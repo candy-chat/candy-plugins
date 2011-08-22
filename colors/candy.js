@@ -70,6 +70,7 @@ CandyShop.Colors = (function(self, Candy, $) {
 		Candy.View.Translation.en.candyshopColorsMessagecolor = 'Message color';
 		Candy.View.Translation.de.candyshopColorsMessagecolor = 'Farbe für Nachrichten';
 		Candy.View.Translation.fr.candyshopColorsMessagecolor = 'Couleur des messages';
+		Candy.View.Translation.nl.candyshopColorsMessagecolor = 'Berichtkleur';
 	};
 
 	return self;
