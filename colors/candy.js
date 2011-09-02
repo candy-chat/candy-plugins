@@ -17,9 +17,9 @@ CandyShop.Colors = (function(self, Candy, $) {
 			return message;
 		};
 
-		Candy.View.Event.Message.beforeShow = function(message) {
-			message = message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
-			return message;
+		Candy.View.Event.Message.beforeShow = function(args) {
+			var message = ($.type(args) !== 'string') ? /* Candy >= 1.0.4 */ args.message : /* Candy < 1.0.4 */ args;
+			return message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
 		};
 
 		if(Candy.Util.cookieExists('candyshop-colors-current')) {
