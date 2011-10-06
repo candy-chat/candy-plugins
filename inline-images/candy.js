@@ -10,7 +10,7 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
 	
-	var _fileExtensions = ['png','jpg','jpeg','gif']
+	var _fileExtensions = ['png','jpe?g','gif']
 		,_originalLinkify = Candy.Util.Parser.linkify
 		,_imageRegex;
 	
