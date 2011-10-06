@@ -34,9 +34,10 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 *   (RegExp)
 	 */
 	var buildImageRegex = function(forFileExtensions) {
-		var pattern = '\bhttps?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|].';
+		var pattern = "\\b(https?:\\/\\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|].";
 		pattern += buildExtensionPattern(forFileExtensions);
-		console.info(pattern);
+		pattern += ')';
+		
 		return new RegExp(pattern,'ig');
 	}
 	
@@ -73,8 +74,9 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	var handleBeforeShow = function(message) {
 		// http://farm6.static.flickr.com/5202/5355145448_93f2233180_t.jpg
+		var processed = message.replace(_imageRegex,'<img src="$1" />');
 		
-		return message.replace(_imageRegex,'<img src="$1" />');
+		return processed;
 	};
 	
 	/** Function: linkify
