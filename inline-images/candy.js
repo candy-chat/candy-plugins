@@ -77,6 +77,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	var handleBeforeShow = function(message) {
 		// http://farm6.static.flickr.com/5202/5355145448_93f2233180_t.jpg
 		var processed = message.replace(_imageRegex,'<img src="$1" />');
+		//processed = processed.replace(/(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|]?(\.jpg))/ig, '<a href="$1" target="_blank">$1</a>');
 		
 		return processed;
 	};
