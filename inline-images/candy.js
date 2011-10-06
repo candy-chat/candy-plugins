@@ -18,11 +18,11 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * Initializes the inline-images plugin.
 	 */
 	self.init = function() {
-		Candy.View.Event.Message.beforeShow = handleBeforeShow;
-		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
-		
 		_originalLinkify =  Candy.Util.Parser.linkify;
 		_imageRegex =  buildImageRegex(_fileExtensions);
+		
+		Candy.View.Event.Message.beforeShow = handleBeforeShow;
+		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
 	};
 	
 	/** Function: buildImageRegex
