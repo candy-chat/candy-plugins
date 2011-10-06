@@ -11,7 +11,7 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.InlineImages = (function(self, Candy, $) {
 	
 	var _fileExtensions = ['png','jpe?g','gif']
-		,_originalLinkify = Candy.Util.Parser.linkify
+		,_originalLinkify
 		,_imageRegex;
 	
 	/** Function: init
@@ -19,7 +19,9 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	self.init = function() {
 		Candy.View.Event.Message.beforeShow = handleBeforeShow;
-		Candy.Util.Parser.linkify = linkify;
+		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
+		
+		_originalLinkify =  Candy.Util.Parser.linkify;
 		_imageRegex =  buildImageRegex(_fileExtensions);
 	};
 	
