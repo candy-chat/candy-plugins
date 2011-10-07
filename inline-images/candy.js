@@ -15,7 +15,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		,_maxImageSize = 100;
 	
 	/** Function: init
-	 * Initializes the inline-images plugin.
+	 * Initializes the inline-images plugin with the default settings.
 	 */
 	self.init = function() {
 		Candy.View.Event.Message.beforeShow = handleBeforeShow;
