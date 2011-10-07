@@ -20,8 +20,48 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	self.init = function() {
 		Candy.View.Event.Message.beforeShow = handleBeforeShow;
 		Candy.View.Event.Message.onShow = handleOnShow;
-		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
+		Candy.Util.Parser.linkify = linkify;
 	};
+	
+	/** Function: initWithFileExtensions
+	 * Initializes the inline-images plugin with the possibility to pass an
+	 * array with all the file extensions you want to display as image.
+	 *
+	 * Parameters:
+	 *   (String array) fileExtensions - Array with extensions (jpg, png, ...)
+	 */
+	self.initWithFileExtensions = function(fileExtensions) {
+		_fileExtensions = fileExtensions;
+		init();
+	};
+	
+	/** Function: initWithMaxImageSize
+	 * Initializes the inline-images plugin with the possibility to pass the
+	 * maximum image size for displayed images.
+	 *
+	 * Parameters:
+	 *   (int) maxImageSize - Maximum edge size for images
+	 */
+	self.initWithMaxImageSize = function(maxImageSize) {
+		_maxImageSize = maxImageSize;
+		init();
+	};
+	
+	/** Function: initWithFileExtensionsAndMaxImageSize
+	 * Initializes the inline-images plugin with the possibility to pass an
+	 * array with all the file extensions you want to display as image and
+	 * the maximum image size for displayed images.
+	 *
+	 * Parameters:
+	 *   (String array) fileExtensions - Array with extensions (jpg, png, ...)
+	 *   (int) maxImageSize - Maximum edge size for images
+	 */
+	self.initWithFileExtensionsAndMaxImageSize = function(fileExtensions, maxImageSize) {
+		_fileExtensions = fileExtensions;
+		_maxImageSize = maxImageSize;
+		init();
+	};
+	
 	
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
