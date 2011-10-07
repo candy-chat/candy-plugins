@@ -1,7 +1,7 @@
 # Colors
 Send and receive colored messages.
 
-![Color Picker](screenshot.png)
+![Color Picker](/amiadogroup/candy-plugins/raw/master/colors/screenshot.png)
 
 ## Usage
 To enable *Colors* you have to include its JavaScript code and stylesheet: 
