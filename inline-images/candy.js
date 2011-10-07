@@ -10,60 +10,17 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
 	
-	var _fileExtensions = ['png','jpe?g','gif']
-		,_originalLinkify
-		,_imageRegex;
+	var _fileExtensions = ['png','jpg','jpeg','gif']
+		,_originalLinkify = Candy.Util.Parser.linkify
+		,_urlRegex = new RegExp("\\b(https?:\\/\\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|])",'ig');
 	
 	/** Function: init
 	 * Initializes the inline-images plugin.
 	 */
 	self.init = function() {
-		_originalLinkify =  Candy.Util.Parser.linkify;
-		_imageRegex =  buildImageRegex(_fileExtensions);
-		
 		Candy.View.Event.Message.beforeShow = handleBeforeShow;
 		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
 	};
-	
-	/** Function: buildImageRegex
-	 * Creates a RegExp to match URL's to an image inside a string.
-	 * Pass an array with file extensions you want to identify as image.
-	 *
-	 * Paramters:
-	 *   (String Array) forFileExtensions - image file extensions (png, jpg, ...)
-	 *
-	 * Returns:
-	 *   (RegExp)
-	 */
-	var buildImageRegex = function(forFileExtensions) {
-		var pattern = "\\b(https?:\\/\\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|].";
-		pattern += buildExtensionPattern(forFileExtensions);
-		pattern += ')';
-		
-		return new RegExp(pattern,'ig');
-	}
-	
-	/** Function: buildExtensionPattern
-	 * Takes an array with file extensions and creates an alternative regex
-	 * pattern out of it.
-	 * Example: ['jpg','png','gif'] => '(jpg|png|gif)'
-	 *
-	 * Paramters:
-	 *   (String array) extensions - File extensions
-	 * 
-	 * Returns:
-	 *  (String)
-	 */
-	var buildExtensionPattern = function(extensions) {
-		var extensions = '(';
-		for(var i = 0, l = _fileExtensions.length; i < l; i++) {
-			extensions += _fileExtensions[i];
-			if(i < l-1) extensions += '|';
-		}
-		extensions += ')';
-		
-		return extensions;
-	}
 	
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
@@ -75,10 +32,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 *   (String)
 	 */
 	var handleBeforeShow = function(message) {
-		// http://farm6.static.flickr.com/5202/5355145448_93f2233180_t.jpg
-		var processed = message.replace(_imageRegex,'<a href="$1" class="inlineimages-link" target="_blank"><img class="inlineimages-thumbnail" src="$1" /></a>');
-		//processed = processed.replace(/(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|]?(\.jpg))/ig, '<a href="$1" target="_blank">$1</a>');
-		
+		var processed = message.replace(_urlRegex, replaceCallback);
 		return processed;
 	};
 	
@@ -97,6 +51,57 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		return text;
 	}
 	
+	/** Function: replaceCallback
+	 * This callback handles matches from the URL regex.
+	 * If the callback detects an image URL, it returns the HTML code to
+	 * display an image. If it is just a common URL, a link-tag gets returned.
+	 *
+	 * Paramters:
+	 *   (String) match - matched URL
+	 *
+	 * Returns:
+	 *   (String)
+	 */
+	var replaceCallback = function(match) {
+		var result = match;
+
+		var dotPosition = match.lastIndexOf(".");
+		if(dotPosition > -1) {
+			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) != -1) {
+				result = buildImageSource(match);
+			} else {
+				result = buildLinkSource(match);
+			}
+		}
+		
+		return result;
+	}
+	
+	/** Function: buildImageSource
+	 * Returns HTML source to show a URL as an image.
+	 *
+	 * Parameters:
+	 *   (String) url - image url
+	 * 
+	 * Returns:
+	 *   (String)
+	 */
+	var buildImageSource = function(url) {
+		return '<a href="' + url + '" target="_blank" class="inlineimages-link"><img src="' + url + '" /></a>';
+	}
+	
+	/** Function: buildLinkSource
+	 * Returns HTML source to show a URL as a link.
+	 *
+	 * Parameters:
+	 *   (String) url - url
+	 * 
+	 * Returns:
+	 *   (String)
+	 */
+	var buildLinkSource = function(url) {
+		return '<a href="' + url + '" target="_blank">' + url + '</a>';
+	}
 
 	return self;
 }(CandyShop.InlineImages || {}, Candy, jQuery));
