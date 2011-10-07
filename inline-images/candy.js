@@ -12,7 +12,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	
 	var _fileExtensions = ['png','jpg','jpeg','gif']
 		,_originalLinkify = Candy.Util.Parser.linkify
-		,_urlRegex = new RegExp("\\b(https?:\\/\\/[-A-Z0-9+&@#\\/%?=~_|!:,.;]*[-A-Z0-9+&@#\\/%=~_|])",'ig');
+		,_maxImageSize = 100;
 	
 	/** Function: init
 	 * Initializes the inline-images plugin.
@@ -33,10 +33,22 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 *   (String)
 	 */
 	var handleBeforeShow = function(message) {
-		var processed = message.replace(_urlRegex, replaceCallback);
+		var processed = message.replace(/(^|[^\/])(www\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
+		processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
+		
 		return processed;
 	};
 	
+	/** Function: handleOnShow
+	 * Each time a message gets displayed, this method checks for possible
+	 * image loaders (created by buildImageLoaderSource).
+	 * If there is one, the image "behind" the loader gets loaded in the
+	 * background. As soon as the image is loaded, the image loader gets
+	 * replaced by proper scaled image.
+	 *
+	 * Parameters:
+	 *   (Array) args
+	 */
 	var handleOnShow = function(args) {
 		$('.inlineimages-loader').each(function(index, element) {
 			$(element).removeClass('inlineimages-loader');
@@ -44,12 +56,17 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 			var imageLoader = new Image();
 			
 			$(imageLoader).load(function() {
-				$(element).replaceWith(buildImageSource(url))
+				var origWidth = this.width;
+				var origHeight = this.height;
+				var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
+				var width = Math.round(ratio * origWidth);
+				var height = Math.round(ratio * origHeight);
+				
+				$(element).replaceWith(buildImageSource(url, width, height))
 			});
 			
 			imageLoader.src = url;
 		});
-		
 	}
 	
 	/** Function: linkify
@@ -69,8 +86,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	
 	/** Function: replaceCallback
 	 * This callback handles matches from the URL regex.
-	 * If the callback detects an image URL, it returns the HTML code to
-	 * display an image. If it is just a common URL, a link-tag gets returned.
+	 * If the callback detects an image URL, it returns an image with a loading
+	 * indicator. If it is just a common URL, a link-tag gets returned.
 	 *
 	 * Paramters:
 	 *   (String) match - matched URL
@@ -84,14 +101,27 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		var dotPosition = match.lastIndexOf(".");
 		if(dotPosition > -1) {
 			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) != -1) {
-				//result = buildImageSource(match);
-				result = '<img class="inlineimages-loader" longdesc="' + match + '" src="candy-plugins/inline-images/spinner.gif" />'
+				result = buildImageLoaderSource(match);
 			} else {
 				result = buildLinkSource(match);
 			}
 		}
 		
 		return result;
+	}
+	
+	/** Function: buildImageLoaderSource
+	 * Returns a loader indicator. The handleOnShow method fullfills afterwards
+	 * the effective image loading.
+	 *
+	 * Parameters:
+	 *   (String) url - image url
+	 * 
+	 * Returns:
+	 *   (String)
+	 */
+	var buildImageLoaderSource = function(url) {
+		return '<img class="inlineimages-loader" longdesc="' + url + '" src="candy-plugins/inline-images/spinner.gif" />'
 	}
 	
 	/** Function: buildImageSource
@@ -103,8 +133,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * Returns:
 	 *   (String)
 	 */
-	var buildImageSource = function(url) {
-		return '<a href="' + url + '" target="_blank" class="inlineimages-link"><img src="' + url + '" /></a>';
+	var buildImageSource = function(url, width, height) {
+		return '<a href="' + url + '" target="_blank" class="inlineimages-link"><img src="' + url + '" width="' + width + '" height="' + height + '"/></a>';
 	}
 	
 	/** Function: buildLinkSource
