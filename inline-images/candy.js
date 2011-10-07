@@ -3,7 +3,8 @@
  * @version 1.0
  * @author Manuel Alabor (manuel@alabor.me)
  *
- * Display an image itself instead of its URL.
+ * If a user posts a URL to an image, that image gets rendered directly
+ * inside of Candy.
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
