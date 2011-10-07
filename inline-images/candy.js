@@ -19,6 +19,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	self.init = function() {
 		Candy.View.Event.Message.beforeShow = handleBeforeShow;
+		Candy.View.Event.Message.onShow = handleOnShow;
 		Candy.Util.Parser.linkify = linkify;  // overwrite with own function
 	};
 	
@@ -35,6 +36,21 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		var processed = message.replace(_urlRegex, replaceCallback);
 		return processed;
 	};
+	
+	var handleOnShow = function(args) {
+		$('.inlineimages-loader').each(function(index, element) {
+			$(element).removeClass('inlineimages-loader');
+			var url = $(element).attr('longdesc');
+			var imageLoader = new Image();
+			
+			$(imageLoader).load(function() {
+				$(element).replaceWith(buildImageSource(url))
+			});
+			
+			imageLoader.src = url;
+		});
+		
+	}
 	
 	/** Function: linkify
 	 * Is used to overwrite the original Candy.Util.Parser.linkify.
@@ -68,7 +84,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		var dotPosition = match.lastIndexOf(".");
 		if(dotPosition > -1) {
 			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) != -1) {
-				result = buildImageSource(match);
+				//result = buildImageSource(match);
+				result = '<img class="inlineimages-loader" longdesc="' + match + '" src="candy-plugins/inline-images/spinner.gif" />'
 			} else {
 				result = buildLinkSource(match);
 			}
