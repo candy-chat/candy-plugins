@@ -15,7 +15,7 @@ Call its `init()` method after Candy has been initialized:
 Candy.init('/http-bind/');
 
 // enable RoomPanel plugin
-CandyShop.Colors.init({
+CandyShop.RoomPanel.init({
     // domain that hosts the muc rooms, only required if autoDetectRooms is enabled
     mucDomain: 'conference.yourdomain.com',
 
