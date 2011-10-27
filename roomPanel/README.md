@@ -1,6 +1,8 @@
 # RoomPanel 
 Adds Icon show a lists rooms, also allows to show rooms upon connection and when all rooms are closed.
 
+![RoomPanel](/amiadogroup/candy-plugins/raw/master/roomPanel/screenshot.png)
+
 ## Usage
 To enable *RoomPanel* you have to include its JavaScript code and stylesheet: 
 
