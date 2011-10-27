@@ -131,14 +131,14 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
     self.applyTranslations = function() {
             Candy.View.Translation.en.candyshopRoomPanelListRoom = 'List Rooms';
-            Candy.View.Translation.de.candyshopRoomPanelListRoom = 'List Rooms';
+            Candy.View.Translation.de.candyshopRoomPanelListRoom = 'Verfügbare Räume anzeigen';
             Candy.View.Translation.fr.candyshopRoomPanelListRoom = 'Liste des salles';
             Candy.View.Translation.nl.candyshopRoomPanelListRoom = 'List Rooms';
             Candy.View.Translation.es.candyshopRoomPanelListRoom = 'List Rooms';
             
             
             Candy.View.Translation.en.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
-            Candy.View.Translation.de.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
+            Candy.View.Translation.de.candyshopRoomPanelChooseRoom = 'Verfügbare Räume';
             Candy.View.Translation.fr.candyshopRoomPanelChooseRoom = 'Choisir une salle';
             Candy.View.Translation.nl.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
             Candy.View.Translation.es.candyshopRoomPanelChooseRoom = 'Choose Room To Join'; 
