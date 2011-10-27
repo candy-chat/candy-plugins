@@ -5,11 +5,21 @@ var CandyShop = (function(self) {return self;}(CandyShop || {}));
  */
 CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
     var _options = {
-        mucDomain: null, // domain that hosts the muc rooms
-        roomList: [], // allow you to force a list of rooms
-        showIfAllTabClosed: true, // show room list if all rooms are closed
-        autoDetectRooms: true,  // detect rooms before showing list
-        roomCacheTime: 600 // how long before refreshing room list
+         // domain that hosts the muc rooms, only required if autoDetectRooms is enabled
+        mucDomain: '',
+
+        // allow you to force a list of rooms, only required if autoDetectRoom is disabled
+        roomList: [],
+
+        // show room list if all rooms are closed, default value is true. [optional]
+        showIfAllTabClosed: true,
+
+        // detect rooms before showing list, default value is true. [optional]
+        autoDetectRooms: true,
+
+        // how long in seconds before refreshing room list, default value is 600. [optional]
+        roomCacheTime: 600
+        
     };
     
     var _lastRoomUpdate = 0;
@@ -91,7 +101,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
                 setTimeout(CandyShop.RoomPanel.showRoomPanel, 100);
             } else {
                 var timeDiff = Math.round(new Date().getTime() / 1000) - _options.roomCacheTime;
-                if (timeDiff > _lastRoomUpdate ) {
+                if (_options.autoDetectRooms && timeDiff > _lastRoomUpdate ) {
                     /* sends a request to get list of rooms user for the room */
                     var iq = $iq({type: 'get', from: Candy.Core.getUser().getJid(), to: _options.mucDomain  , id: 'findRooms1'})
                         .c('query', {xmlns: Strophe.NS.DISCO_ITEMS});
