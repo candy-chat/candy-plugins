@@ -8,3 +8,8 @@ This is the official plugin repository for [Candy](http://amiadogroup.github.com
 * __jQuery-Ui__ - jQuery UI lightness theme
 * __Room Panel__ - Provides a list of rooms available to join.
 * __Timeago__ - Replaces the exact time/date with fuzzy timestamps like "2 minutes ago".
+
+Support & Community
+-------------------
+Take a look at our [FAQ](https://github.com/amiadogroup/candy/wiki/Frequently-Asked-Questions). If it doesn't solve your questions, your welcome to join our [Mailinglist on Google Groups](http://groups.google.com/group/candy-chat).
+You don't need to have a Gmail account for it. 
