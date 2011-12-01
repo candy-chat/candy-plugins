@@ -2,6 +2,8 @@
 
 This is the official plugin repository for [Candy](http://amiadogroup.github.com/candy), a JavaScript based multi-user chat client.
 
+[![Still Maintained](http://stillmaintained.com/amiadogroup/candy-plugins.png)](http://stillmaintained.com/amiadogroup/candy-plugins)
+
 ## List of available plugins
 * __Colors__ - Send and receive colored messages.
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
