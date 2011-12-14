@@ -9,7 +9,7 @@ This fork is just for not breaking users who forked the already existing reposit
 You can do this using this command:
 
 ```
-git remote set-url origin git://github.com/candy-chat/candy.git
+git remote set-url origin git://github.com/candy-chat/candy-plugins.git
 ```
 
 If you have any questions, don't hesitate to ask in the mailinglist (link below).
@@ -17,8 +17,6 @@ If you have any questions, don't hesitate to ask in the mailinglist (link below)
 # Candy Plugins
 
 This is the official plugin repository for [Candy](http://amiadogroup.github.com/candy), a JavaScript based multi-user chat client.
-
-[![Still Maintained](http://stillmaintained.com/amiadogroup/candy-plugins.png)](http://stillmaintained.com/amiadogroup/candy-plugins)
 
 ## List of available plugins
 * __Colors__ - Send and receive colored messages.
