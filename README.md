@@ -6,6 +6,12 @@ This fork is just for not breaking users who forked the already existing reposit
 
 **Please update your .git/config to use "candy-chat" instead of "amiadogroup" as the "origin"!**
 
+You can do this using this command:
+
+```
+git remote set-url origin git://github.com/candy-chat/candy.git
+```
+
 If you have any questions, don't hesitate to ask in the mailinglist (link below).
 
 # Candy Plugins
