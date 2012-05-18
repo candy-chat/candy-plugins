@@ -32,9 +32,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	 * Bind to beforeShow, play sound and higlight if specified
 	 *
 	 * Parameters:
-	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc.
-	 *   (Boolean) playSound - Whether to play a sound when identified
-	 *   (Boolean) highlightInRoom - Whether to highlight the name in the room
+	 *   (Object) options - The options to apply to this plugin
 	 */
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
