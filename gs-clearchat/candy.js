@@ -13,6 +13,15 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
  * Clears the chat window if either clicked or '/clear' is typed
  */
 CandyShop.ClearChat = (function(self, Candy, $) {
+	/** Object: _options
+	 * Options:
+	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+	 *   (Integer) completeKeyCode - Which key to use to complete
+	 */
+	var _options = {
+		showInToolbar: true
+	};
+
 	/** Function: init
 	 * Initialize the ClearChat plugin
 	 * Bind event and if specified, add the icon to be clickable
@@ -20,13 +29,16 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Boolean) showInToolbar - Whether to add it to the toolbar
 	 */
-    self.init = function(showInToolbar) {
+    self.init = function(options) {
+	    // apply the supplied options to the defaults specified
+	    $.extend(true, _options, options);
+
         // add the translations
         self.applyTranslations();
 
 	    // if it's specified to show the control,
 	    // add it to the toolbar
-	    if (showInToolbar) {
+	    if (_options.showInToolbar) {
 	        var html = '<li id="clearchat-control" data-tooltip="' + $.i18n._('candyshopClearchat') + '"></li>';
 	        $('#emoticons-icon').after(html);
 	        $('#clearchat-control').click(function() {
