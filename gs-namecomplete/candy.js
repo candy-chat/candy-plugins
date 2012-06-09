@@ -40,39 +40,86 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		// apply the supplied options to the defaults specified
 		$.extend(true, _options, options);
 
-		$(Candy.View.Pane).on('candy:core.presence, candy:view.room.afterShow', function() {
-			self.populateNicks();
-		});
-
 		// listen for keydown when autocomplete options exist
 		$(document).on('keydown', 'input[name="message"]', function(e) {
 			// if we hear the key code for completion
 			if (e.which == _options.completeKeyCode) {
+				// update the list of nicks to grab
+				self.populateNicks();
+
 				// set up the vars for this method
 				// break it on spaces, and get the last word in the string
 				var field = $(this);
-				var msg = field.val();
-				var msgParts = msg.split(' ');
+				var msgParts = field.val().split(' ');
 				var lastWord = msgParts[msgParts.length - 1];
+				var matches = [];
 
 				// go through each of the nicks and compare it
 				$(_nicks).each(function(index, item) {
 					// if we have results
 					if (item.match(lastWord) !== null) {
-						// replace the last part with the item
-						msgParts[msgParts.length - 1] = item;
-
-						// put the string back together on spaces
-						field.val(msgParts.join(' '));
-
-						// prevent tabs from switching to the field
-						if (_options.completeKeyCode == 9) {
-							e.preventDefault();
-						}
+						matches.push(item);
 					}
+
 				});
+
+				// if we only have one match, no need to show the picker, just replace it
+				// else show the picker of the name matches
+				if (matches.length == 1) {
+					self.replaceName(matches[0]);
+				} else if (matches.length > 1) {
+					self.showPicker(matches, field);
+				}
+
+				// don't perform any key actions
+				e.preventDefault();
 			}
 		});
+	}
+
+	/** Function: keyDown
+	 * The listener for keydown in the menu
+	 */
+	self.keyDown = function(e) {
+		// get the menu and the content element
+		var menu = $('#context-menu'),
+			content = menu.find('ul');
+
+		// switch the key code
+		switch (e.which) {
+			// up arrow
+			case 38:
+				// move the selected thing up
+				content.find('li.selected').removeClass('selected').prev().addClass('selected');
+				break;
+
+			// down arrow
+			case 40:
+				// move the selected thing down
+				content.find('li.selected').removeClass('selected').next().addClass('selected');
+				break;
+
+			// the key code for completion
+			case _options.completeKeyCode:
+			// esc key
+			case 27:
+				if (e.which == _options.completeKeyCode) {
+					// get the text of the selected item
+					var val = content.find('li.selected').text();
+					// replace the last item with the selected item
+					self.replaceName(val);
+				}
+
+				// remove the listener on the field
+				$('input[name="message"]').unbind('keydown', self.keyDown);
+
+				// hide the menu
+				menu.hide();
+				break;
+		}
+
+		// stop the action of any keys
+		e.preventDefault();
 	}
 
 	/** Function: populateNicks
@@ -90,6 +137,59 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			_nicks.push(_options.nameIdentifier + item.getNick());
 		});
 	}
+
+	/** Function: replaceName
+	 *
+	 */
+	self.replaceName = function(replaceText) {
+		// get the parts of the message
+		var msgParts = $('input[name="message"]').val().split(' ');
+
+		// replace the last part with the item
+		msgParts[msgParts.length - 1] = replaceText;
+
+		// put the string back together on spaces
+		$('input[name="message"]').val(msgParts.join(' '));
+	}
+
+	/** Function: showPicker
+	 * Show the picker for the list of names that match
+	 */
+	self.showPicker = function(matches, elem) {
+		// get the element
+		elem = $(elem);
+
+		// get the necessary items
+		var pos = elem.offset(),
+			menu = $('#context-menu'),
+			content = $('ul', menu),
+			i;
+
+		// clear the content if needed
+		content.empty();
+
+		// add the matches to the list
+		for(i = 0; i < matches.length; i++) {
+			content.append('<li class="gs-namecomplete-option">' + matches[i] + '</li>');
+		}
+
+		// select the first item
+		$(content.find('li')[0]).addClass('selected');
+
+		// bind the keydown to move around the menu
+		$('input[name="message"]').bind('keydown', self.keyDown);
+
+		// estimate the left to the # of chars * 7...not sure?
+		// get the top of the box to put this thing at
+		var posLeft = elem.val().length * 7,
+			posTop  = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
+
+		// show it
+		menu.css({'left': posLeft, 'top': posTop.px, backgroundPosition: posLeft.backgroundPositionAlignment + ' ' + posTop.backgroundPositionAlignment});
+		menu.fadeIn('fast');
+
+		return true;
+	};
 
 	return self;
 }(CandyShop.NameComplete || {}, Candy, jQuery));
