@@ -1,0 +1,7 @@
+#context-menu li.selected {
+    background-color: #ccc;
+}
+
+li.gs-namecomplete-option {
+    padding: 3px 5px !important;
+}
