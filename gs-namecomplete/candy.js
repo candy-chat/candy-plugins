@@ -83,20 +83,29 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.keyDown = function(e) {
 		// get the menu and the content element
 		var menu = $('#context-menu'),
-			content = menu.find('ul');
+			content = menu.find('ul'),
+			selected = content.find('li.selected');
 
 		// switch the key code
 		switch (e.which) {
 			// up arrow
 			case 38:
 				// move the selected thing up
-				content.find('li.selected').removeClass('selected').prev().addClass('selected');
+				var prev = selected.prev('li');
+				if (prev.length > 0) {
+					selected.removeClass('selected');
+					prev.addClass('selected');
+				}
 				break;
 
 			// down arrow
 			case 40:
 				// move the selected thing down
-				content.find('li.selected').removeClass('selected').next().addClass('selected');
+				var next = selected.next('li');
+				if (next.length > 0) {
+					selected.removeClass('selected');
+					next.addClass('selected');
+				}
 				break;
 
 			// the key code for completion
@@ -111,7 +120,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				}
 
 				// remove the listener on the field
-				$('input[name="message"]').unbind('keydown', self.keyDown);
+				$(document).unbind('keydown', self.keyDown);
 
 				// hide the menu
 				menu.hide();
@@ -148,8 +157,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		// replace the last part with the item
 		msgParts[msgParts.length - 1] = replaceText;
 
-		// put the string back together on spaces
-		$('input[name="message"]').val(msgParts.join(' '));
+		// put the string back together on spaces and focus back in the field
+		$('input[name="message"]').val(msgParts.join(' ')).focus();
 	}
 
 	/** Function: showPicker
@@ -158,6 +167,9 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.showPicker = function(matches, elem) {
 		// get the element
 		elem = $(elem);
+
+		// blur the field
+		elem.blur();
 
 		// get the necessary items
 		var pos = elem.offset(),
@@ -177,7 +189,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$(content.find('li')[0]).addClass('selected');
 
 		// bind the keydown to move around the menu
-		$('input[name="message"]').bind('keydown', self.keyDown);
+		$(document).bind('keydown', self.keyDown);
 
 		// estimate the left to the # of chars * 7...not sure?
 		// get the top of the box to put this thing at
