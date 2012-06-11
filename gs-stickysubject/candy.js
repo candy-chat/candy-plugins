@@ -21,7 +21,7 @@ CandyShop.StickySubject = (function(self, Candy, $) {
 		$(Candy.View.Pane).on('candy:view.room.afterSubjectChange', function(e, data) {
 			// get the current message pane and create the text
 			var messagePane = $(Candy.View.Pane.Room.getPane(Candy.View.getCurrent().roomJid)),
-				subjectText = 'Subject: ' + Candy.Util.Parser.linkify(data.subject);
+				subjectText = $.i18n._('roomSubject') + ' ' + Candy.Util.Parser.linkify(data.subject);
 
 			// if we don't have the subject container yet, add it
 			// else just update the content

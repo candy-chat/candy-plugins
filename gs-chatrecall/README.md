@@ -1,19 +1,30 @@
-# Clear chat plugin
-This plugin will allow the user to type '/clear' or click the clear icon to clear the currently active room
+# Chat recall plugin
+This plugin will allow the user to navigate through historical messages they've typed using the up and down keys
 
-### Usage
-    <script type="text/javascript" src="path_to_plugins/gs-chatrecall/candy.js"></script>
+## Usage
+Include the JavaScript file:
 
-    ...
+```HTML
+<script type="text/javascript" src="path_to_plugins/gs-chatrecall/candy.js"></script>
+```
 
-    CandyShop.ChatRecall.init();
+Call its `init()` method after Candy has been initialized:
 
-### Configuration options
+```JavaScript
+Candy.init('/http-bind/');
+
+CandyShop.ChatRecall.init();
+
+Candy.Core.connect();
+```
+
+## Configuration options
 messagesToKeep - Integer - The number of messages to store in history. Defaults to 10
 
-### Example configurations
-
-    // Store 25 messages for the user to scroll through
-    CandyShop.ChatRecall.init({
-        messagesToKeep: 25
-    });
+## Example configurations
+```JavaScript
+// Store 25 messages for the user to scroll through
+CandyShop.ChatRecall.init({
+    messagesToKeep: 25
+});
+```

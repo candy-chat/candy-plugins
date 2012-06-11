@@ -15,8 +15,7 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.ClearChat = (function(self, Candy, $) {
 	/** Object: _options
 	 * Options:
-	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *   (Integer) completeKeyCode - Which key to use to complete
+	 *   (Boolean) showInToolbar - Whether to show the clear chat button in the toolbar
 	 */
 	var _options = {
 		showInToolbar: true
@@ -27,7 +26,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	 * Bind event and if specified, add the icon to be clickable
 	 *
 	 * Parameters:
-	 *   (Boolean) showInToolbar - Whether to add it to the toolbar
+	 *   (Object) options - An options packet to apply to this plugin
 	 */
     self.init = function(options) {
 	    // apply the supplied options to the defaults specified

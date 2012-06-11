@@ -33,7 +33,9 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
 
 	/** Function: init
 	 * Initialize the ChatRecall plugin
-	 * Apply the options passed in to the defaults
+	 *
+	 * Parameters:
+	 *   (Object) options - An options packet to apply to this plugin
 	 */
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
@@ -89,6 +91,9 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
 	/** Function: addMessage
 	 * Add a message to the front of the stack
 	 * This is stored New[0] -> Old[N]
+	 *
+	 * Parameters:
+	 *   (String) message - The message to store
 	 */
 	self.addMessage = function(message) {
 		// pop one off the end if it's too many

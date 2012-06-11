@@ -79,6 +79,9 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 	/** Function: keyDown
 	 * The listener for keydown in the menu
+	 *
+	 * Parameters:
+	 *   (Event) e - The keydown event
 	 */
 	self.keyDown = function(e) {
 		// get the menu and the content element
@@ -148,7 +151,10 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	}
 
 	/** Function: replaceName
+	 * Replace the name in the message input
 	 *
+	 * Parameters:
+	 *   (String) replaceText - Replace the last word in the message with this
 	 */
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
@@ -163,6 +169,10 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 	/** Function: showPicker
 	 * Show the picker for the list of names that match
+	 *
+	 * Parameters:
+	 *   (Array) matches - The matches that we found in the roster
+	 *   (Element) elem - The input element that we're going to put the list over the top of
 	 */
 	self.showPicker = function(matches, elem) {
 		// get the element
