@@ -4,11 +4,11 @@ Adds Icon show a lists rooms, also allows to show rooms upon connection and when
 ![RoomPanel](/amiadogroup/candy-plugins/raw/master/roomPanel/screenshot.png)
 
 ## Usage
-To enable *RoomPanel* you have to include its JavaScript code and stylesheet: 
+Include the JavaScript and CSS files:
 
 ```HTML
-<script type="text/javascript" src="candyshop/roomPanel/roomPanel.js"></script>
-<link rel="stylesheet" type="text/css" href="candyshop/roomPanel/default.css" />
+<script type="text/javascript" src="path_to_plugins/roompanel/candy.js"></script>
+<link rel="stylesheet" type="text/css" href="path_to_plugins/roompanel/candy.css" />
 ```
 
 Call its `init()` method after Candy has been initialized: 
@@ -44,4 +44,4 @@ CandyShop.RoomPanel.init({
 }); 
 
 Candy.Core.connect();
-
+```
