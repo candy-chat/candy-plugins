@@ -62,7 +62,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 				}
 			}
 		});
-	}
+	};
 
 	return self;
 }(CandyShop.NotifyMe || {}, Candy, jQuery));

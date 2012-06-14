@@ -75,7 +75,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				e.preventDefault();
 			}
 		});
-	}
+	};
 
 	/** Function: keyDown
 	 * The listener for keydown in the menu
@@ -132,7 +132,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// stop the action of any keys
 		e.preventDefault();
-	}
+	};
 
 	/** Function: populateNicks
 	 * Populate the collection of nicks to autocomplete from
@@ -148,7 +148,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$.each(roster, function(index, item) {
 			_nicks.push(_options.nameIdentifier + item.getNick());
 		});
-	}
+	};
 
 	/** Function: replaceName
 	 * Replace the name in the message input
@@ -165,7 +165,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// put the string back together on spaces and focus back in the field
 		$('input[name="message"]').val(msgParts.join(' ')).focus();
-	}
+	};
 
 	/** Function: showPicker
 	 * Show the picker for the list of names that match

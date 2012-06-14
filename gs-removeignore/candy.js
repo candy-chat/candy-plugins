@@ -24,7 +24,7 @@ CandyShop.RemoveIgnore = (function(self, Candy, $) {
 				requiredPermission: function(user, me) { return false }
 			};
 		});
-	}
+	};
 
 	return self;
 }(CandyShop.RemoveIgnore || {}, Candy, jQuery));

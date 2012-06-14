@@ -6,6 +6,7 @@ This plugin replaces the exact time/date with 'fuzzy timestamps' (e.g. 'less tha
 Include the JavaScript and CSS files:
 
 ```HTML
+<script type="text/javascript" src="path_to_plugins/timeago/jquery.timeago.js"></script>
 <script type="text/javascript" src="path_to_plugins/timeago/candy.js"></script>
 <link rel="stylesheet" type="text/css" href="path_to_plugins/timeago/candy.css" />
 ```

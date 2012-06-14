@@ -54,7 +54,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	            args.message = '';
             }
         });
-    }
+    };
 
 	/** Function: clearCurrentTab
 	 * Clear the current tab's content
@@ -65,7 +65,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
             $('.room-pane').filter(':visible').find('.message-pane').empty();
         } catch (e) {
         }
-    }
+    };
 
 	/** Function: applyTranslations
 	 * Apply translations to this plugin

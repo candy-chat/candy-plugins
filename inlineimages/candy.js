@@ -49,7 +49,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	self.buildImageLoaderSource = function(url) {
 		url = url.replace(/^\>/, '').replace(/\<$/, '');
 		return '<img class="inlineimages-loader" longdesc="' + url + '" src="candy-plugins/inline-images/spinner.gif" />'
-	}
+	};
 
 	/** Function: buildImageSource
 	 * Returns HTML source to show a URL as an image.
@@ -62,7 +62,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	self.buildImageSource = function(url, width, height) {
 		return '<img src="' + url + '" width="' + width + '" height="' + height + '" />';
-	}
+	};
 
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
@@ -106,7 +106,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 
 			imageLoader.src = url;
 		});
-	}
+	};
 
 	/** Function: replaceCallback
 	 * This callback handles matches from the URL regex.
@@ -132,7 +132,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		result = '>' + result + '<';
 
 		return result;
-	}
+	};
 
 	return self;
 }(CandyShop.InlineImages || {}, Candy, jQuery));

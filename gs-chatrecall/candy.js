@@ -86,7 +86,7 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
 		$(Candy.View.Pane).on('candy:view.message.beforeSend', function(e, data) {
 			self.addMessage(data.message);
 		});
-	}
+	};
 
 	/** Function: addMessage
 	 * Add a message to the front of the stack
@@ -103,7 +103,7 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
 
 		// put the message at pos 0 and move everything else
 		_messages.unshift(message);
-	}
+	};
 
 	return self;
 }(CandyShop.ChatRecall || {}, Candy, jQuery));
