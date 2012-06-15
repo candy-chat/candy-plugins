@@ -13,20 +13,31 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
  * Clears the chat window if either clicked or '/clear' is typed
  */
 CandyShop.ClearChat = (function(self, Candy, $) {
+	/** Object: _options
+	 * Options:
+	 *   (Boolean) showInToolbar - Whether to show the clear chat button in the toolbar
+	 */
+	var _options = {
+		showInToolbar: true
+	};
+
 	/** Function: init
 	 * Initialize the ClearChat plugin
 	 * Bind event and if specified, add the icon to be clickable
 	 *
 	 * Parameters:
-	 *   (Boolean) showInToolbar - Whether to add it to the toolbar
+	 *   (Object) options - An options packet to apply to this plugin
 	 */
-    self.init = function(showInToolbar) {
+    self.init = function(options) {
+	    // apply the supplied options to the defaults specified
+	    $.extend(true, _options, options);
+
         // add the translations
         self.applyTranslations();
 
 	    // if it's specified to show the control,
 	    // add it to the toolbar
-	    if (showInToolbar) {
+	    if (_options.showInToolbar) {
 	        var html = '<li id="clearchat-control" data-tooltip="' + $.i18n._('candyshopClearchat') + '"></li>';
 	        $('#emoticons-icon').after(html);
 	        $('#clearchat-control').click(function() {
@@ -43,7 +54,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	            args.message = '';
             }
         });
-    }
+    };
 
 	/** Function: clearCurrentTab
 	 * Clear the current tab's content
@@ -54,7 +65,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
             $('.room-pane').filter(':visible').find('.message-pane').empty();
         } catch (e) {
         }
-    }
+    };
 
 	/** Function: applyTranslations
 	 * Apply translations to this plugin
