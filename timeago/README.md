@@ -1,8 +1,8 @@
-#Candy Timeago plugin
+# Timeago plugin
 
 This plugin replaces the exact time/date with 'fuzzy timestamps' (e.g. 'less than a minute ago', '2 minutes ago', 'about an hour ago'). The timestamps update dynamically. All the heavy lifting is done by Ryan McGeary's excellent jQuery Timeago plugin (http://timeago.yarp.com/).
 
-##Usage
+## Usage
 Include the JavaScript and CSS files:
 
 ```HTML

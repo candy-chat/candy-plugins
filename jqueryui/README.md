@@ -1,8 +1,8 @@
-#Candy jQuery UI lightness Theme plugin
+# jQuery UI lightness theme plugin
 
 This plugin replaces the default theme with the jQuery UI lightness Theme. (http://jqueryui.com/)
 
-##Usage
+## Usage
 Include the CSS file:
 
 ```HTML
