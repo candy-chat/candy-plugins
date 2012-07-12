@@ -83,8 +83,14 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.keyDown = function(e) {
 		// get the menu and the content element
 		var menu = $('#context-menu'),
-			content = menu.find('ul');
-
+			content = menu.find('ul'),
+			selected = content.find('li.selected');
+		
+		if(menu.css('display') == 'none') {
+			$(document).unbind('keydown', self.keyDown);
+			return;
+		}
+		
 		// switch the key code
 		switch (e.which) {
 			// up arrow
@@ -103,6 +109,9 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			case _options.completeKeyCode:
 			// esc key
 			case 27:
+			// delete Key
+			case 8:
+			case 46:
 				if (e.which == _options.completeKeyCode) {
 					// get the text of the selected item
 					var val = content.find('li.selected').text();
@@ -117,10 +126,23 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				menu.hide();
 				break;
 		}
-
+		
 		// stop the action of any keys
 		e.preventDefault();
-	}
+	};
+	
+	/** Function: selectOnClick
+	 * The listener for click on decision in the menu
+	 *
+	 * Parameters:
+	 *   (Event) e - The click event
+	 */
+	self.selectOnClick = function(e) {
+		self.replaceName($(e.currentTarget).text());
+		$(document).unbind('keydown', self.keyDown);
+		$('#context-menu').hide();
+		e.preventDefault();
+	};
 
 	/** Function: populateNicks
 	 * Populate the collection of nicks to autocomplete from
@@ -175,6 +197,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// select the first item
 		$(content.find('li')[0]).addClass('selected');
+		
+		content.find('li').click(self.selectOnClick);
 
 		// bind the keydown to move around the menu
 		$('input[name="message"]').bind('keydown', self.keyDown);
