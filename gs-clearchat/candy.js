@@ -72,6 +72,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	 */
     self.applyTranslations = function() {
         Candy.View.Translation.en.candyshopClearchat = 'Clear chat';
+        Candy.View.Translation.de.candyshopClearchat = 'Chat leeren';
     };
 
     return self;
