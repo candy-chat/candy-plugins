@@ -8,3 +8,6 @@ Include the CSS file:
 ```HTML
 <link rel="stylesheet" type="text/css" href="path_to_plugins/jqueryui/ui-lightness/css/ui-lightness.css" />
 ```
+
+## Screenshot
+![Screenshot](https://github.com/amiadogroup/candy-plugins/raw/dev/jqueryui/screenshot.png)
