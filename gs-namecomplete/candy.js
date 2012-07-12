@@ -112,7 +112,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			// delete Key
 			case 8:
 			case 46:
-				if (e.which == _options.completeKeyCode) {
+			case 13:
+				if (e.which == _options.completeKeyCode || e.which == 13) {
 					// get the text of the selected item
 					var val = content.find('li.selected').text();
 					// replace the last item with the selected item
@@ -141,6 +142,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		self.replaceName($(e.currentTarget).text());
 		$(document).unbind('keydown', self.keyDown);
 		$('#context-menu').hide();
+		$('input[name="message"]').focus();
 		e.preventDefault();
 	};
 
