@@ -165,12 +165,14 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		_nicks = [];
 
 		// grab the roster in the current room
-		var roster = Candy.Core.getRoom(Candy.View.getCurrent().roomJid).getRoster().getAll();
-
-		// iterate and add the nicks to the collection
-		$.each(roster, function(index, item) {
-			_nicks.push(_options.nameIdentifier + item.getNick());
-		});
+		if(Candy.Core.getRoom(Candy.View.getCurrent().roomJid)) {
+			var roster = Candy.Core.getRoom(Candy.View.getCurrent().roomJid).getRoster().getAll();
+	
+			// iterate and add the nicks to the collection
+			$.each(roster, function(index, item) {
+				_nicks.push(_options.nameIdentifier + item.getNick());
+			});
+		}
 	};
 
 	/** Function: replaceName
