@@ -11,9 +11,9 @@ This is the official plugin repository for [Candy](http://amiadogroup.github.com
 * __Timeago__ - Replaces the exact time/date with fuzzy timestamps like "2 minutes ago".
 
 ### [Amiado Group](http://www.amiadogroup.com)
-* __game-api__ - An API for Candy Games.
-* __game-pictionary__ - The Beginning of a game.
-* __paint__ - A Plugin to Paint instaed of write.
+* __game-api__ (branch: dev) - An API for Candy Games.
+* __game-pictionary__ (branch: dev) - The Beginning of a game.
+* __paint__ (branch: dev) - A Plugin to Paint instaed of write.
 
 ### [Geek Squad](http://geeksquad.com) (maintainer: [troy.mccabe@geeksquad.com](mailto:troy.mccabe@geeksquad.com))
 * __Chat Recall__ - Recall the last `n` items sent to the room.
