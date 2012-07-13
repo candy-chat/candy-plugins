@@ -120,4 +120,4 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	};
 	
 	return self;
-}(CandyShop.GameAPI || {}, Candy, jQuery));
+}(CandyShop.AvailableRooms || {}, Candy, jQuery));
