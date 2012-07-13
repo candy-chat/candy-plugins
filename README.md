@@ -12,6 +12,7 @@ This is the official plugin repository for [Candy](http://amiadogroup.github.com
 
 ### [Amiado Group](http://www.amiadogroup.com)
 * __available-rooms__ A plugin to show & join public rooms.
+* __join__ A plugin that allows to type `/join room [password]` to join a room.
 * __game-api__ (branch: dev) - An API for Candy Games.
 * __game-pictionary__ (branch: dev) - The Beginning of a game.
 * __paint__ (branch: dev) - A Plugin to Paint instaed of write.
