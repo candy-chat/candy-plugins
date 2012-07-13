@@ -16,4 +16,4 @@ CandyShop.AvailableRooms.init();
 ```
 
 ## Screenshot
-![Screenshot](https://github.com/amiadogroup/candy-plugins/raw/dev/available-rooms/screenshot.png)
+![Screenshot](https://github.com/amiadogroup/candy-plugins/raw/master/available-rooms/screenshot.png)
