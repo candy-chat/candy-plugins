@@ -65,20 +65,22 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	
 	
 	/** Function: handleBeforeShow
-	 * Handles the beforeShow event of a message.
-	 *
-	 * Paramteres:
-	 *   (String) message - the message to process
-	 *
-	 * Returns:
-	 *   (String)
-	 */
-	var handleBeforeShow = function(message) {
-		var processed = message.replace(/(^|[^\/])(www\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
-		processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
-		
-		return processed;
-	};
+         * Handles the beforeShow event of a message.
+         *
+         * Paramteres:
+         *   (Object) args - {roomJid, element, nick, message}
+         *
+         * Returns:
+         *   (String)
+         */
+        var handleBeforeShow = function(args) {
+                var message = args.message;
+                var processed = message.replace(/\|[^\|]+\|/, "");
+                processed = processed.replace(/(^|[^\/])(www\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
+                processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
+                return processed;
+        };
+
 	
 	/** Function: handleOnShow
 	 * Each time a message gets displayed, this method checks for possible
