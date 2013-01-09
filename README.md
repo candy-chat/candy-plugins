@@ -11,5 +11,5 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 
 Support & Community
 -------------------
-Take a look at our [FAQ](https://github.com/candy-chat/candy/wiki/Frequently-Asked-Questions). If it doesn't solve your questions, your welcome to join our [Mailinglist on Google Groups](http://groups.google.com/group/candy-chat).
+Take a look at our [FAQ](https://github.com/candy-chat/candy/wiki/Frequently-Asked-Questions). If it doesn't solve your questions, you're welcome to join our [Mailinglist on Google Groups](http://groups.google.com/group/candy-chat).
 You don't need to have a Gmail account for it. 
