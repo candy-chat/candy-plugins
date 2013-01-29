@@ -51,7 +51,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				// break it on spaces, and get the last word in the string
 				var field = $(this);
 				var msgParts = field.val().split(' ');
-				var lastWord = msgParts[msgParts.length - 1];
+				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1], "i");
 				var matches = [];
 
 				// go through each of the nicks and compare it
@@ -168,6 +168,13 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
 		var msgParts = $('input[name="message"]').val().split(' ');
+
+		// If the name is the first word, add a colon to the end
+		if (msgParts.length==1) {
+			replaceText += ": "
+		} else {
+			replaceText += " "
+		}
 
 		// replace the last part with the item
 		msgParts[msgParts.length - 1] = replaceText;
