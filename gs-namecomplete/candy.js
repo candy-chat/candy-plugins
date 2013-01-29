@@ -169,6 +169,13 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		// get the parts of the message
 		var msgParts = $('input[name="message"]').val().split(' ');
 
+		// If the name is the first word, add a colon to the end
+		if (msgParts.length==1) {
+			replaceText += ": "
+		} else {
+			replaceText += " "
+		}
+
 		// replace the last part with the item
 		msgParts[msgParts.length - 1] = replaceText;
 
