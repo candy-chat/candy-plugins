@@ -51,7 +51,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				// break it on spaces, and get the last word in the string
 				var field = $(this);
 				var msgParts = field.val().split(' ');
-				var lastWord = msgParts[msgParts.length - 1];
+				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1], "i");
 				var matches = [];
 
 				// go through each of the nicks and compare it
