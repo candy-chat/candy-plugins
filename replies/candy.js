@@ -12,6 +12,16 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.Replies = (function(self, Candy, $) {
 
 	self.init = function() {
+	  
+    Candy.View.Event.Message.onShow = handleOnShow;
     
-	return self;
+	  return self;
+  }
+  
+  var handleOnShow = function(args) {
+    // params are roomJid, element, nick, message
+    console.log(JSON.stringify(args));
+    console.log($(element));
+  }
+  
 }(CandyShop.Replies || {}, Candy, jQuery));
