@@ -19,10 +19,14 @@ CandyShop.Replies = (function(self, Candy, $) {
   };
   
   var handleOnShow = function(args) {
-    // params are roomJid, element, nick, message
-    Candy.Core.log("in handleOnShow");
-    // console.log(JSON.stringify(args));
-    // console.log($(element));
+    var localNick = Candy.Core.getUser().getNick();
+    
+    if(args.message.indexOf("@" + localNick)!=-1) {
+      var el = args.element;
+
+      el.addClass("mention");
+      el.prev().addClass("mention");
+    }
   }
   
   return self;
