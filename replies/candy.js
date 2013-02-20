@@ -20,8 +20,9 @@ CandyShop.Replies = (function(self, Candy, $) {
   
   var handleOnShow = function(args) {
     // params are roomJid, element, nick, message
-    console.log(JSON.stringify(args));
-    console.log($(element));
+    Candy.Core.log("in handleOnShow");
+    // console.log(JSON.stringify(args));
+    // console.log($(element));
   }
   
   return self;
