@@ -1,7 +1,7 @@
 # Inline Images
 If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 
-![Inline Images](/amiadogroup/candy-plugins/raw/master/inline-images/screenshot.png)
+![Inline Images](screenshot.png)
 
 ## Usage
 Include the JavaScript and CSS files:
