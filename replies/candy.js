@@ -19,9 +19,9 @@ CandyShop.Replies = (function(self, Candy, $) {
   };
   
   var handleOnShow = function(args) {
-    var localNick = Candy.Core.getUser().getNick();
+    var localNick = Candy.Core.getUser().getNick().toLowerCase();
     
-    if(args.message.indexOf("@" + localNick)!=-1) {
+    if(args.message.toLowerCase().indexOf("@" + localNick)!=-1) {
       var el = args.element;
 
       el.addClass("mention");
