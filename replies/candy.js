@@ -21,7 +21,9 @@ CandyShop.Replies = (function(self, Candy, $) {
   var handleOnShow = function(args) {
     var localNick = Candy.Core.getUser().getNick().toLowerCase();
     
-    if(args.message.toLowerCase().indexOf("@" + localNick)!=-1) {
+    var re = new RegExp("@" + localNick + "[ .!><\":\/@-]|$");
+    
+    if(re.test(args.message.toLowerCase())) {
       var el = args.element;
 
       el.addClass("mention");
