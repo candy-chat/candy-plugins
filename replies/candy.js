@@ -12,6 +12,9 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.Replies = (function(self, Candy, $) {
 
 	self.init = function(options) {
+	  if(typeof options === "undefined") {
+	    options = {};
+	  }
 	  
 	  if("clickToReply" in options) {
 	    if(options["clickToReply"]==true){
