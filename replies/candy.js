@@ -19,11 +19,11 @@ CandyShop.Replies = (function(self, Candy, $) {
   };
   
   var handleOnShow = function(args) {
-    var localNick = Candy.Core.getUser().getNick().toLowerCase();
+    var localNick = Candy.Core.getUser().getNick();
     
-    var re = new RegExp("@" + localNick + "([ .!><\":\/@-]|$)");
+    var re = new RegExp("@" + localNick + "([ .!><\":\/@-]|$)", 'im');
     
-    if(re.test(args.message.toLowerCase())) {
+    if(re.test(args.message)) {
       var el = args.element;
 
       el.addClass("mention");
