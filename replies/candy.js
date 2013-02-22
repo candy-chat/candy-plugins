@@ -11,23 +11,53 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Replies = (function(self, Candy, $) {
 
-	self.init = function() {
+	self.init = function(options) {
+	  
+	  if("clickToReply" in options) {
+	    if(options["clickToReply"]==true){
+	      clickToReply = true;
+	    } else {
+	      clickToReply = false;
+	    }
+	  }
 	  
     Candy.View.Event.Message.onShow = handleOnShow;
     
 	  return self;
   };
   
+  var clickToReply = true;
+  
   var handleOnShow = function(args) {
     var localNick = Candy.Core.getUser().getNick().toLowerCase();
     
     var re = new RegExp("@" + localNick + "([ .!><\":\/@-]|$)");
+    var el = args.element;
     
     if(re.test(args.message.toLowerCase())) {
-      var el = args.element;
-
       el.addClass("mention");
       el.prev().addClass("mention");
+    }
+    
+    if(clickToReply) {
+      // now swap in different event handlers for clicking
+      // people's names.
+      el.find("a.name").unbind();
+    
+      el.find("a.name").click(function(e) {
+        var inputEl = $(".message-form input[type=text]");
+      
+        var addText = "@" + $(this).text();
+      
+        // prepend a space if there's already content there.
+        if(inputEl.val().length > 0 &&
+           inputEl.val()[inputEl.val().length-1] != " "){
+          addText = " " + addText;
+        }
+      
+        inputEl.val(inputEl.val() + addText);
+        inputEl.focus();
+      });
     }
   }
   
