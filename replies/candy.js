@@ -50,7 +50,7 @@ CandyShop.Replies = (function(self, Candy, $) {
       el.find("a.name").click(function(e) {
         var inputEl = $(".message-form input[type=text]");
       
-        var addText = "@" + $(this).text();
+        var addText = "@" + $(this).text() + " ";
       
         // prepend a space if there's already content there.
         if(inputEl.val().length > 0 &&
