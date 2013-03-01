@@ -44,7 +44,20 @@ CandyShop.Replies = (function(self, Candy, $) {
       el.prev().addClass("mention");
     }
 
-    // lets also highlight messages 
+    // lets also highlight messages that are FROM the local user, TO anyone.
+    // this makes highlighting function as "all messages in conversations 
+    // i'm involved in" rather than "messages to me" which feels more natural.
+    if(args.nick==localNick) {
+      // now the trick is we need to test for it having an @ message in it.
+      // for now we're just going to look for an @ message somewhere in the
+      // message. This has one weakness: any message that includes an email
+      // address (or anything with an @) but practically, in the conversations
+      // I've seen, that's quite quite rare compared to the former case.
+      if(args.message.indexOf("@")!=-1) {
+        el.addClass("mention");
+        el.prev().addClass("mention");
+      }
+    }
 
     if(clickToReply) {
       // now swap in different event handlers for clicking
