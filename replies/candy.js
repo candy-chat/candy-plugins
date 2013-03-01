@@ -73,6 +73,27 @@ CandyShop.Replies = (function(self, Candy, $) {
         inputEl.focus();
       });
     }
+
+		// on mouseover, highlight all the messages from that user
+		el.find("a.name").mouseenter(function(e) {
+			// if data-nick is available, use that. otherwise, use the text.
+			var targetName = $(this).attr("data-nick")===undefined ? $(this).text() : $(this).attr("data-nick");
+			
+			var messagePane = $(".message-pane");
+			
+			messagePane.find("a.name").each(function(el) {
+				var elName = $(this).attr("data-nick")===undefined ? $(this).text() : $(this).attr("data-nick");
+				
+				if(elName==targetName) {
+					$(this).parent().parent().addClass("user-highlight");
+					$(this).parent().parent().prev().addClass("user-highlight");
+				}
+			});
+		});
+		
+		el.find("a.name").mouseleave(function(e) {
+			$(".message-pane .user-highlight").removeClass("user-highlight");
+		});
   }
   
   return self;

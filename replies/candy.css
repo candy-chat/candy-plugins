@@ -5,3 +5,8 @@
 .message-pane dd.mention, .message-pane dt.mention {
   background-color: #FFF7DE;
 }
+
+
+.message-pane dd.user-highlight, .message-pane dt.user-highlight {
+  background-color: #D7FFFD;
+}
