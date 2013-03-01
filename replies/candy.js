@@ -32,7 +32,9 @@ CandyShop.Replies = (function(self, Candy, $) {
   var clickToReply = true;
   
   var handleOnShow = function(args) {
-    var localNick = Candy.Core.getUser().getNick().toLowerCase();
+    // if the end of the nick has spaces (which, surprisingly, is possible)
+    // trim() those off because it causes drama with the regex.
+    var localNick = Candy.Core.getUser().getNick().toLowerCase().trim();
     
     var re = new RegExp("@" + localNick + "([ .!><\":\/@-]|$)");
     var el = args.element;
@@ -49,9 +51,18 @@ CandyShop.Replies = (function(self, Candy, $) {
     
       el.find("a.name").click(function(e) {
         var inputEl = $(".message-form input[type=text]");
-      
-        var addText = "@" + $(this).text() + " ";
-      
+        
+        var fullName = $(this).attr("data-nick");
+        
+        // this is a hedge so the plugin continues to work until 
+        // https://github.com/candy-chat/candy/pull/154
+        // is merged onto master. 
+        if(fullName === undefined) {
+          fullName = $(this).text();
+        }
+        
+        var addText = "@" + fullName + " ";
+        
         // prepend a space if there's already content there.
         if(inputEl.val().length > 0 &&
            inputEl.val()[inputEl.val().length-1] != " "){
