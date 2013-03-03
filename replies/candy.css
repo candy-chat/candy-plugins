@@ -3,10 +3,14 @@
 }
 
 .message-pane dd.mention, .message-pane dt.mention {
-  background-color: #FFF7DE;
+  background-color: #FFF7DE !important;
 }
 
 
 .message-pane dd.user-highlight, .message-pane dt.user-highlight {
-  background-color: #D7FFFD;
+  background-color: #D7FFFD !important;
+}
+
+.message-pane dd.mod, .message-pane dt.mod {
+  background-color: #F9F4FD;
 }

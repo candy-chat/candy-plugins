@@ -88,9 +88,16 @@ CandyShop.Replies = (function(self, Candy, $) {
         inputEl.focus();
       });
     }
-
+    
+    var nameEl = el.find("a.name");
+    
+    if(nameEl.attr("data-role")=="moderator") {
+      nameEl.parent().parent().addClass("mod");
+      nameEl.parent().parent().prev().addClass("mod");
+    }
+    
     // on mouseover, highlight all the messages from that user
-    el.find("a.name").mouseenter(function(e) {
+    nameEl.mouseenter(function(e) {
       // if data-nick is available, use that. otherwise, use the text.
       var targetName = $(this).attr("data-nick")===undefined ? $(this).text() : $(this).attr("data-nick");
 
@@ -106,7 +113,7 @@ CandyShop.Replies = (function(self, Candy, $) {
       });
     });
 
-    el.find("a.name").mouseleave(function(e) {
+    nameEl.mouseleave(function(e) {
       $(".message-pane .user-highlight").removeClass("user-highlight");
     });
   }
