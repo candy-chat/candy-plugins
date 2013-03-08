@@ -2,7 +2,9 @@
 
 To better support conversations in high-activity rooms, this plugin adds support for @username replies. Any message that contains @yourusername will be highlighted, as will any outgoing messages you send @otherusers. This makes it easier to see messages related to conversations that you're involved in.
 
-The plugin also provides two other minor quality of life improvements for conversations. Mousing over a user's name in the message pane will highlight all that user's messages. Clicking on a user's name in the message pane will add @thatusersname to your chat input field, making it easy to address a message to them.
+The plugin provides two other minor quality of life improvements for conversations. Mousing over a user's name in the message pane will highlight all that user's messages. Clicking on a user's name in the message pane will add @thatusersname to your chat input field, making it easy to address a message to them.
+
+It is perhaps a little bit beyond the purview of a conversation-oriented plugin, but there are a few tools included in this package to make it easier for moderators to be heard in the midst of large conversations. Any user with the moderator role will have their a very light purple background on their chat messages. Any message from a moderator like "QUESTION: " or "TOPIC: " will have a darker background and a border. Any word preceding the colon is fine - but it must be an all caps word followed by a colon. This makes it easier for moderators to mark transition points in a conversation and guide participants in a new direction by visually getting their attention.
 
 ## Usage
 

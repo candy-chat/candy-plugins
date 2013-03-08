@@ -92,8 +92,22 @@ CandyShop.Replies = (function(self, Candy, $) {
     var nameEl = el.find("a.name");
     
     if(nameEl.attr("data-role")=="moderator") {
-      nameEl.parent().parent().addClass("mod");
-      nameEl.parent().parent().prev().addClass("mod");
+
+      // lets look and see if this message fits the format
+      // WORD: blah blah blah
+      // we'll accept any WORD, and the notion is that moderators
+      // can use it to do something like QUESTION: Are you happy?
+      
+      var alert = new RegExp("[A-Z]*:");
+      
+      // if it's an alert, that gets priority over mod status.
+      if(alert.test(args.message)) {
+        nameEl.parent().parent().addClass("alert");
+        nameEl.parent().parent().prev().addClass("alert");
+      } else {
+        nameEl.parent().parent().addClass("mod");
+        nameEl.parent().parent().prev().addClass("mod");
+      }
     }
     
     // on mouseover, highlight all the messages from that user

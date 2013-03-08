@@ -14,3 +14,13 @@
 .message-pane dd.mod, .message-pane dt.mod {
   background-color: #F9F4FD;
 }
+
+.message-pane dd.alert, .message-pane dt.alert {
+  background-color: #EFDFFC;
+}
+
+.message-pane dd.alert {
+  border: 1px solid #6F4393;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
