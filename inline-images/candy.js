@@ -10,20 +10,20 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
-	
+
 	var _fileExtensions = ['png','jpg','jpeg','gif']
 		,_originalLinkify = Candy.Util.Parser.linkify
 		,_maxImageSize = 100;
-	
+
 	/** Function: init
 	 * Initializes the inline-images plugin with the default settings.
 	 */
 	self.init = function() {
-		Candy.View.Event.Message.beforeShow = handleBeforeShow;
-		Candy.View.Event.Message.onShow = handleOnShow;
+		$(Candy.View.Pane).on('candy:view.message.before-show', handleBeforeShow);
+		$(Candy.View.Pane).on('candy:view.message.after-show', handleOnShow);
 		Candy.Util.Parser.linkify = linkify;
 	};
-	
+
 	/** Function: initWithFileExtensions
 	 * Initializes the inline-images plugin with the possibility to pass an
 	 * array with all the file extensions you want to display as image.
@@ -35,7 +35,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		_fileExtensions = fileExtensions;
 		init();
 	};
-	
+
 	/** Function: initWithMaxImageSize
 	 * Initializes the inline-images plugin with the possibility to pass the
 	 * maximum image size for displayed images.
@@ -47,7 +47,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		_maxImageSize = maxImageSize;
 		init();
 	};
-	
+
 	/** Function: initWithFileExtensionsAndMaxImageSize
 	 * Initializes the inline-images plugin with the possibility to pass an
 	 * array with all the file extensions you want to display as image and
@@ -62,8 +62,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 		_maxImageSize = maxImageSize;
 		init();
 	};
-	
-	
+
+
 	/** Function: handleBeforeShow
          * Handles the beforeShow event of a message.
          *
@@ -81,7 +81,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
                 return processed;
         };
 
-	
+
 	/** Function: handleOnShow
 	 * Each time a message gets displayed, this method checks for possible
 	 * image loaders (created by buildImageLoaderSource).
@@ -97,21 +97,21 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 			$(element).removeClass('inlineimages-loader');
 			var url = $(element).attr('longdesc');
 			var imageLoader = new Image();
-			
+
 			$(imageLoader).load(function() {
 				var origWidth = this.width;
 				var origHeight = this.height;
 				var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
 				var width = Math.round(ratio * origWidth);
 				var height = Math.round(ratio * origHeight);
-				
+
 				$(element).replaceWith(buildImageSource(url, width, height))
 			});
-			
+
 			imageLoader.src = url;
 		});
 	}
-	
+
 	/** Function: linkify
 	 * Is used to overwrite the original Candy.Util.Parser.linkify.
 	 * This implementation prevents the parsing of URL's by the Candy core.
@@ -126,7 +126,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	var linkify = function(text) {
 		return text;
 	}
-	
+
 	/** Function: replaceCallback
 	 * This callback handles matches from the URL regex.
 	 * If the callback detects an image URL, it returns an image with a loading
@@ -149,43 +149,43 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 				result = buildLinkSource(match);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/** Function: buildImageLoaderSource
 	 * Returns a loader indicator. The handleOnShow method fullfills afterwards
 	 * the effective image loading.
 	 *
 	 * Parameters:
 	 *   (String) url - image url
-	 * 
+	 *
 	 * Returns:
 	 *   (String)
 	 */
 	var buildImageLoaderSource = function(url) {
 		return '<img class="inlineimages-loader" longdesc="' + url + '" src="candy-plugins/inline-images/spinner.gif" />'
 	}
-	
+
 	/** Function: buildImageSource
 	 * Returns HTML source to show a URL as an image.
 	 *
 	 * Parameters:
 	 *   (String) url - image url
-	 * 
+	 *
 	 * Returns:
 	 *   (String)
 	 */
 	var buildImageSource = function(url, width, height) {
 		return '<a href="' + url + '" target="_blank" class="inlineimages-link"><img src="' + url + '" width="' + width + '" height="' + height + '"/></a>';
 	}
-	
+
 	/** Function: buildLinkSource
 	 * Returns HTML source to show a URL as a link.
 	 *
 	 * Parameters:
 	 *   (String) url - url
-	 * 
+	 *
 	 * Returns:
 	 *   (String)
 	 */
