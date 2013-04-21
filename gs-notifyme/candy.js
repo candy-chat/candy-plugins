@@ -39,7 +39,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		$.extend(true, _options, options);
 
 		// bind to the beforeShow event
-		$(Candy.View.Pane).bind('candy:view.message.beforeShow', function(e, args) {
+		$(Candy.View.Pane).on('candy:view.message.before-show', function(e, args) {
 			// get the nick from the current user
 			var nick = Candy.Core.getUser().getNick();
 
