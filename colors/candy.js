@@ -10,15 +10,13 @@ CandyShop.Colors = (function(self, Candy, $) {
 
 		self.applyTranslations();
 
-		// Updated to new jQuery event model
-		$(Candy.View.Pane).bind('candy:view.message.beforeSend', function(e, args) {
+		$(Candy.View.Pane).on('candy:view.message.before-send', function(e, args) {
 			if(_currentColor > 0 && $.trim(args.message) !== '') {
 				args.message = '|c:'+ _currentColor +'|' + args.message;
 			}
 		});
 
-		// Updated to new jQuery event model
-		$(Candy.View.Pane).bind('candy:view.message.beforeShow', function(e, args) {
+		$(Candy.View.Pane).on('candy:view.message.before-show', function(e, args) {
 			args.message = args.message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
 		});
 
