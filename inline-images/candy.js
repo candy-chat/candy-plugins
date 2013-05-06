@@ -101,9 +101,13 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 			$(imageLoader).load(function() {
 				var origWidth = this.width;
 				var origHeight = this.height;
-				var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
-				var width = Math.round(ratio * origWidth);
-				var height = Math.round(ratio * origHeight);
+				if(origWidth > _maxImageSize || origHeight > _maxImageSize)
+                {
+	                var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
+	                var width = Math.round(ratio * origWidth);
+	                var height = Math.round(ratio * origHeight);
+                }
+
 
 				$(element).replaceWith(buildImageSource(url, width, height))
 			});
