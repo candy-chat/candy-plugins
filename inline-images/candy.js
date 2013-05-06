@@ -76,7 +76,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
         var handleBeforeShow = function(e, args) {
                 var message = args.message;
                 var processed = message.replace(/\|[^\|]+\|/, "");
-                processed = processed.replace(/(^|[^\/])(www\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
+                processed = processed.replace(/(^|[^\/])(www|i\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
                 processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
                 return processed;
         };
