@@ -73,7 +73,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
          * Returns:
          *   (String)
          */
-        var handleBeforeShow = function(args) {
+        var handleBeforeShow = function(e, args) {
                 var message = args.message;
                 var processed = message.replace(/\|[^\|]+\|/, "");
                 processed = processed.replace(/(^|[^\/])(www\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
@@ -92,7 +92,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Array) args
 	 */
-	var handleOnShow = function(args) {
+	var handleOnShow = function(e, args) {
 		$('.inlineimages-loader').each(function(index, element) {
 			$(element).removeClass('inlineimages-loader');
 			var url = $(element).attr('longdesc');
