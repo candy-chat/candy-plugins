@@ -78,6 +78,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
                 var processed = message.replace(/\|[^\|]+\|/, "");
                 processed = processed.replace(/(^|[^\/])(www|i\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
                 processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
+                args.message = processed; //what
                 return processed;
         };
 
