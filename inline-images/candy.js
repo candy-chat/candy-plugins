@@ -65,22 +65,22 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 
 
 	/** Function: handleBeforeShow
-         * Handles the beforeShow event of a message.
-         *
-         * Paramteres:
-         *   (Object) args - {roomJid, element, nick, message}
-         *
-         * Returns:
-         *   (String)
-         */
-        var handleBeforeShow = function(e, args) {
-                var message = args.message;
-                var processed = message.replace(/\|[^\|]+\|/, "");
-                processed = processed.replace(/(^|[^\/])(www|i\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
-                processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
-                args.message = processed; //what
-                return processed;
-        };
+	 * Handles the beforeShow event of a message.
+	 *
+	 * Paramteres:
+	 *   (Object) args - {roomJid, element, nick, message}
+	 *
+	 * Returns:
+	 *   (String)
+	 */
+	var handleBeforeShow = function(e, args) {
+		var message = args.message;
+		var processed = message.replace(/\|[^\|]+\|/, "");
+		processed = processed.replace(/(^|[^\/])(www|i\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
+		processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
+		args.message = processed;
+		return processed;
+	};
 
 
 	/** Function: handleOnShow
@@ -102,13 +102,11 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 			$(imageLoader).load(function() {
 				var origWidth = this.width;
 				var origHeight = this.height;
-				if(origWidth > _maxImageSize || origHeight > _maxImageSize)
-                {
-	                var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
-	                var width = Math.round(ratio * origWidth);
-	                var height = Math.round(ratio * origHeight);
-                }
-
+				if(origWidth > _maxImageSize || origHeight > _maxImageSize) {
+					var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
+					var width = Math.round(ratio * origWidth);
+					var height = Math.round(ratio * origHeight);
+				}
 
 				$(element).replaceWith(buildImageSource(url, width, height))
 			});
