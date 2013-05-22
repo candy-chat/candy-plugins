@@ -130,21 +130,20 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
     };
 
     self.applyTranslations = function() {
-            Candy.View.Translation.en.candyshopRoomPanelListRoom = 'List Rooms';
-            Candy.View.Translation.ru.candyshopRoomPanelListRoom = 'Список комнат';
-            Candy.View.Translation.de.candyshopRoomPanelListRoom = 'Verfügbare Räume anzeigen';
-            Candy.View.Translation.fr.candyshopRoomPanelListRoom = 'Liste des salles';
-            Candy.View.Translation.nl.candyshopRoomPanelListRoom = 'List Rooms';
-            Candy.View.Translation.es.candyshopRoomPanelListRoom = 'List Rooms';
-            
-            
-            Candy.View.Translation.en.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
-            Candy.View.Translation.ru.candyshopRoomPanelChooseRoom = 'Выберите комнату ';
-            Candy.View.Translation.de.candyshopRoomPanelChooseRoom = 'Verfügbare Räume';
-            Candy.View.Translation.fr.candyshopRoomPanelChooseRoom = 'Choisir une salle';
-            Candy.View.Translation.nl.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
-            Candy.View.Translation.es.candyshopRoomPanelChooseRoom = 'Choose Room To Join'; 
-            
+        var translations = {
+            'en' : ['List Rooms', 'Choose Room To Join'],
+            'ru' : ['Список комнат', 'Выберите комнату'],
+            'de' : ['Verfügbare Räume anzeigen', 'Verfügbare Räume'],
+            'fr' : ['Choisir une salle', 'Liste des salles'],
+            'nl' : ['Choose Room To Join', 'List Rooms'],
+            'es' : ['Choose Room To Join', 'List Rooms'],
+        };
+        $.each(translations, function(k, v) {
+            if(Candy.View.Translation[k]) {
+                Candy.View.Translation[k].candyshopRoomPanelListRoom = v[0];
+                Candy.View.Translation[k].candyshopRoomPanelChooseRoom = v[1];
+            }
+        });
     };
 
     return self;
