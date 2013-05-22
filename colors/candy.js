@@ -67,12 +67,20 @@ CandyShop.Colors = (function(self, Candy, $) {
 	};
 
 	self.applyTranslations = function() {
-		Candy.View.Translation.en.candyshopColorsMessagecolor = 'Message color';
-		Candy.View.Translation.ru.candyshopColorsMessagecolor = 'Цвет сообщения';
-		Candy.View.Translation.de.candyshopColorsMessagecolor = 'Farbe für Nachrichten';
-		Candy.View.Translation.fr.candyshopColorsMessagecolor = 'Couleur des messages';
-		Candy.View.Translation.nl.candyshopColorsMessagecolor = 'Berichtkleur';
-		Candy.View.Translation.es.candyshopColorsMessagecolor = 'Color de los mensajes';
+		var translations = {
+		  'en' : 'Message Color',
+		  'ru' : 'Цвет сообщения',
+		  'de' : 'Farbe für Nachrichten',
+		  'fr' : 'Couleur des messages',
+		  'nl' : 'Berichtkleur',
+		  'es' : 'Color de los mensajes'
+		};
+		$.each(translations, function(k, v) {
+			if(Candy.View.Translation[k]) {
+				Candy.View.Translation[k].candyshopColorsMessagecolor = v;
+			}
+
+		});
 	};
 
 	return self;
