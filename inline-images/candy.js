@@ -33,7 +33,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	self.initWithFileExtensions = function(fileExtensions) {
 		_fileExtensions = fileExtensions;
-		init();
+		self.init();
 	};
 	
 	/** Function: initWithMaxImageSize
@@ -45,7 +45,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	self.initWithMaxImageSize = function(maxImageSize) {
 		_maxImageSize = maxImageSize;
-		init();
+		self.init();
 	};
 	
 	/** Function: initWithFileExtensionsAndMaxImageSize
@@ -60,7 +60,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	self.initWithFileExtensionsAndMaxImageSize = function(fileExtensions, maxImageSize) {
 		_fileExtensions = fileExtensions;
 		_maxImageSize = maxImageSize;
-		init();
+		self.init();
 	};
 	
 	
