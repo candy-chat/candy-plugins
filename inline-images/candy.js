@@ -19,8 +19,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * Initializes the inline-images plugin with the default settings.
 	 */
 	self.init = function() {
-		$(Candy.View.Pane).on('candy:view.message.before-show', handleBeforeShow);
-		$(Candy.View.Pane).on('candy:view.message.after-show', handleOnShow);
+		$(Candy).on('candy:view.message.before-show', handleBeforeShow);
+		$(Candy).on('candy:view.message.after-show', handleOnShow);
 		Candy.Util.Parser.linkify = linkify;
 	};
 

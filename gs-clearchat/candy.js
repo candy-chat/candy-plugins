@@ -34,7 +34,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	        });
 	    }
 
-	    $(Candy.View.Pane).on('candy:view.message.before-send', function(e, args) {
+	    $(Candy).on('candy:view.message.before-send', function(e, args) {
 		    // (strip colors)
 		    // if it matches '/clear', clear the chat window and don't send anything
             if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() == '/clear') {

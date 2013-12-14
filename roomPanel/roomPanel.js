@@ -19,16 +19,16 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
         // how long in seconds before refreshing room list, default value is 600. [optional]
         roomCacheTime: 600
-        
+
     };
-    
+
     var _lastRoomUpdate = 0;
     self.init = function(options) {
-        
+
         $.extend(_options, options);
         self.applyTranslations();
-        
-        
+
+
         /* Overwrite candy allTabsClosed function not
          *  to disconnect when all tags are closed */
         if (_options.showIfAllTabClosed) {
@@ -44,7 +44,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             CandyShop.RoomPanel.showRoomPanel();
         });
 
-        $(Candy.Core.Event).on('candy:core.chat.connection', {update: function(obj, data) {
+        $(Candy).on('candy:core.chat.connection', {update: function(obj, data) {
             if (data.type == 'connection') {
                 if (Strophe.Status.CONNECTED == data.status) {
                     /* only show room window if not already in a room, timeout is to let some time for auto join to execute */
@@ -53,11 +53,11 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             } //if
             return true;
         }});
-    
+
     };
 
     self.showRoomPanelIfAllClosed = function() {
-        
+
         var roomCount = 0;
         var rooms = Candy.Core.getRooms();
         for (k in rooms) {
@@ -70,18 +70,18 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             CandyShop.RoomPanel.showRoomPanel();
         } //if
     }
-    
+
     self.updateRoomList = function (iq) {
-        
+
         var newRoomList = [];
         $('item', iq).each(function (index, value) {
             var name = $(value).attr('name');
             var jid = $(value).attr('jid');
-            
+
             if (typeof name == 'undefined') {
                 name = jid.split('@')[0];
             } //if
-            
+
             newRoomList.push({
                 name: name,
                 jid: jid
@@ -90,7 +90,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
         _options.roomList = newRoomList;
         _lastRoomUpdate = Math.round(new Date().getTime() / 1000);
-        
+
         self.showRoomPanel();
     };
 
@@ -105,7 +105,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
                     /* sends a request to get list of rooms user for the room */
                     var iq = $iq({type: 'get', from: Candy.Core.getUser().getJid(), to: _options.mucDomain  , id: 'findRooms1'})
                         .c('query', {xmlns: Strophe.NS.DISCO_ITEMS});
-                    
+
                     Candy.Core.getConnection().sendIQ(iq, self.updateRoomList);
                 } else {
 
@@ -121,9 +121,9 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
                         Candy.View.Pane.Chat.Modal.hide();
                         e.preventDefault();
                     });
-                    
+
                 } //if
-                
+
             } //if
 
             return true;
@@ -136,15 +136,15 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             Candy.View.Translation.fr.candyshopRoomPanelListRoom = 'Liste des salles';
             Candy.View.Translation.nl.candyshopRoomPanelListRoom = 'List Rooms';
             Candy.View.Translation.es.candyshopRoomPanelListRoom = 'List Rooms';
-            
-            
+
+
             Candy.View.Translation.en.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
             Candy.View.Translation.ru.candyshopRoomPanelChooseRoom = 'Выберите комнату ';
             Candy.View.Translation.de.candyshopRoomPanelChooseRoom = 'Verfügbare Räume';
             Candy.View.Translation.fr.candyshopRoomPanelChooseRoom = 'Choisir une salle';
             Candy.View.Translation.nl.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
-            Candy.View.Translation.es.candyshopRoomPanelChooseRoom = 'Choose Room To Join'; 
-            
+            Candy.View.Translation.es.candyshopRoomPanelChooseRoom = 'Choose Room To Join';
+
     };
 
     return self;
@@ -161,8 +161,8 @@ CandyShop.RoomPanel.Template = (function (self) {
             '</ul>',
         '</div>'
     ];
-    
+
     self.rooms = roomParts.join('');
-    
+
     return self;
 })(CandyShop.RoomPanel.Template || {});
