@@ -133,7 +133,6 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 				result = buildImageLoaderSource(match);
 			}
 		}
-		console.log(result);
 		return '>' + result + '<';
 	};
 
