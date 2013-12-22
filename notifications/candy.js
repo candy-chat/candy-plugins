@@ -15,11 +15,14 @@ CandyShop.Notifications = (function(self, Candy, $) {
 	 * @return void
 	 */
 	self.init = function() {
-		// Setup Permissions (has to be kicked on with some user-events)
-		jQuery(document).on('click keydown', setupPermissions);
-		
-		// Add Listener for Notifications
-		$(Candy).on('candy:view.message.after-show', handleOnShow);
+		// Just init if notifications are supported
+		if (window.webkitNotifications) {
+			// Setup Permissions (has to be kicked on with some user-events)
+			jQuery(document).on('click keydown', setupPermissions);
+			
+			// Add Listener for Notifications
+			$(Candy).on('candy:view.message.after-show', handleOnShow);
+		}
 	};
 	
 	/** Function: checkPermissions
