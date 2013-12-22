@@ -2,6 +2,7 @@
  * inline-images
  * @version 1.0
  * @author Manuel Alabor (manuel@alabor.me)
+ * @author Jonatan Männchen <jonatan@maennchen.ch>
  *
  * If a user posts a URL to an image, that image gets rendered directly
  * inside of Candy.
@@ -12,7 +13,6 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.InlineImages = (function(self, Candy, $) {
 
 	var _fileExtensions = ['png','jpg','jpeg','gif']
-		,_originalLinkify = Candy.Util.Parser.linkify
 		,_maxImageSize = 100;
 
 	/** Function: init
@@ -21,7 +21,6 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	self.init = function() {
 		$(Candy).on('candy:view.message.before-show', handleBeforeShow);
 		$(Candy).on('candy:view.message.after-show', handleOnShow);
-		Candy.Util.Parser.linkify = linkify;
 	};
 
 	/** Function: initWithFileExtensions
@@ -75,9 +74,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	var handleBeforeShow = function(e, args) {
 		var message = args.message;
-		var processed = message.replace(/\|[^\|]+\|/, "");
-		processed = processed.replace(/(^|[^\/])(www|i\.[^\.]+\.[\S]+(\b|$))/gi, '$1http://$2');
-		processed = processed.replace(/\b(https?:\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, replaceCallback);
+		var processed = message.replace(/>(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])</ig, replaceCallback);
 		args.message = processed;
 		return processed;
 	};
@@ -113,22 +110,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 
 			imageLoader.src = url;
 		});
-	}
-
-	/** Function: linkify
-	 * Is used to overwrite the original Candy.Util.Parser.linkify.
-	 * This implementation prevents the parsing of URL's by the Candy core.
-	 * inline-images handles this on itself by handleBeforeShow.
-	 *
-	 * Parameters:
-	 *   (String) text - text to process
-	 *
-	 * Returns:
-	 *   (String)
-	 */
-	var linkify = function(text) {
-		return text;
-	}
+	};
 
 	/** Function: replaceCallback
 	 * This callback handles matches from the URL regex.
@@ -136,25 +118,24 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * indicator. If it is just a common URL, a link-tag gets returned.
 	 *
 	 * Paramters:
+	 *   (String) uselessMatch - whole url with ">" and "<"
 	 *   (String) match - matched URL
 	 *
 	 * Returns:
 	 *   (String)
 	 */
-	var replaceCallback = function(match) {
+	var replaceCallback = function(uselessMatch, match) {
 		var result = match;
 
 		var dotPosition = match.lastIndexOf(".");
 		if(dotPosition > -1) {
 			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) != -1) {
 				result = buildImageLoaderSource(match);
-			} else {
-				result = buildLinkSource(match);
 			}
 		}
-
-		return result;
-	}
+		console.log(result);
+		return '>' + result + '<';
+	};
 
 	/** Function: buildImageLoaderSource
 	 * Returns a loader indicator. The handleOnShow method fullfills afterwards
@@ -167,8 +148,8 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 *   (String)
 	 */
 	var buildImageLoaderSource = function(url) {
-		return '<img class="inlineimages-loader" longdesc="' + url + '" src="candy-plugins/inline-images/spinner.gif" />'
-	}
+		return '<img class="inlineimages-loader" longdesc="' + url + '" src="candy-plugins/inline-images/spinner.gif" />';
+	};
 
 	/** Function: buildImageSource
 	 * Returns HTML source to show a URL as an image.
@@ -181,20 +162,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 */
 	var buildImageSource = function(url, width, height) {
 		return '<a href="' + url + '" target="_blank" class="inlineimages-link"><img src="' + url + '" width="' + width + '" height="' + height + '"/></a>';
-	}
-
-	/** Function: buildLinkSource
-	 * Returns HTML source to show a URL as a link.
-	 *
-	 * Parameters:
-	 *   (String) url - url
-	 *
-	 * Returns:
-	 *   (String)
-	 */
-	var buildLinkSource = function(url) {
-		return '<a href="' + url + '" target="_blank">' + url + '</a>';
-	}
+	};
 
 	return self;
 }(CandyShop.InlineImages || {}, Candy, jQuery));
