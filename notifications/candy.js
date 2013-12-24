@@ -18,7 +18,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
 		// Just init if notifications are supported
 		if (window.webkitNotifications) {
 			// Setup Permissions (has to be kicked on with some user-events)
-			jQuery(document).on('click keydown', setupPermissions);
+			jQuery(document).one('click keydown', setupPermissions);
 			
 			// Add Listener for Notifications
 			$(Candy).on('candy:view.message.after-show', handleOnShow);
@@ -36,8 +36,6 @@ CandyShop.Notifications = (function(self, Candy, $) {
 			// Request for it
 			window.webkitNotifications.requestPermission();
 		}
-		// Unbind the permission setup events
-		jQuery(document).unbind('click keydown', setupPermissions);
 	};
 	
 
