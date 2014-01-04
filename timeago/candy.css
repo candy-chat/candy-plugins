@@ -1,8 +1,3 @@
-.message-pane dt {
-	width: 120px;
-	padding-right: 10px;
-}
-
-.message-pane dt abbr {
+.message-pane li abbr {
 	border-bottom: none;
 }

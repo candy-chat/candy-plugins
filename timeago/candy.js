@@ -11,33 +11,33 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.Timeago = (function(self, Candy, $) {
 
 	self.init = function() {
-		
-		Candy.View.Template.Chat['adminMessage'] = '<dt><abbr title="{{time}}">{{time}}</abbr></dt><dd class="adminmessage"><span class="label">{{sender}}</span>{{subject}} {{message}}</dd>';
-		Candy.View.Template.Chat['infoMessage'] = '<dt><abbr title="{{time}}">{{time}}</abbr></dt><dd class="infomessage">{{subject}} {{message}}</dd>';
-		Candy.View.Template.Room['subject'] = '<dt><abbr title="{{time}}">{{time}}</abbr></dt><dd class="subject"><span class="label">{{roomName}}</span>{{_roomSubject}} {{subject}}</dd>';
-		Candy.View.Template.Message['item'] = '<dt><abbr title="{{time}}">{{time}}</abbr></dt><dd><span class="label"><a href="#" class="name">{{displayName}}</a></span>{{{message}}}</dd>';
-		
+
+		Candy.View.Template.Chat['adminMessage'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="adminmessage"><span class="label">{{sender}}</span><span class="spacer">▸</span>{{subject}} {{message}}</div></li>';
+		Candy.View.Template.Chat['infoMessage'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="infomessage"><span class="spacer">•</span>{{subject}} {{message}}</div></li>';
+		Candy.View.Template.Room['subject'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="subject"><span class="label">{{roomName}}</span><span class="spacer">▸</span>{{_roomSubject}} {{subject}}</div></li>';
+		Candy.View.Template.Message['item'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div><a class="label" href="#" class="name">{{displayName}}</a><span class="spacer">▸</span>{{{message}}}</div></li>';
+
 		Candy.Util.localizedTime = function(dateTime) {
 			if (dateTime === undefined) {
 				return undefined;
 			}
-	
+
 			var date = Candy.Util.iso8601toDate(dateTime);
 			return date.format($.i18n._('isoDateTime'));
 		};
-		
+
 		Candy.View.Event.Message.onShow = function(message) {
 			$('abbr').timeago();
 		};
-		
+
 		Candy.View.Event.Chat.onAdminMessage = function(message) {
 			$('abbr').timeago();
 		};
-		
+
 		Candy.View.Event.Room.onSubjectChange = function(message) {
 			$('abbr').timeago();
 		};
-		
+
 		Candy.View.Event.Room.onPresenceChange = function(message) {
 			$('abbr').timeago();
 		};
