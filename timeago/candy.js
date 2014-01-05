@@ -26,21 +26,16 @@ CandyShop.Timeago = (function(self, Candy, $) {
 			return date.format($.i18n._('isoDateTime'));
 		};
 
-		Candy.View.Event.Message.onShow = function(message) {
-			$('abbr').timeago();
-		};
+    var applyTimeago = function(e, args) {
+      var $elem = args.element ? $('abbr', args.element) : $('abbr');
+      $elem.timeago();
+    };
 
-		Candy.View.Event.Chat.onAdminMessage = function(message) {
-			$('abbr').timeago();
-		};
-
-		Candy.View.Event.Room.onSubjectChange = function(message) {
-			$('abbr').timeago();
-		};
-
-		Candy.View.Event.Room.onPresenceChange = function(message) {
-			$('abbr').timeago();
-		};
+    $(Candy).on('candy:view.message.after-show', applyTimeago);
+    $(Candy).on('candy:view.room.after-subject-change', applyTimeago);
+    // the following handlers run timeago() on all <abbr> tags
+    $(Candy).on('candy:core.presence.room', applyTimeago);
+    $(Candy).on('candy:view.chat.admin-message', applyTimeago);
 	};
 
 	return self;
