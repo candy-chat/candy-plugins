@@ -46,7 +46,8 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
         $(Candy).on('candy:core.chat.connection', {update: function(obj, data) {
             if (data.type == 'connection') {
-                if (Strophe.Status.CONNECTED == data.status) {
+                if (Strophe.Status.CONNECTED == data.status ||
+                    Strophe.Status.ATTACHED == data.status) {
                     /* only show room window if not already in a room, timeout is to let some time for auto join to execute */
                     setTimeout(CandyShop.RoomPanel.showRoomPanelIfAllClosed, 500);
                 } //if
