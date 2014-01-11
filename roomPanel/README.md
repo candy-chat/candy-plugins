@@ -14,7 +14,7 @@ To enable *RoomPanel* you have to include its JavaScript code and stylesheet:
 Call its `init()` method after Candy has been initialized: 
 
 ```JavaScript
-Candy.init('/http-bind/');
+Candy.init('/http-bind/', {core: {autojoin: []}});
 
 // enable RoomPanel plugin
 CandyShop.RoomPanel.init({

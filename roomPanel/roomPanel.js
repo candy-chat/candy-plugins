@@ -30,7 +30,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
 
         /* Overwrite candy allTabsClosed function not
-         *  to disconnect when all tags are closed */
+         *  to disconnect when all tabs are closed */
         if (_options.showIfAllTabClosed) {
             Candy.View.Pane.Chat.allTabsClosed = function () {
                 CandyShop.RoomPanel.showRoomPanel();
@@ -44,15 +44,14 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             CandyShop.RoomPanel.showRoomPanel();
         });
 
-        $(Candy).on('candy:core.chat.connection', {update: function(obj, data) {
-            if (data.type == 'connection') {
-                if (Strophe.Status.CONNECTED == data.status) {
-                    /* only show room window if not already in a room, timeout is to let some time for auto join to execute */
-                    setTimeout(CandyShop.RoomPanel.showRoomPanelIfAllClosed, 500);
-                } //if
+        $(Candy).on('candy:core.chat.connection', function(obj, data) {
+            if (Strophe.Status.CONNECTED == data.status ||
+                Strophe.Status.ATTACHED == data.status) {
+                /* only show room window if not already in a room, timeout is to let some time for auto join to execute */
+                setTimeout(CandyShop.RoomPanel.showRoomPanelIfAllClosed, 500);
             } //if
             return true;
-        }});
+        });
 
     };
 
