@@ -3,7 +3,7 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.ColorsXhtml = (function(self, Candy, $) {
 
 	var _numColors,
-		_currentColor = 0,
+		_currentColor = '',
 		_colors = [
 			'#333',
 			'#c4322b',
