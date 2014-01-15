@@ -25,7 +25,7 @@ CandyShop.ColorsXhtml = (function(self, Candy, $) {
 
 		$(Candy).on('candy:view.message.before-send', function(e, args) {
 			if(_currentColor !== '' && $.trim(args.message) !== '') {
-				args.xhtmlMessage = '<span style="color:' + _currentColor + '">' + args.message + '</span>';
+				args.xhtmlMessage = '<span style="color:' + _currentColor + '">' + Candy.Util.Parser.escape(args.message) + '</span>';
 			}
 		});
 
