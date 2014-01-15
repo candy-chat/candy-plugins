@@ -82,8 +82,8 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             } //if
 
             newRoomList.push({
-                name: name,
-                jid: jid
+                name: Strophe.unescapeNode(name),
+                jid: Candy.Util.unescapeJid(jid)
             });
         });
 
@@ -102,7 +102,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
                 var timeDiff = Math.round(new Date().getTime() / 1000) - _options.roomCacheTime;
                 if (_options.autoDetectRooms && timeDiff > _lastRoomUpdate ) {
                     /* sends a request to get list of rooms user for the room */
-                    var iq = $iq({type: 'get', from: Candy.Core.getUser().getJid(), to: _options.mucDomain  , id: 'findRooms1'})
+                    var iq = $iq({type: 'get', from: Candy.Core.getUser().getJid(), to: _options.mucDomain})
                         .c('query', {xmlns: Strophe.NS.DISCO_ITEMS});
 
                     Candy.Core.getConnection().sendIQ(iq, self.updateRoomList);
