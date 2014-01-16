@@ -6,8 +6,8 @@
  */
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
-/** Class: InlineImages
- * If a user posts a URL to an image, that image gets rendered directly
+/** Class: InlineVideos
+ * If a user posts a URL to a video, that video gets rendered directly
  * inside of Candy.
  */
 CandyShop.InlineVideos = (function(self, Candy, $) {
