@@ -33,16 +33,30 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
          *  to disconnect when all tabs are closed */
         if (_options.showIfAllTabClosed) {
             Candy.View.Pane.Chat.allTabsClosed = function () {
-                CandyShop.RoomPanel.showRoomPanel();
+                self.showRoomPanel();
                 return;
             };
         } //if
 
-        var html = '<li id="roomPanel-control" data-tooltip="' + $.i18n._('candyshopRoomPanelListRoom') + '"></li>';
-        $('#chat-toolbar').prepend(html);
-        $('#roomPanel-control').click(function() {
-            CandyShop.RoomPanel.showRoomPanel();
-        });
+        if(_options.showToolbarIcon !== false) {
+            var html = '<li id="roomPanel-control" data-tooltip="' + $.i18n._('candyshopRoomPanelListRoom') + '"></li>';
+            $('#chat-toolbar').prepend(html);
+            $('#roomPanel-control').click(function() {
+                self.showRoomPanel();
+            });
+        }
+        if(_options.showTab === true) {
+            var chatTabs = $('#chat-tabs'),
+                html = '<li id="roomPanel-tab"><a href="#" class="label">+</a></li>';
+            chatTabs.append(html);
+            var el = $('#roomPanel-tab');
+            $('#roomPanel-tab').click(function() {
+                self.showRoomPanel();
+            });
+            $(Candy).on('candy:view.room.after-add', function(_evt, args) {
+                chatTabs.remove('#roomPanel-tab').append(el);
+            });
+        }
 
         $(Candy).on('candy:core.chat.connection', function(obj, data) {
             if (Strophe.Status.CONNECTED == data.status ||
@@ -66,7 +80,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
         } //for
 
         if (roomCount == 0) {
-            CandyShop.RoomPanel.showRoomPanel();
+            self.showRoomPanel();
         } //if
     }
 
