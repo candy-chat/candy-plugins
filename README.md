@@ -11,6 +11,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Notifyme__ - Notifies yourself in case one does use your nickname in a message
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 * __jQuery-Ui__ - jQuery UI lightness theme
+* __join__ A plugin that allows to type `/join room [password]` to join a room.
 * __Nickchange__ - Enable your users to change the nick using a toolbar icon
 * __Notifications__ - OS Notifications in webkit
 * __Replies__ - Similar to *Notifyme* this highlights messages with your nickname
