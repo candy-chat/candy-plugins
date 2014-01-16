@@ -3,6 +3,7 @@
 This is the official plugin repository for [Candy](http://candy-chat.github.com/candy), a JavaScript based multi-user chat client.
 
 ## List of available plugins
+* __available-rooms__ A plugin to show & join public rooms.
 * __Colors__ - Send and receive colored messages.
 * __Colors XHTML__ - Send and receive colored messages formatted with XHTML.
 * __Clearchat__ - Clears chat window on click or if typing `/clear`
