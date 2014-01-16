@@ -18,7 +18,13 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
         autoDetectRooms: true,
 
         // how long in seconds before refreshing room list, default value is 600. [optional]
-        roomCacheTime: 600
+        roomCacheTime: 600,
+
+        // show a "+"-tab to access the panel
+        showTab: true,
+
+        // show toolbar icon to access the panel
+        showToolbarIcon: false
 
     };
 

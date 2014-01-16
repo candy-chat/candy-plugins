@@ -36,11 +36,12 @@ CandyShop.RoomPanel.init({
     // show room list if all rooms are closed, default value is true. [optional]
     showIfAllTabClosed: true,
 
-    // show icon in toolbar to show room list
-    showToolbarIcon: true,
-
     // show '+' at the end of the room tabs
-    showTab: false,
+    showTab: true,
+
+    // show icon in toolbar to show room list
+    showToolbarIcon: false,
+
 
     // detect rooms before showing list, default value is true. [optional]
     autoDetectRooms: true,
