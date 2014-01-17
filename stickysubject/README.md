@@ -1,6 +1,8 @@
 # Sticky subject plugin
 This plugin will retain the subject of the room at the top of the chat panel
 
+![Sticky Subject](screenshot.png)
+
 ## Usage
 Include the JavaScript and CSS files:
 ```HTML
