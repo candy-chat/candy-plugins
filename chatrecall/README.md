@@ -5,7 +5,7 @@ This plugin will allow the user to navigate through historical messages they've 
 Include the JavaScript file:
 
 ```HTML
-<script type="text/javascript" src="path_to_plugins/gs-chatrecall/candy.js"></script>
+<script type="text/javascript" src="path_to_plugins/chatrecall/candy.js"></script>
 ```
 
 Call its `init()` method after Candy has been initialized:
