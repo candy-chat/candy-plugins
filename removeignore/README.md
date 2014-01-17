@@ -5,7 +5,7 @@ This plugin will remove the option to ignore another user
 Include the JavaScript file:
 
 ```HTML
-<script type="text/javascript" src="path_to_plugins/gs-removeignore/candy.js"></script>
+<script type="text/javascript" src="path_to_plugins/removeignore/candy.js"></script>
 ```
 
 Call its `init()` method after Candy has been initialized:
