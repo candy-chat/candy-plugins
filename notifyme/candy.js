@@ -58,7 +58,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 
 				// highlight if specified
 				if (_options.highlightInRoom) {
-					args.message = args.message.replace(searchRegExp, '<span class="gs-notifyme-highlight">' + searchTerm + '</span>');
+					args.message = args.message.replace(searchRegExp, '<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
 				}
 			}
 		});
