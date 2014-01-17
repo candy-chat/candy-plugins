@@ -2,16 +2,17 @@
 This plugin will complete the names of users in the room when a specified key is pressed.
 
 ### Usage
-    <script type="text/javascript" src="path_to_plugins/gs-namecomplete/candy.js"></script>
-    <link rel="stylesheet" type="text/css" href="path_to_plugins/gs-namecomplete/candy.css" />
+    <script type="text/javascript" src="path_to_plugins/namecomplete/candy.js"></script>
+    <link rel="stylesheet" type="text/css" href="path_to_plugins/namecomplete/candy.css" />
 
     ...
 
     CandyShop.NameComplete.init();
 
 ### Configuration options
-nameIdentifier - String - The identifier to look for in a string. Defaults to '@'  
-completeKeyCode - Integer - The key code of the key to use. Defaults to 9 (tab)
+`nameIdentifier` - String - The identifier to look for in a string. Defaults to `'@'`
+
+`completeKeyCode` - Integer - The key code of the key to use. Defaults to `9` (tab)
 
 ### Example configurations
 

@@ -201,7 +201,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// add the matches to the list
 		for(i = 0; i < matches.length; i++) {
-			content.append('<li class="gs-namecomplete-option">' + matches[i] + '</li>');
+			content.append('<li class="candy-namecomplete-option">' + matches[i] + '</li>');
 		}
 
 		// select the first item

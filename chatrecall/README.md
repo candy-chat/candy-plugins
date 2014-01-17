@@ -19,7 +19,7 @@ Candy.Core.connect();
 ```
 
 ## Configuration options
-messagesToKeep - Integer - The number of messages to store in history. Defaults to 10
+`messagesToKeep` - Integer - The number of messages to store in history. Defaults to 10
 
 ## Example configurations
 ```JavaScript
