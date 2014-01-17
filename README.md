@@ -5,13 +5,13 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 ## List of available plugins
 * __available-rooms__ A plugin to show & join public rooms.
 * __Colors__ - Send and receive colored messages.
-* __Colors XHTML__ - Send and receive colored messages formatted with XHTML.
 * __Clearchat__ - Clears chat window on click or if typing `/clear`
 * __Namecomplete__ - Autocompletes names of users within room
 * __Notifyme__ - Notifies yourself in case one does use your nickname in a message
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
-* __jQuery-Ui__ - jQuery UI lightness theme
+* __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
 * __join__ A plugin that allows to type `/join room [password]` to join a room.
+* __jQuery-Ui__ - jQuery UI lightness theme
 * __Nickchange__ - Enable your users to change the nick using a toolbar icon
 * __Notifications__ - OS Notifications in webkit
 * __Replies__ - Similar to *Notifyme* this highlights messages with your nickname
