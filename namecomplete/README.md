@@ -10,8 +10,9 @@ This plugin will complete the names of users in the room when a specified key is
     CandyShop.NameComplete.init();
 
 ### Configuration options
-nameIdentifier - String - The identifier to look for in a string. Defaults to `'@'`
-completeKeyCode - Integer - The key code of the key to use. Defaults to `9` (tab)
+`nameIdentifier` - String - The identifier to look for in a string. Defaults to `'@'`
+
+`completeKeyCode` - Integer - The key code of the key to use. Defaults to `9` (tab)
 
 ### Example configurations
 

@@ -10,9 +10,11 @@ This plugin will notify users when their names are mentioned and prefixed with a
     CandyShop.NotifyMe.init();
 
 ### Configuration options
-nameIdentifier - String - The identifier to look for in a string. Defaults to `'@'`
-playSound - Boolean - Whether to play a sound when the username is mentioned. Defaults to `true`
-highlightInRoom - Boolean - Whether to highlight the username when it is mentioned. Defaults to `true`
+`nameIdentifier` - String - The identifier to look for in a string. Defaults to `'@'`
+
+`playSound` - Boolean - Whether to play a sound when the username is mentioned. Defaults to `true`
+
+`highlightInRoom` - Boolean - Whether to highlight the username when it is mentioned. Defaults to `true`
 
 ### Example configurations
 
