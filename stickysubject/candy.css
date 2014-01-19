@@ -1,0 +1,14 @@
+.candy-subject-container {
+    background: #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    left: 0;
+    margin: 30px 200px 0 0;
+    padding: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.candy-has-subject {
+    margin: 55px 200px 32px 0;
+}
