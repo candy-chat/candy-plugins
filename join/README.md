@@ -1,7 +1,7 @@
 # Join Plugin
 A plugin to join public rooms.
 
-Just Type ´/join [roomname]´ to join a room.
+Just Type `/join room [password]` to join a room.
 
 ## Usage
 Include the JavaScript file::
