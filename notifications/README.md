@@ -17,3 +17,13 @@ CandyShop.Notifications.init();
 
 Candy.Core.connect();
 ```
+
+It is possible to configure the Plugin.
+
+```JavaScript
+CandyShop.Notifications.init({
+	notifyNormalMessage: false,		// Send a notification for every message. Defaults to false
+	notifyPersonalMessage: true,	// Send a notification if the user is mentioned. (Requires NotfiyMe Plugin) Defaults to true
+	closeTime: 3000					// Close notification after X milliseconds. Zero means it doesn't close automaticly. Defaults to 3000
+});
+```
