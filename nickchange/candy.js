@@ -57,4 +57,4 @@ CandyShop.Nickchange = (function(self, Candy, $) {
 	};
 
 	return self;
-}(CandyShop.Colors || {}, Candy, jQuery));
+}(CandyShop.Nickchange || {}, Candy, jQuery));

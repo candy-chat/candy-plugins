@@ -16,6 +16,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Nickchange__ - Enable your users to change the nick using a toolbar icon
 * __Notifications__ - OS Notifications in webkit
 * __Notify Me__ - Notify me either through highlighting or audio that my username was mentioned.
+* __Refocus__ - This plugin puts the focus on the entry box if the user clicks somewhere in the message list.
 * __Remove Ignore__ - Removes the option to ignore/unignore a user from the roster.
 * __Replies__ - Highlight any message that contains "@my_username"
 * __Room Panel__ - Provides a list of rooms available to join.
