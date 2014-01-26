@@ -11,6 +11,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
 * __join__ A plugin that allows to type `/join room [password]` to join a room.
 * __jQuery-Ui__ - jQuery UI lightness theme
+* __Modify Role__ - Adds **add moderator** and **remove moderator** context menu links.
 * __Namecomplete__ - Provides auto-complete of user names that are currently in the chat room.
 * __Nickchange__ - Enable your users to change the nick using a toolbar icon
 * __Notifications__ - OS Notifications in webkit
