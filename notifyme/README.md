@@ -19,12 +19,12 @@ This plugin will notify users when their names are mentioned and prefixed with a
 ### Example configurations
 
     // Highlight my name when it's prefixed with a '+'
-    CandyShop.NameComplete.init({
+    CandyShop.NotifyMe.init({
         nameIdentifier: '+',
         playSound: false
     });
 
     // Highlight and play a sound if my name is prefixed with a '-'
-    CandyShop.NameComplete.init({
+    CandyShop.NotifyMe.init({
         nameIdentifier: '-'
     });
