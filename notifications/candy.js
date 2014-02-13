@@ -80,9 +80,6 @@ CandyShop.Notifications = (function(self, Candy, $) {
 				
 				if(sendNotification) {
 					var message = args.message;
-					if(typeof args.textOnlyMessage != 'undefined') {
-						message = args.textOnlyMessage;
-					}
 					
 					// Send Notification
 					var notification = window.webkitNotifications.createNotification(
