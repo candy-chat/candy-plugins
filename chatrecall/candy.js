@@ -87,7 +87,8 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
 
         // listen before send and add it to the stack
         $(Candy).on('candy:view.message.before-send', function(e, data) {
-            self.addMessage(data.message);
+            // remove, in case there is the colors plugin, the |c:number| prefix
+            self.addMessage(data.message.replace(/\|c:\d+\|/i, ''));
         });
     };
 

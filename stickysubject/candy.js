@@ -20,16 +20,16 @@ CandyShop.StickySubject = (function(self, Candy, $) {
         // Listen for a subject change in the room
         $(Candy).on('candy:view.room.after-subject-change', function(e, data) {
             // get the current message pane and create the text
-            var messagePane = $(Candy.View.Pane.Room.getPane(Candy.View.getCurrent().roomJid)),
-                subjectText = $.i18n._('roomSubject') + ' ' + Candy.Util.Parser.linkify(data.subject);
+            var $messagePane = $(Candy.View.Pane.Room.getPane(Candy.View.getCurrent().roomJid)),
+                subjectText = $.i18n._('roomSubject') + ' ' + data.subject;
 
             // if we don't have the subject container yet, add it
             // else just update the content
-            if ($('.candy-subject-container').length == 0) {
-                messagePane.prepend('<div class="candy-subject-container">' + subjectText + '</div>');
-                messagePane.find('.message-pane-wrapper').addClass('candy-has-subject');
+            if ($('.candy-subject-container:visible').length == 0) {
+                $messagePane.prepend('<div class="candy-subject-container">' + subjectText + '</div>');
+                $messagePane.find('.message-pane-wrapper').addClass('candy-has-subject');
             } else {
-                messagePane.find('.candy-subject-container').html(subjectText);
+                $messagePane.find('.candy-subject-container').html(subjectText);
             }
         });
     };

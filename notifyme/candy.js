@@ -3,7 +3,6 @@
  *
  * Authors:
  *   - Troy McCabe <troy.mccabe@geeksquad.com>
- *   - Jonatan Männchen <jonatan@maennchen.ch>
  *
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
@@ -40,20 +39,18 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		$.extend(true, _options, options);
 
 		// bind to the beforeShow event
-		$(Candy).on('candy:view.message.before-show', function(e, args) {
+		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			// get the nick from the current user
 			var nick = Candy.Core.getUser().getNick();
 
 			// make it what is searched
-			// search for the name at the beginning of the message, or with a space in front
+			// search for <identifier>name in the whole message
 			var searchTerm = _options.nameIdentifier + nick;
-			var searchRegExp = new RegExp('(^' + searchTerm + '| ' + searchTerm + ')', 'ig');
+			var searchRegExp = new RegExp('^(.*)(' + searchTerm + '| ' + searchTerm + ')', 'ig');
 
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.message) && args.nick != nick) {
-				args.forMe = true;
-				
+			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {
 				// play the sound if specified
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
@@ -61,12 +58,11 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 
 				// highlight if specified
 				if (_options.highlightInRoom) {
-					args.textOnlyMessage = args.message;
-					args.message = args.message.replace(searchRegExp, '<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
+					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
 				}
 			}
 		});
-	};
+	}
 
 	return self;
 }(CandyShop.NotifyMe || {}, Candy, jQuery));

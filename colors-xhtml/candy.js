@@ -1,35 +1,44 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
-CandyShop.Colors = (function(self, Candy, $) {
+CandyShop.ColorsXhtml = (function(self, Candy, $) {
 
 	var _numColors,
-		_currentColor = 0;
+		_currentColor = '',
+		_colors = [
+			'#333',
+			'#c4322b',
+			'#37991e',
+			'#1654c9',
+			'#66379b',
+			'#ba7318',
+			'#32938a',
+			'#9e2274'
+		];
 
-	self.init = function(numColors) {
-		_numColors = numColors ? numColors : 8;
+	self.init = function(colors) {
+		if(colors && colors.length) {
+			_colors = colors;
+		}
+		_numColors = _colors.length;
 
 		self.applyTranslations();
 
 		$(Candy).on('candy:view.message.before-send', function(e, args) {
-			if(_currentColor > 0 && $.trim(args.message) !== '') {
-				args.message = '|c:'+ _currentColor +'|' + args.message;
+			if(_currentColor !== '' && $.trim(args.message) !== '') {
+				args.xhtmlMessage = '<span style="color:' + _currentColor + '">' + Candy.Util.Parser.escape(args.message) + '</span>';
 			}
 		});
 
-		$(Candy).on('candy:view.message.before-render', function(e, args) {
-			args.templateData.message = args.templateData.message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
-		});
-
-		if(Candy.Util.cookieExists('candyshop-colors-current')) {
-			var color = parseInt(Candy.Util.getCookie('candyshop-colors-current'), 10);
-			if(color > 0 && color < _numColors) {
+		if(Candy.Util.cookieExists('candyshop-colors-xhtml-current')) {
+			var color = Candy.Util.getCookie('candyshop-colors-xhtml-current');
+			if(_colors.indexOf(color) !== -1) {
 				_currentColor = color;
 			}
 		}
-		var html = '<li id="colors-control" data-tooltip="' + $.i18n._('candyshopColorsMessagecolor') + '"><span class="color-' + _currentColor + '" id="colors-control-indicator"></span></li>';
+		var html = '<li id="colors-control" data-tooltip="' + $.i18n._('candyshopColorsXhtmlMessagecolor') + '"><span style="color:' + _currentColor + ';background-color:' + _currentColor +'" id="colors-control-indicator"></span></li>';
 		$('#emoticons-icon').after(html);
 		$('#colors-control').click(function(event) {
-			CandyShop.Colors.showPicker(this);
+			CandyShop.ColorsXhtml.showPicker(this);
 		});
 	};
 
@@ -44,13 +53,13 @@ CandyShop.Colors = (function(self, Candy, $) {
 		$('#tooltip').hide();
 
 		for(i = _numColors-1; i >= 0; i--) {
-			colors = '<span class="color-' + i + '" data-color="' + i + '"></span>' + colors;
+			colors = '<span style="color:' + _colors[i] + ';background-color:' + _colors[i] + ';" data-color="' + _colors[i] + '"></span>' + colors;
 		}
 		content.html('<li class="colors">' + colors + '</li>');
 		content.find('span').click(function() {
 			_currentColor = $(this).attr('data-color');
-			$('#colors-control-indicator').attr('class', 'color-' + _currentColor);
-			Candy.Util.setCookie('candyshop-colors-current', _currentColor, 365);
+			$('#colors-control-indicator').attr('style', 'color:' + _currentColor + ';background-color:' + _currentColor);
+			Candy.Util.setCookie('candyshop-colors-xhtml-current', _currentColor, 365);
 			Candy.View.Pane.Room.setFocusToForm(Candy.View.getCurrent().roomJid);
 			menu.hide();
 		});
@@ -75,11 +84,11 @@ CandyShop.Colors = (function(self, Candy, $) {
 		};
 		$.each(translations, function(k, v) {
 			if(Candy.View.Translation[k]) {
-				Candy.View.Translation[k].candyshopColorsMessagecolor = v;
+				Candy.View.Translation[k].candyshopColorsXhtmlMessagecolor = v;
 			}
 
 		});
 	};
 
 	return self;
-}(CandyShop.Colors || {}, Candy, jQuery));
+}(CandyShop.ColorsXhtml || {}, Candy, jQuery));
