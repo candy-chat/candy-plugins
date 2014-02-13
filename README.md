@@ -7,6 +7,10 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Chat Recall__ - Saves the last {x} messages to scroll through with up and down arrows, similar to terminal/cmd.
 * __Clearchat__ - Clears chat window on click or if typing `/clear`
 * __Colors__ - Send and receive colored messages.
+* __Colors XHTML__ - Send and receive colored messages formatted with XHTML.
+* __Clearchat__ - Clears chat window on click or if typing `/clear`
+* __Namecomplete__ - Autocompletes names of users within room
+* __Notifyme__ - Notifies yourself in case one does use your nickname in a message
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 * __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
 * __join__ A plugin that allows to type `/join room [password]` to join a room.
