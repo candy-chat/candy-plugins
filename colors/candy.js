@@ -16,8 +16,8 @@ CandyShop.Colors = (function(self, Candy, $) {
 			}
 		});
 
-		$(Candy).on('candy:view.message.before-show', function(e, args) {
-			args.message = args.message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
+		$(Candy).on('candy:view.message.before-render', function(e, args) {
+			args.templateData.message = args.templateData.message.replace(/^\|c:([0-9]{1,2})\|(.*)/gm, '<span class="colored color-$1">$2</span>');
 		});
 
 		if(Candy.Util.cookieExists('candyshop-colors-current')) {

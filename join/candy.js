@@ -20,14 +20,14 @@ CandyShop.Join = (function(self, Candy, $) {
 	 */
 	self.about = {
 		name: 'Candy Plugin Join',
-		version: '1.0.1'
+		version: '1.0.2'
 	};
 	
 	/** Function: init
 	 * Initializes the join plugin with the default settings.
 	 */
 	self.init = function(){
-		$(Candy.View.Pane).bind('candy:view.message.beforeSend', function(e, args) {
+		$(Candy).bind('candy:view.message.before-send', function(e, args) {
 			// (strip colors)
 			// if it matches '/join', join room and don't send anything
 			if (args.message.replace(/\|c:\d+\|/, '').substring(0, 5).toLowerCase() == '/join') {

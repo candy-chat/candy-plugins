@@ -29,6 +29,11 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 */
 	var _nicks = [];
 
+    /** String: _selector
+     * The selector for the visible message box
+     */
+    var _selector = 'input[name="message"]:visible';
+
 	/** Function: init
 	 * Initialize the NameComplete plugin
 	 * Show options for auto completion of names
@@ -41,7 +46,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$.extend(true, _options, options);
 
 		// listen for keydown when autocomplete options exist
-		$(document).on('keydown', 'input[name="message"]', function(e) {
+		$(document).on('keydown', _selector, function(e) {
 			// if we hear the key code for completion
 			if (e.which == _options.completeKeyCode) {
 				// update the list of nicks to grab
@@ -121,7 +126,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				}
 
 				// remove the listener on the field
-				$('input[name="message"]').unbind('keydown', self.keyDown);
+				$(_selector).unbind('keydown', self.keyDown);
 
 				// hide the menu
 				menu.hide();
@@ -142,7 +147,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		self.replaceName($(e.currentTarget).text());
 		$(document).unbind('keydown', self.keyDown);
 		$('#context-menu').hide();
-		$('input[name="message"]').focus();
+		$(_selector).focus();
 		e.preventDefault();
 	};
 
@@ -154,12 +159,15 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		_nicks = [];
 
 		// grab the roster in the current room
-		var roster = Candy.Core.getRoom(Candy.View.getCurrent().roomJid).getRoster().getAll();
+        var room = Candy.Core.getRoom(Candy.View.getCurrent().roomJid);
+        if (room != null) {
+            var roster = room.getRoster().getAll();
 
-		// iterate and add the nicks to the collection
-		$.each(roster, function(index, item) {
-			_nicks.push(_options.nameIdentifier + item.getNick());
-		});
+            // iterate and add the nicks to the collection
+            $.each(roster, function(index, item) {
+                _nicks.push(_options.nameIdentifier + item.getNick());
+            });
+        }
 	}
 
 	/** Function: replaceName
@@ -167,7 +175,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 */
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
-		var msgParts = $('input[name="message"]').val().split(' ');
+        var $msgBox = $(_selector);
+		var msgParts = $msgBox.val().split(' ');
 
 		// If the name is the first word, add a colon to the end
 		if (msgParts.length==1) {
@@ -180,7 +189,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		msgParts[msgParts.length - 1] = replaceText;
 
 		// put the string back together on spaces
-		$('input[name="message"]').val(msgParts.join(' '));
+        $msgBox.val(msgParts.join(' '));
 	}
 
 	/** Function: showPicker
@@ -201,7 +210,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// add the matches to the list
 		for(i = 0; i < matches.length; i++) {
-			content.append('<li class="gs-namecomplete-option">' + matches[i] + '</li>');
+			content.append('<li class="candy-namecomplete-option">' + matches[i] + '</li>');
 		}
 
 		// select the first item
@@ -210,7 +219,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		content.find('li').click(self.selectOnClick);
 
 		// bind the keydown to move around the menu
-		$('input[name="message"]').bind('keydown', self.keyDown);
+		$(_selector).bind('keydown', self.keyDown);
 
 		// estimate the left to the # of chars * 7...not sure?
 		// get the top of the box to put this thing at
