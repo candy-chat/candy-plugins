@@ -55,7 +55,17 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
 				}
-
+				
+				// Save that I'm mentioned in args
+				args.forMe = true;
+			}
+		});
+		
+		// bind to the beforeShow event
+		$(Candy).on('candy:view.message.before-render', function(e, args) {
+			// if it's in the message and it's not from me, do stuff
+			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
+			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
 					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
