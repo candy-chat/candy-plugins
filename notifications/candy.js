@@ -83,7 +83,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
 					
 					// Send Notification
 					var notification = window.webkitNotifications.createNotification(
-							window.location + '/' + Candy.View.getOptions().resources + '/img/favicon.png',
+							window.location + '/' + Candy.View.getOptions().assets + '/img/favicon.png',
 							args.name,
 							message);
 					notification.show();
