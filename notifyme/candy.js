@@ -47,7 +47,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-show', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(' + searchTerm + '| ' + searchTerm + ')', 'ig');
+			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
@@ -66,7 +66,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(' + searchTerm + '| ' + searchTerm + ')', 'ig');
+			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
