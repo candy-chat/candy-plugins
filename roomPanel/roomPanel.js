@@ -155,7 +155,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             'de' : ['Verfügbare Räume anzeigen', 'Verfügbare Räume'],
             'fr' : ['Choisir une salle', 'Liste des salles'],
             'nl' : ['Choose Room To Join', 'List Rooms'],
-            'es' : ['Choose Room To Join', 'List Rooms'],
+            'es' : ['Choose Room To Join', 'List Rooms']
         };
         $.each(translations, function(k, v) {
             if(Candy.View.Translation[k]) {
