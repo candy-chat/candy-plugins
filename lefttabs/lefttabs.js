@@ -1,4 +1,4 @@
-/** File: bootstrap3.js
+/** File: lefttabs.js
  * Candy Plugin Left Tabs + Bootstrap3 Layout
  * Author: Melissa Adamaitis <melissa@melissanoelle.com>
  */
@@ -18,7 +18,7 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
   };
 
   /**
-   * Initializes the bootstrap3 plugin with the default settings.
+   * Initializes the LeftTabs plugin with the default settings.
    */
   self.init = function(){
     Candy.View.Template.Chat = {
