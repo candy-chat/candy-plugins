@@ -17,3 +17,8 @@ To enable this Left Tabs plugin, add its `init` method _before_ you `init` Candy
 CandyShop.LeftTabs.init();
 Candy.init('/http-bind', { ...
 ```
+## Compatibility with other plugins
+
+Make sure to `init` it after all other plugins, but before the Candy `init`.
+
+1. CreateRoom

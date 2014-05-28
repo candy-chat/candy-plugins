@@ -24,7 +24,7 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
     Candy.View.Template.Chat = {
       pane: '<div class="row" id="chat-pane">{{> tabs}}{{> toolbar}}{{> rooms}}</div>{{> modal}}',
       rooms: '<div id="chat-rooms" class="rooms"></div>',
-      tabs: '<div id="left-menu-wrapper"><ul data="melwashere" id="chat-tabs"></ul></div>',
+      tabs: '<div id="left-menu-wrapper"><ul id="chat-tabs"></ul></div>',
       tab: '<li class="roomtype-{{roomType}}" data-roomjid="{{roomJid}}" data-roomtype="{{roomType}}">' +
           '<a href="#" class="label">{{#privateUserChat}}<span class="glyphicon glyphicon-user"></span> {{/privateUserChat}}{{name}}</a>' +
           '<a href="#" class="transition"></a><a href="#" class="close">\u00D7</a>' +
@@ -78,13 +78,22 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
     // Make sure that the window heights are the right size after a new room is added.
     $(Candy).on('candy:view.room.after-add', function() {
       self.heights();
+      if(typeof CandyShop.CreateRoom == "object") {
+        self.createRoomPluginCompatibility();
+      }
     });
+
   };
 
   self.heights = function() {
     var barless_height = $(window).height() - $('.message-form').height();
     $('.message-pane-wrapper').height(barless_height + 'px');
     $('.roster-pane').height(barless_height + 'px');
+  }
+
+  self.createRoomPluginCompatibility = function() {
+    $('#create-group-form button').addClass('btn');
+    $('#create-group-form .close-button').html('<span class="glyphicon glyphicon-remove"></span>');
   }
 
   return self;
