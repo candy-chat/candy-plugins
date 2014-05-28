@@ -1,0 +1,82 @@
+#create-group {
+  background-color: rgba(255,255,255,0.9);
+  border-radius: 3px;
+  bottom: 7px;
+  cursor: default;
+  display: inline-block;
+  height: 13px;
+  padding: 6px 5px;
+  position: relative;
+}
+#create-group .click {
+  bottom: 3px;
+  position: relative;
+  text-align: center;
+}
+#create-group .group-form {
+  border-top: 1px solid rgba(0,0,0,0.9);
+  left: 0;
+  margin-top: 5px;
+  padding-top: 5px;
+  position: absolute;
+  top: 0;
+}
+#group-form-wrapper.hidden {
+  display: none;
+}
+#group-form-wrapper.show {
+  display block;
+  background-color: rgba(0,0,0,0.3);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+#group-form-wrapper .inner-wrapper {
+  background: none;
+  display: table;
+  margin: 0 auto;
+  height: 100%;
+}
+#group-form-wrapper .inner-inner-wrapper {
+  display: table-cell;
+  height: 50%;
+  margin: 0 auto;
+  vertical-align: middle;
+  width: 50%;
+}
+#create-group-form {
+  background: white;
+  border-bottom: 2px solid rgba(0,0,0,0.5);
+  border-radius: 4px;
+  padding: 20px;
+}
+#create-group .group-form > p {
+  font-size: 0.85em;
+  margin-bottom: 0;
+}
+#create-group .group-form > button {
+  bottom: 0;
+  left: 32%;
+  position: absolute;
+}
+#chat-tabs {
+  display: inline-block;
+  margin-right: 3px;
+}
+#create-group-form p:first-of-type {
+  margin-top: 0;
+}
+#create-group-form .close-button {
+  cursor: default;
+  display: inline-block;
+  float: right;
+}
+#create-group-form .close-button:hover {
+  color: #A8A8A8;
+}
+#create-group-form button[type='submit'] {
+  display: block;
+  margin-top: 15px;
+}

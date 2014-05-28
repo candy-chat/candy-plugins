@@ -6,6 +6,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __available-rooms__ A plugin to show & join public rooms.
 * __Chat Recall__ - Saves the last {x} messages to scroll through with up and down arrows, similar to terminal/cmd.
 * __Clearchat__ - Clears chat window on click or if typing `/clear`
+* __Create Room__ - Creates a clickable UI for creating and joining rooms.
 * __Colors__ - Send and receive colored messages.
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 * __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
