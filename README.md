@@ -3,7 +3,8 @@
 This is the official plugin repository for [Candy](http://candy-chat.github.com/candy), a JavaScript based multi-user chat client.
 
 ## List of available plugins
-* __available-rooms__ A plugin to show & join public rooms.
+* __Auto-Join Invites__ - Automatically joins any and all incoming MUC invites.
+* __available-rooms__ - A plugin to show & join public rooms.
 * __Chat Recall__ - Saves the last {x} messages to scroll through with up and down arrows, similar to terminal/cmd.
 * __Clearchat__ - Clears chat window on click or if typing `/clear`
 * __Create Room__ - Creates a clickable UI for creating and joining rooms.
