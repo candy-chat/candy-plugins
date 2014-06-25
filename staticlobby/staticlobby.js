@@ -48,7 +48,21 @@ CandyShop.StaticLobby = (function(self, Candy, $) {
 
   // Create a fake jid for the lobby so that other parts of candy don't fail on .replace() commands.
   self.getLobbyFakeJid = function(){
-    return 'lobby@conference.' + Candy.Core.getConnection().domain;
+    if(self.lobbyFakeJid == null) {
+      var guid = (function() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+                     .toString(16)
+                     .substring(1);
+        }
+        return function() {
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                 s4() + '-' + s4() + s4() + s4();
+        };
+      })();
+      self.lobbyFakeJid = guid() + '@conference.' + Candy.Core.getConnection().domain;
+    }
+    return self.lobbyFakeJid;
   }
 
   // Request and parse global roster from server.
