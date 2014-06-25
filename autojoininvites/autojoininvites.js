@@ -1,6 +1,6 @@
 /** File: autojoininvites.js
  * Candy Plugin Auto-Join Incoming MUC Invites
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
