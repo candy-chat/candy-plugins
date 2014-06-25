@@ -1,6 +1,6 @@
 /** File: lefttabs.js
  * Candy Plugin Left Tabs + Bootstrap3 Layout
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));

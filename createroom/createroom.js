@@ -1,6 +1,6 @@
 /** File: createroom.js
  * Candy Plugin Create Room
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
