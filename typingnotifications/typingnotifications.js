@@ -1,6 +1,6 @@
 /** File: typingnotifications.js
  * Candy Plugin Typing Notifications
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
