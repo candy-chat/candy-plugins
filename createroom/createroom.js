@@ -14,7 +14,7 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
    */
   self.about = {
     name: 'Candy Plugin Create Room',
-    version: '0.1'
+    version: '1.0'
   };
 
   /**
@@ -49,11 +49,21 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
   self.addFormHandler = function(){
     $('#create-group-form').submit(function(event) {
       event.preventDefault();
-      var roomJid = $('#create-group-form-name').val() + '@conference.powerhrg.com';
-      if(roomJid != '@conference.powerhrg.com') {
+      if($('#create-group-form-name').val() === '') {
+        // Notify that group name cannot be blank.
+        var warning_html = '<label class="control-label" for="create-group-form-name">Name cannot be blank.</label>';
+        $('#create-group-form-name').before(warning_html);
+        $('.form-group.group-form-name-group').addClass('has-error');
+        // Remove classes after user either starts typing or has pasted in a name.
+        $('#create-group-form-name').focus(function() {
+          $('.form-group.group-form-name-group').removeClass('has-error');
+          $('.form-group.group-form-name-group label').remove();
+        });
+      } else {
+        var roomJid = $('#create-group-form-name').val() + '@conference.' + Candy.Core.getConnection().domain;
         Candy.Core.Action.Jabber.Room.Join(roomJid, null);
+        self.hideModal();
       }
-      self.hideModal();
     });
   }
 
@@ -70,7 +80,7 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
 
   self.addModal = function(){
     if($('#group-form-wrapper').length == 0) {
-      var modal_html = '<div id="group-form-wrapper" class="hidden group-form"><div class="inner-wrapper"><div class="inner-inner-wrapper"><form id="create-group-form"><div class="close-button">X</div><p>Name:</p><input type="text" name="room-name" id="create-group-form-name" /><button type="submit">Create</button></form></div></div></div>';
+      var modal_html = '<div id="group-form-wrapper" class="hidden group-form"><div class="inner-wrapper"><div class="inner-inner-wrapper"><form id="create-group-form"><div class="close-button">X</div><p>Name:</p><div class="form-group group-form-name-group"><input class="form-control" type="text" name="room-name" id="create-group-form-name" /></div><button type="submit">Create</button></form></div></div></div>';
       $('#candy').after(modal_html);
     }
   };
