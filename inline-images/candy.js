@@ -13,7 +13,8 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.InlineImages = (function(self, Candy, $) {
 
 	var _fileExtensions = ['png','jpg','jpeg','gif']
-		,_maxImageSize = 100;
+		, _maxImageSize = 100
+		, _replaceRegex = />(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])</ig;
 
 	/** Function: init
 	 * Initializes the inline-images plugin with the default settings.
@@ -73,9 +74,14 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 *   (String)
 	 */
 	var handleBeforeShow = function(e, args) {
-		var message = args.message;
-		var processed = message.replace(/>(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])</ig, replaceCallback);
+		var message = args.message,
+			xhtmlMessage = args.xhtmlMessage;
+		var processed = message.replace(_replaceRegex, replaceCallback);
 		args.message = processed;
+		if(xhtmlMessage) {
+			var processedXhtml = xhtmlMessage.replace(_replaceRegex, replaceCallback);
+			args.xhtmlMessage = processedXhtml;
+		}
 		return processed;
 	};
 
