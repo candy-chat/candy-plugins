@@ -1,3 +1,8 @@
+/**
+ * Create Room CSS
+ *
+ * @author Melissa Adamaitis <madamei@mojolingo.com>
+ */
 #create-group {
   background-color: rgba(255,255,255,0.9);
   border-radius: 3px;
@@ -79,4 +84,8 @@
 #create-group-form button[type='submit'] {
   display: block;
   margin-top: 15px;
+}
+#create-group-form .text-warning {
+  font-style: oblique;
+  padding-bottom: 3px;
 }
