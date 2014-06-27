@@ -27,7 +27,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Static Lobby__ - Creates a static lobby UI and pulls in a global roster. Allows you to invite people from global roster to other MUCs you are participating in.
 * __Sticky Subject__ - Retains the subject of the room underneath the tab itself.
 * __Timeago__ - Replaces the exact time/date with fuzzy timestamps like "2 minutes ago".
-* __Typing notifications__ - Show typing notifications.
+* __Typing Notifications__ - Displays a user's typing notification status above the text entry form.
 
 ## Contributing
 Please submit a pull request with your plugin or your changes to a plugin. We'll gladly merge it.
