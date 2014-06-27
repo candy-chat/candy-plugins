@@ -23,8 +23,10 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Remove Ignore__ - Removes the option to ignore/unignore a user from the roster.
 * __Replies__ - Highlight any message that contains "@my_username"
 * __Room Panel__ - Provides a list of rooms available to join.
+* __Static Lobby__ - Creates a static lobby UI and pulls in a global roster. Allows you to invite people from global roster to other MUCs you are participating in.
 * __Sticky Subject__ - Retains the subject of the room underneath the tab itself.
 * __Timeago__ - Replaces the exact time/date with fuzzy timestamps like "2 minutes ago".
+* __Typing notifications__ - Show typing notifications.
 
 ## Contributing
 Please submit a pull request with your plugin or your changes to a plugin. We'll gladly merge it.
