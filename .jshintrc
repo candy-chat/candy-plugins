@@ -1,12 +1,12 @@
 {
-	"node": true,
 	"curly": true,
 	"eqeqeq": true,
 	"latedef": true,
+	"maxdepth": 4,
 	"newcap": true,
 	"noarg": true,
-	"undef": true,
-	"unused": true,
+	"node": true,
 	"trailing": true,
-	"maxdepth": 4
+	"undef": true,
+	"unused": true
 }
