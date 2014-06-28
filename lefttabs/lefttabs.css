@@ -18,6 +18,11 @@
   position: relative;
   width: 100%;
 }
+.message-pane {
+  padding-top: 1px;
+  width: 69.8%;
+  position: fixed;
+}
 .message-pane .label {
   padding-top: 7px;
 }
@@ -202,12 +207,15 @@
 #create-group {
   background: #eee;
   border-radius: 3px 0 0 3px;
+  cursor: pointer !important;
   float: right;
-  height: initial;
-  margin-top: 3px;
+  height: 18px !important;
+  margin-right: 1px;
+  margin-top: 9px;
   position: initial;
   width: 99%;
 }
+
 #create-group .click {
   font-size: 75%;
   font-weight: 700;
