@@ -228,3 +228,8 @@
 .row {
   margin: 0 !important;
 }
+
+/* Align tooltip context menu properly in the roster. */
+#context-menu {
+  margin-top: 48px !important;
+}
