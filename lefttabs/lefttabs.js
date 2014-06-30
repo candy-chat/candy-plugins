@@ -1,6 +1,6 @@
 /** File: lefttabs.js
  * Candy Plugin Left Tabs + Bootstrap3 Layout
- * Author: Melissa Adamaitis <madamei@mojolingo.com>
+ * Author: Melissa Adamaitis <melissa@melissanoelle.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
@@ -81,6 +81,10 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
       if(typeof CandyShop.CreateRoom == "object") {
         self.createRoomPluginCompatibility();
       }
+    });
+
+    $(Candy).on('candy:view.message.after-show', function(ev, obj) {
+      $('div[data-roomjid="' + obj.roomJid + '"] .message-pane').scrollTop($('div[data-roomjid="' + obj.roomJid + '"] .message-pane').prop('scrollHeight'));
     });
 
   };

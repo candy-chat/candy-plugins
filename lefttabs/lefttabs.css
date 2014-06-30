@@ -20,8 +20,10 @@
   width: 100%;
 }
 .message-pane {
+  height: 100%;
   padding-top: 1px;
   width: 69.8%;
+  overflow-y: scroll;
   position: fixed;
 }
 .message-pane .label {
