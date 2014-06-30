@@ -84,14 +84,17 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
     });
 
     $(Candy).on('candy:view.message.after-show', function(ev, obj) {
-      $('div[data-roomjid="' + obj.roomJid + '"] .message-pane').scrollTop($('div[data-roomjid="' + obj.roomJid + '"] .message-pane').prop('scrollHeight'));
+      if(Candy.View.Pane.Window.autoscroll) {
+        $('div[data-roomjid="' + obj.roomJid + '"] .message-pane').scrollTop($('div[data-roomjid="' + obj.roomJid + '"] .message-pane').prop('scrollHeight') + $('div[data-roomjid="' + obj.roomJid + '"] .message-form-wrapper').height());
+      }
     });
 
   };
 
   self.heights = function() {
-    var barless_height = $(window).height() - $('.message-form').height();
-    $('.message-pane-wrapper').height(barless_height + 'px');
+    var barless_height = $(window).height() - $('.message-form-wrapper').height();
+    $('.message-pane-wrapper').height((barless_height - parseInt($('.message-pane-wrapper').css('padding-bottom'))) + 'px');
+    $('.message-pane').height(barless_height + 'px');
     $('.roster-pane').height(barless_height + 'px');
   }
 
