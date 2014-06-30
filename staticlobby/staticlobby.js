@@ -15,7 +15,7 @@ CandyShop.StaticLobby = (function(self, Candy, $) {
    */
   self.about = {
     name: 'Candy Plugin Static Lobby Tab',
-    version: '0.7'
+    version: '0.9'
   };
 
 
@@ -27,7 +27,7 @@ CandyShop.StaticLobby = (function(self, Candy, $) {
     $(Candy).on('candy:view.connection.status-5', function(){
       var lobbyFakeJid = self.getLobbyFakeJid();
       // Add the lobby room to the list of rooms so that other functions don't break looking for the room.
-      if(!Candy.View.Pane.Chat.rooms['lobby']) {
+      if(!Candy.View.Pane.Chat.rooms[lobbyFakeJid]) {
         var lobby = Candy.View.Pane.Room.init(lobbyFakeJid, 'Lobby', 'lobby');
         Candy.View.Pane.Chat.rooms[lobbyFakeJid].user = Candy.Core.getUser('me'); // Need to set the user of this room as ourselves to enable dropdown functionality for roster items.
       }
