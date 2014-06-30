@@ -49,11 +49,12 @@
 .roster-pane {
   background-color: initial;
   border: 0;
+  box-shadow: none;
   float:right;
   margin: 0;
   padding-right: 3px;
   padding-top: 2px;
-  position: absolute;
+  position: fixed;
   right: 0;
   width: 14%;
 }
