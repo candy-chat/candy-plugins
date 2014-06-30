@@ -1,0 +1,15 @@
+{
+	"browser": true,
+	"curly": true,
+	"eqeqeq": true,
+	"jquery": true,
+	"latedef": true,
+	"maxdepth": 4,
+	"newcap": true,
+	"noarg": true,
+	"node": true,
+	"predef": [ "Candy" ],
+	"trailing": true,
+	"undef": true,
+	"unused": true
+}

@@ -52,11 +52,11 @@ CandyShop.Notifications = (function(self, Candy, $) {
 	 */
 	function setupPermissions() {
 		// Check if permissions is given
-		if (window.webkitNotifications.checkPermission() != 0) { // 0 is PERMISSION_ALLOWED
+		if (window.webkitNotifications.checkPermission() !== 0) { // 0 is PERMISSION_ALLOWED
 			// Request for it
 			window.webkitNotifications.requestPermission();
 		}
-	};
+	}
 	
 
 	/** Function: handleOnShow
@@ -71,10 +71,10 @@ CandyShop.Notifications = (function(self, Candy, $) {
 		// Check if window has focus, so no notification needed
 		if (!document.hasFocus()) {
 			// Check if notifications are allowed
-			if (window.webkitNotifications.checkPermission() == 0) { // 0 is PERMISSION_ALLOWED
+			if (window.webkitNotifications.checkPermission() === 0) { // 0 is PERMISSION_ALLOWED
 				var sendNotification = _options.notifyNormalMessage;
 				
-				if(_options.notifyPersonalMessage && typeof args.forMe != 'undefined' && args.forMe) {
+				if(_options.notifyPersonalMessage && args.forMe !== undefined && args.forMe) {
 					sendNotification = true;
 				}
 				
@@ -95,7 +95,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
 				}
 			}
 		}
-	};
+	}
 
 	return self;
 }(CandyShop.Notifications || {}, Candy, jQuery));
