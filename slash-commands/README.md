@@ -12,6 +12,16 @@ To use any of the following, just type them into the chat input text area. Note 
 * `/invite username[@domain]` - Invites the user "username" to the current room. If the optional domain is not provided, it is assumed to be the same domain as the current user
 * `/topic This will be the new topic` - Sets the topic for the current room to "This will be the new topic"
 
+## Configuration
+
+For the commands that work on rooms (such as `/join`) you can specify the default domain to be suffixed to the room name:
+
+```JavaScript
+CandyShop.SlashCommands.defaultConferenceDomain = 'muc.example.com';
+```
+
+If unset, it defaults to the user's XMPP domain prefixed with "conference."
+
 ## Usage
 Include the JavaScript file::
 

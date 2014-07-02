@@ -31,11 +31,26 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		'join',
 		'clear',
 	];
+
+	self.defaultConferenceDomain = null;
 	
 	/** Function: init
 	 * Initializes the Slash Commands plugin with the default settings.
 	 */
 	self.init = function(){
+
+		$(Candy).on('candy:view.connection.status-5', function() {
+			// When connected to the server, default the conference domain if unspecified
+			if (!self.defaultConferenceDomain) {
+				self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
+			}
+
+      // Ensure we have a leading "@"
+			if (self.defaultConferenceDomain.indexOf('@') == -1) {
+				self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
+			}
+		});
+
 		$(Candy).bind('candy:view.message.before-send', function(e, args) {
 			try {
 				// (strip colors)
@@ -79,7 +94,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 		if(typeof room != 'undefined' && room != '') {
 			if(room.indexOf("@") == -1) {
-				room += "@conference." + Candy.Core.getConnection().domain;
+				room += self.defaultConferenceDomain;
 			}
 			if (typeof password != 'undefined' && password != '') {
 				Candy.Core.Action.Jabber.Room.Join(room, password);
