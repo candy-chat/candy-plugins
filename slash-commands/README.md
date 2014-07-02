@@ -16,7 +16,7 @@ To use any of the following, just type them into the chat input text area. Note 
 Include the JavaScript file::
 
 ```HTML
-<script type="text/javascript" src="candyshop/slash-commands/candy.js"></script>
+<script type="text/javascript" src="candyshop/slash-commands/slash-commands.js"></script>
 ```
 
 To enable the Slash Commands Plugin, just add one of the ´init´ methods to your bootstrap:
