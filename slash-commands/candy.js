@@ -1,11 +1,15 @@
 /** File: candy.js
- * Candy join room over command
+ * Make several Candy actions accessible via the message box when prefixed with a slash "/"
  * 
  * Authors:
+ *  - Ben Klang <bklang@mojolingo.com>
+ *
+ * Contributors:
+ *  - Troy McCabe <troy.mccabe@geeksquad.com>
  *	- Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
  * 
  * Copyright:
- *	- (c) 2012 Amiado Group AG. All rights reserved.
+ *	- (c) 2014 Mojo Lingo LLC. All rights reserved.
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
