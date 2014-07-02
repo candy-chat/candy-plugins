@@ -32,6 +32,9 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		'part',
 		'clear',
 		'topic',
+		'available',
+		'away',
+		'dnd',
 	];
 
 	self.defaultConferenceDomain = null;
@@ -129,6 +132,36 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.clear = function() {
 		$('.room-pane').filter(':visible').find('.message-pane').empty();
+	}
+
+	/** Function: available
+	 * Change the current user's XMPP status to "available" with an optional message
+	 * Parameters:
+	 * 	(String) message Optional message to set with availability
+	 */
+	self.available = function(message) {
+		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
+		Candy.Core.Action.Jabber.Presence();
+	}
+
+	/** Function: away
+	 * Change the current user's XMPP status to "away" with an optional message
+	 * Parameters:
+	 * 	(String) message Optional message to set with availability
+	 */
+	self.away = function(message) {
+		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
+		Candy.Core.Action.Jabber.Presence(null, $build('show', 'away'));
+	}
+
+	/** Function: dnd
+	 * Change the current user's XMPP status to "dnd" with an optional message
+	 * Parameters:
+	 * 	(String) message Optional message to set with availability
+	 */
+	self.dnd = function(message) {
+		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
+		Candy.Core.Action.Jabber.Presence(null, $build('show', 'dnd'));
 	}
 
 	/** Function: currentRoom

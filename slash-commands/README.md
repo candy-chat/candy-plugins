@@ -4,10 +4,18 @@ A plugin to provide a command-line interface to Candy actions.
 ## Examples
 To use any of the following, just type them into the chat input text area. Note that any commands which are room-specific (`/topic`, `/kick`, etc) will work on/for the current room only.
 
+### Room Management
+
 * `/join room [password]` - Joins the MUC room "room" with an optional password
 * `/part` - Leaves the current MUC room
 * `/clear` - Clears the scrollback in the current room
 * `/topic This will be the new topic` - Sets the topic for the current room to "This will be the new topic"
+
+### Presence
+
+* `/available`
+* `/away`
+* `/dnd` - Do Not Disturb
 
 ## Todo
 * `/kick username` - Ejects the user "username" from the current room. Must be a MUC admin for this to work
