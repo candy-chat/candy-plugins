@@ -2,10 +2,10 @@
  * Make several Candy actions accessible via the message box when prefixed with a slash "/"
  * 
  * Authors:
- *  - Ben Klang <bklang@mojolingo.com>
+ *	- Ben Klang <bklang@mojolingo.com>
  *
  * Contributors:
- *  - Troy McCabe <troy.mccabe@geeksquad.com>
+ *	- Troy McCabe <troy.mccabe@geeksquad.com>
  *	- Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
  * 
  * Copyright:
