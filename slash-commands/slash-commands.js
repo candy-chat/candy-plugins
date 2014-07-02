@@ -1,13 +1,13 @@
 /** File: candy.js
  * Make several Candy actions accessible via the message box when prefixed with a slash "/"
- * 
+ *
  * Authors:
  *	- Ben Klang <bklang@mojolingo.com>
  *
  * Contributors:
  *	- Troy McCabe <troy.mccabe@geeksquad.com>
  *	- Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
- * 
+ *
  * Copyright:
  *	- (c) 2014 Mojo Lingo LLC. All rights reserved.
  */
@@ -35,7 +35,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	];
 
 	self.defaultConferenceDomain = null;
-	
+
 	/** Function: init
 	 * Initializes the Slash Commands plugin with the default settings.
 	 */
@@ -64,7 +64,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 						console.log(match);
 						var command = match[1];
 						var data = match[2];
-						
+
 						// Match only whitelisted commands
 						if ($.inArray(command, self.commands) != -1) {
 							self[command](data);
@@ -81,10 +81,10 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			}
 		});
 	};
-	
+
 	/** Function: join
 	 * Joins a room
-	 * 
+	 *
 	 * Parameters:
 	 *	 (String) args The name of the room and the optional password, separated by a space
 	 */
@@ -108,7 +108,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 	/** Function: part
 	 * Exits the current chat room
-	 * 
+	 *
 	 */
 	self.part = function() {
 		Candy.Core.Action.Jabber.Room.Leave(self.currentRoom());
