@@ -29,7 +29,9 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 	self.commands = [
 		'join',
+		'part',
 		'clear',
+		'topic',
 	];
 
 	self.defaultConferenceDomain = null;
@@ -45,7 +47,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
 			}
 
-      // Ensure we have a leading "@"
+			// Ensure we have a leading "@"
 			if (self.defaultConferenceDomain.indexOf('@') == -1) {
 				self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
 			}
@@ -104,12 +106,37 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		}
 	};
 
+	/** Function: part
+	 * Exits the current chat room
+	 * 
+	 */
+	self.part = function() {
+		Candy.Core.Action.Jabber.Room.Leave(self.currentRoom());
+	}
+
+	/** Function: topic
+	 * Sets the topic (subject) for the current chat room
+	 *
+	 * Parameters:
+	 * 	(String) topic The new topic for the room
+	 */
+	self.topic = function(topic) {
+		Candy.Core.Action.Jabber.Room.Admin.SetSubject(self.currentRoom(), topic);
+	}
+
 	/** Function: clear
 	 * Clear the current room's scrollback
 	 */
 	self.clear = function() {
 		$('.room-pane').filter(':visible').find('.message-pane').empty();
 	}
-	
+
+	/** Function: currentRoom
+	 * Helper function to get the current room
+	 */
+	self.currentRoom = function() {
+		return Candy.View.getCurrent().roomJid;
+	}
+
 	return self;
 }(CandyShop.SlashCommands || {}, Candy, jQuery));
