@@ -63,8 +63,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 				if (input[0] == '/') {
 					var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
-					if (match != null) {
-						console.log(match);
+					if (match !== null) {
 						var command = match[1];
 						var data = match[2];
 
@@ -78,9 +77,9 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 					}
 					args.message = '';
 				}
-			} catch (e) {
+			} catch (ex) {
 				// Without an exception catcher, the page will reload and the user will be logged out
-				console.log(e);
+				console.log(ex);
 			}
 		});
 	};
@@ -97,11 +96,11 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		var room = args[0];
 		var password = args[1];
 
-		if(typeof room != 'undefined' && room != '') {
+		if(typeof room != 'undefined' && room !== '') {
 			if(room.indexOf("@") == -1) {
 				room += self.defaultConferenceDomain;
 			}
-			if (typeof password != 'undefined' && password != '') {
+			if (typeof password !== 'undefined' && password !== '') {
 				Candy.Core.Action.Jabber.Room.Join(room, password);
 			} else {
 				Candy.Core.Action.Jabber.Room.Join(room);
@@ -115,7 +114,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.part = function() {
 		Candy.Core.Action.Jabber.Room.Leave(self.currentRoom());
-	}
+	};
 
 	/** Function: topic
 	 * Sets the topic (subject) for the current chat room
@@ -125,14 +124,14 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.topic = function(topic) {
 		Candy.Core.Action.Jabber.Room.Admin.SetSubject(self.currentRoom(), topic);
-	}
+	};
 
 	/** Function: clear
 	 * Clear the current room's scrollback
 	 */
 	self.clear = function() {
-		$('.room-pane').filter(':visible').find('.message-pane').empty();
-	}
+		$('.room-pane:visible').find('.message-pane').empty();
+	};
 
 	/** Function: available
 	 * Change the current user's XMPP status to "available" with an optional message
@@ -142,7 +141,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.available = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence();
-	}
+	};
 
 	/** Function: away
 	 * Change the current user's XMPP status to "away" with an optional message
@@ -152,7 +151,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.away = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'away'));
-	}
+	};
 
 	/** Function: dnd
 	 * Change the current user's XMPP status to "dnd" with an optional message
@@ -162,14 +161,14 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.dnd = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'dnd'));
-	}
+	};
 
 	/** Function: currentRoom
 	 * Helper function to get the current room
 	 */
 	self.currentRoom = function() {
 		return Candy.View.getCurrent().roomJid;
-	}
+	};
 
 	return self;
 }(CandyShop.SlashCommands || {}, Candy, jQuery));
