@@ -1,6 +1,6 @@
 /** File: lefttabs.js
  * Candy Plugin Left Tabs + Bootstrap3 Layout
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
@@ -93,8 +93,14 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
 
   self.heights = function() {
     var barless_height = $(window).height() - $('.message-form-wrapper').height();
-    $('.message-pane-wrapper').height((barless_height - parseInt($('.message-pane-wrapper').css('padding-bottom'))) + 'px');
-    $('.message-pane').height(barless_height + 'px');
+    var message_pane_height = barless_height;
+    var message_pane_wrapper_height = (barless_height - parseInt($('.message-pane-wrapper').css('padding-bottom')));
+    if(CandyShop.RoomBar) {
+      message_pane_height = barless_height - parseInt($('.roombar').css('height'));
+      $('.message-pane').css('margin-top', parseInt($('.roombar').css('height')) + 'px');
+    }
+    $('.message-pane-wrapper').height(message_pane_wrapper_height + 'px');
+    $('.message-pane').height(message_pane_height + 'px');
     $('.roster-pane').height(barless_height + 'px');
   }
 
