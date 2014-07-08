@@ -23,6 +23,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Refocus__ - This plugin puts the focus on the entry box if the user clicks somewhere in the message list.
 * __Remove Ignore__ - Removes the option to ignore/unignore a user from the roster.
 * __Replies__ - Highlight any message that contains "@my_username"
+* __MUC Room Bar__ - Adds a bar to the top of the message pane that displays the room topic and allows moderators to click-to-edit.
 * __Room Panel__ - Provides a list of rooms available to join.
 * __Static Lobby__ - Creates a static lobby UI and pulls in a global roster. Allows you to invite people from global roster to other MUCs you are participating in.
 * __Sticky Subject__ - Retains the subject of the room underneath the tab itself.
