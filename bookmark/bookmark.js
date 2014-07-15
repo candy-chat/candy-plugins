@@ -42,6 +42,22 @@ CandyShop.Bookmark = (function(self, Candy, $) {
     );
   }
 
+  /** Function: remove
+   * Removes a bookmark for the provided MUC room
+   *
+   * Parameters:
+   *   (String) roomJid - The JID of the room to remove from bookmarks
+   */
+  self.remove = function(roomJid) {
+    Candy.Core.getConnection().sendIQ($iq({
+        type: 'set'
+    })
+      .c('pubsub', {xmlns: Strophe.NS.PUBSUB})
+      .c('retract', {node: Strophe.NS.BOOKMARKS})
+      .c('item', {id: roomJid})
+    );
+  }
+
   self._createBookmarksNode = function() {
     // We do this instead of using publish-options because this is not mandatory to implement according to XEP-0060
     Candy.Core.getConnection().sendIQ($iq({type: 'set'})
