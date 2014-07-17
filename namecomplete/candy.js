@@ -2,10 +2,10 @@
  * Candy - Chats are not dead yet.
  *
  * Authors:
- *   - Troy McCabe <troy.mccabe@geeksquad.com>
+ *	 - Troy McCabe <troy.mccabe@geeksquad.com>
  *
  * Copyright:
- *   (c) 2012 Geek Squad. All rights reserved.
+ *	 (c) 2012 Geek Squad. All rights reserved.
  */
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
@@ -15,8 +15,8 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.NameComplete = (function(self, Candy, $) {
 	/** Object: _options
 	 * Options:
-	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *   (Integer) completeKeyCode - Which key to use to complete
+	 *	 (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+	 *	 (Integer) completeKeyCode - Which key to use to complete
 	 */
 	var _options = {
 		nameIdentifier: '@',
@@ -29,17 +29,17 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 */
 	var _nicks = [];
 
-    /** String: _selector
-     * The selector for the visible message box
-     */
-    var _selector = 'input[name="message"]:visible';
+	/** String: _selector
+	 * The selector for the visible message box
+	 */
+	var _selector = 'input[name="message"]:visible';
 
 	/** Function: init
 	 * Initialize the NameComplete plugin
 	 * Show options for auto completion of names
 	 *
 	 * Parameters:
-	 *   (Object) options - Options to apply to this plugin
+	 *	 (Object) options - Options to apply to this plugin
 	 */
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
@@ -90,12 +90,12 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		var menu = $('#context-menu'),
 			content = menu.find('ul'),
 			selected = content.find('li.selected');
-		
+
 		if(menu.css('display') == 'none') {
 			$(document).unbind('keydown', self.keyDown);
 			return;
 		}
-		
+
 		// switch the key code
 		switch (e.which) {
 			// up arrow
@@ -159,15 +159,15 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		_nicks = [];
 
 		// grab the roster in the current room
-        var room = Candy.Core.getRoom(Candy.View.getCurrent().roomJid);
-        if (room != null) {
-            var roster = room.getRoster().getAll();
+		var room = Candy.Core.getRoom(Candy.View.getCurrent().roomJid);
+		if (room != null) {
+			var roster = room.getRoster().getAll();
 
-            // iterate and add the nicks to the collection
-            $.each(roster, function(index, item) {
-                _nicks.push(_options.nameIdentifier + item.getNick());
-            });
-        }
+			// iterate and add the nicks to the collection
+			$.each(roster, function(index, item) {
+				_nicks.push(_options.nameIdentifier + item.getNick());
+			});
+		}
 	}
 
 	/** Function: replaceName
@@ -175,7 +175,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 */
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
-        var $msgBox = $(_selector);
+		var $msgBox = $(_selector);
 		var msgParts = $msgBox.val().split(' ');
 
 		// If the name is the first word, add a colon to the end
@@ -189,7 +189,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		msgParts[msgParts.length - 1] = replaceText;
 
 		// put the string back together on spaces
-        $msgBox.val(msgParts.join(' '));
+		$msgBox.val(msgParts.join(' '));
 	}
 
 	/** Function: showPicker
@@ -215,14 +215,12 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// select the first item
 		$(content.find('li')[0]).addClass('selected');
-		
+
 		content.find('li').click(self.selectOnClick);
 
 		// bind the keydown to move around the menu
 		$(_selector).bind('keydown', self.keyDown);
 
-		// estimate the left to the # of chars * 7...not sure?
-		// get the top of the box to put this thing at
 		var posLeft = elem.val().length * 7,
 			posTop  = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
 
