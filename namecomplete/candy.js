@@ -6,8 +6,8 @@
  *	 - Ben Klang <bklang@mojolingo.com>
  *
  * Copyright:
- *	 (c) 2012 Geek Squad. All rights reserved.
- *	 (c) 2014 Power Home Remodeling Group. All rights reserved.
+ * (c) 2012 Geek Squad. All rights reserved.
+ * (c) 2014 Power Home Remodeling Group. All rights reserved.
  */
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
@@ -17,8 +17,8 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.NameComplete = (function(self, Candy, $) {
 	/** Object: _options
 	 * Options:
-	 *	 (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *	 (Integer) completeKeyCode - Which key to use to complete
+	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+	 *   (Integer) completeKeyCode - Which key to use to complete
 	 */
 	var _options = {
 		nameIdentifier: '@',
@@ -46,7 +46,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 * Show options for auto completion of names
 	 *
 	 * Parameters:
-	 *	 (Object) options - Options to apply to this plugin
+	 *   (Object) options - Options to apply to this plugin
 	 */
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
@@ -111,7 +111,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			case 38:
 			// down arrow
 			case 40:
-        var newEl;
+				var newEl;
 				if (e.which === 38) {
 					// move the selected thing up
 					newEl = selected.prev();
@@ -164,7 +164,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 * The listener for click on decision in the menu
 	 *
 	 * Parameters:
-	 *	 (Event) e - The click event
+	 *   (Event) e - The click event
 	 */
 	self.selectOnClick = function(e) {
 		self.replaceName($(e.currentTarget).text());
