@@ -54,7 +54,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// listen for keydown when autocomplete options exist
 		$(document).on('keypress', _selector, function(e) {
-			if (e.which == _options.nameIdentifier.charCodeAt()) {
+			if (e.which === _options.nameIdentifier.charCodeAt()) {
 				_autocompleteStarted = true;
 			}
 
@@ -80,7 +80,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 				// if we only have one match, no need to show the picker, just replace it
 				// else show the picker of the name matches
-				if (matches.length == 1) {
+				if (matches.length === 1) {
 					self.replaceName(matches[0]);
 					// Since the name will be autocompleted, throw away the last character
 					e.preventDefault();
@@ -89,18 +89,18 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				}
 			}
 		});
-	}
+	};
 
 	/** Function: keyDown
 	 * The listener for keydown in the menu
 	 */
 	self.keyDown = function(e) {
 		// get the menu and the content element
-		var menu = $('#context-menu'),
-			content = menu.find('ul'),
-			selected = content.find('li.selected');
+		var menu = $('#context-menu');
+		var content = menu.find('ul');
+		var selected = content.find('li.selected');
 
-		if(menu.css('display') == 'none') {
+		if(menu.css('display') === 'none') {
 			$(document).unbind('keydown', self.keyDown);
 			return;
 		}
@@ -111,17 +111,17 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			case 38:
 			// down arrow
 			case 40:
-				current = content.find('li.selected');
-				if (e.which == 38) {
+        var newEl;
+				if (e.which === 38) {
 					// move the selected thing up
-					newEl = current.prev();
+					newEl = selected.prev();
 				} else {
 					// move the selected thing down
-					newEl = current.next();
+					newEl = selected.next();
 				}
 				// Prevent going off either end of the list
 				if ($(newEl).length > 0) {
-					current.removeClass('selected')
+					selected.removeClass('selected');
 					newEl.addClass('selected');
 				}
 				// don't perform any key actions
@@ -133,7 +133,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			// delete Key
 			case 8:
 			case 46:
-				self.endAutoComplete();
+				self.endAutocomplete();
 				break;
 
 			// the key code for completion
@@ -181,7 +181,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// grab the roster in the current room
 		var room = Candy.Core.getRoom(Candy.View.getCurrent().roomJid);
-		if (room != null) {
+		if (room !== null) {
 			var roster = room.getRoster().getAll();
 
 			// iterate and add the nicks to the collection
@@ -189,7 +189,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				_nicks.push(_options.nameIdentifier + item.getNick());
 			});
 		}
-	}
+	};
 
 	/** Function: replaceName
 	 *
@@ -200,10 +200,10 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		var msgParts = $msgBox.val().split(' ');
 
 		// If the name is the first word, add a colon to the end
-		if (msgParts.length==1) {
-			replaceText += ": "
+		if (msgParts.length === 1) {
+			replaceText += ": ";
 		} else {
-			replaceText += " "
+			replaceText += " ";
 		}
 
 		// replace the last part with the item
@@ -212,7 +212,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		// put the string back together on spaces
 		$msgBox.val(msgParts.join(' '));
 		self.endAutocomplete();
-	}
+	};
 
 	/** Function: showPicker
 	 * Show the picker for the list of names that match
