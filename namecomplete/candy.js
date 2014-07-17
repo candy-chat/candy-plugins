@@ -3,9 +3,11 @@
  *
  * Authors:
  *	 - Troy McCabe <troy.mccabe@geeksquad.com>
+ *	 - Ben Klang <bklang@mojolingo.com>
  *
  * Copyright:
  *	 (c) 2012 Geek Squad. All rights reserved.
+ *	 (c) 2014 Power Home Remodeling Group. All rights reserved.
  */
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
@@ -34,6 +36,11 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	 */
 	var _selector = 'input[name="message"]:visible';
 
+	/** Boolean:_autocompleteStarted
+	 * Keeps track of whether we're in the middle of autocompleting a name
+	 */
+	var _autocompleteStarted = false;
+
 	/** Function: init
 	 * Initialize the NameComplete plugin
 	 * Show options for auto completion of names
@@ -46,9 +53,12 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$.extend(true, _options, options);
 
 		// listen for keydown when autocomplete options exist
-		$(document).on('keydown', _selector, function(e) {
-			// if we hear the key code for completion
-			if (e.which == _options.completeKeyCode) {
+		$(document).on('keypress', _selector, function(e) {
+			if (e.which == _options.nameIdentifier.charCodeAt()) {
+				_autocompleteStarted = true;
+			}
+
+			if (_autocompleteStarted) {
 				// update the list of nicks to grab
 				self.populateNicks();
 
@@ -56,7 +66,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				// break it on spaces, and get the last word in the string
 				var field = $(this);
 				var msgParts = field.val().split(' ');
-				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1], "i");
+				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1] + String.fromCharCode(e.which), "i");
 				var matches = [];
 
 				// go through each of the nicks and compare it
@@ -72,12 +82,11 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				// else show the picker of the name matches
 				if (matches.length == 1) {
 					self.replaceName(matches[0]);
+					// Since the name will be autocompleted, throw away the last character
+					e.preventDefault();
 				} else if (matches.length > 1) {
 					self.showPicker(matches, field);
 				}
-
-				// don't perform any key actions
-				e.preventDefault();
 			}
 		});
 	}
@@ -100,53 +109,65 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		switch (e.which) {
 			// up arrow
 			case 38:
-				// move the selected thing up
-				content.find('li.selected').removeClass('selected').prev().addClass('selected');
-				break;
-
 			// down arrow
 			case 40:
-				// move the selected thing down
-				content.find('li.selected').removeClass('selected').next().addClass('selected');
+				current = content.find('li.selected');
+				if (e.which == 38) {
+					// move the selected thing up
+					newEl = current.prev();
+				} else {
+					// move the selected thing down
+					newEl = current.next();
+				}
+				// Prevent going off either end of the list
+				if ($(newEl).length > 0) {
+					current.removeClass('selected')
+					newEl.addClass('selected');
+				}
+				// don't perform any key actions
+				e.preventDefault();
 				break;
 
-			// the key code for completion
-			case _options.completeKeyCode:
 			// esc key
 			case 27:
 			// delete Key
 			case 8:
 			case 46:
+				self.endAutoComplete();
+				break;
+
+			// the key code for completion
+			case _options.completeKeyCode:
 			case 13:
-				if (e.which == _options.completeKeyCode || e.which == 13) {
-					// get the text of the selected item
-					var val = content.find('li.selected').text();
-					// replace the last item with the selected item
-					self.replaceName(val);
-				}
-
-				// remove the listener on the field
-				$(_selector).unbind('keydown', self.keyDown);
-
-				// hide the menu
-				menu.hide();
+				// get the text of the selected item
+				var val = content.find('li.selected').text();
+				// replace the last item with the selected item
+				self.replaceName(val);
+				// don't perform any key actions
+				e.preventDefault();
 				break;
 		}
-		
-		// stop the action of any keys
-		e.preventDefault();
 	};
-	
+
+	/** Function: endAutocomplete
+	 * Disables autocomplete mode, hiding the context menu
+	 */
+	self.endAutocomplete = function() {
+		_autocompleteStarted = false;
+		$(_selector).unbind('keydown', self.keyDown);
+		$('#context-menu').hide();
+	};
+
+
+
 	/** Function: selectOnClick
 	 * The listener for click on decision in the menu
 	 *
 	 * Parameters:
-	 *   (Event) e - The click event
+	 *	 (Event) e - The click event
 	 */
 	self.selectOnClick = function(e) {
 		self.replaceName($(e.currentTarget).text());
-		$(document).unbind('keydown', self.keyDown);
-		$('#context-menu').hide();
 		$(_selector).focus();
 		e.preventDefault();
 	};
@@ -190,6 +211,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 		// put the string back together on spaces
 		$msgBox.val(msgParts.join(' '));
+		self.endAutocomplete();
 	}
 
 	/** Function: showPicker
