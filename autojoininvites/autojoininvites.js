@@ -22,7 +22,11 @@ CandyShop.AutoJoinInvites = (function(self, Candy, $) {
    */
   self.init = function(){
     $(Candy).on('candy:core:chat:invite',function(ev, obj) {
-      Candy.Core.Action.Jabber.Room.Join(obj.roomJid, null);
+      // JIDs in automatic invitations are escaped,
+      // but Room.Join expects unescaped JID
+      var roomJid = Candy.Util.unescapeJid(obj.roomJid);
+
+      Candy.Core.Action.Jabber.Room.Join(roomJid, null);
     })
   };
 
