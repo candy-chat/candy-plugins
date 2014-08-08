@@ -1,0 +1,40 @@
+{
+  "name": "candy-plugins",
+  "version": "1.0.0",
+  "description": "Multi-user XMPP web client plugins",
+  "directories": {
+  },
+  "scripts": {
+    "test": "grunt ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/candy-chat/candy-plugins.git"
+  },
+  "keywords": [
+    "xmpp",
+    "muc",
+    "multi-user",
+    "websocket",
+    "bosh",
+    "chat"
+  ],
+  "contributors": [
+    {
+      "name": "Michael Weibel",
+      "email": "michael.weibel@gmail.com"
+    },
+    {
+      "name": "Patrick Stadler",
+      "email": "patrick.stadler@gmail.com",
+      "url": "http://pstadler.sh"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/candy-chat/candy-plugins/issues"
+  },
+  "homepage": "http://candy-chat.github.io/candy/",
+  "devDependencies": {
+  }
+}
