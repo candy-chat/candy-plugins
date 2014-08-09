@@ -9,18 +9,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.StaticLobby = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Static Lobby Tab
-   *  (Float) version - Candy Plugin Static Lobby Tab
-   */
-  self.about = {
-    name: 'Candy Plugin Static Lobby Tab',
-    version: '0.9'
-  };
-
-
   /**
    * Initializes the Static Lobby plugin with the default settings.
    */

@@ -13,18 +13,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Join = (function(self, Candy, $) {
-	/** Object: about
-	 * About Game API
-	 *
-	 * Contains:
-	 *   (String) name - Candy Plugin Join
-	 *   (Float) version - andy Plugin Available Rooms version
-	 */
-	self.about = {
-		name: 'Candy Plugin Join',
-		version: '1.0.2'
-	};
-
 	/** Function: init
 	 * Initializes the join plugin with the default settings.
 	 */

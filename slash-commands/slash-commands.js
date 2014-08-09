@@ -17,18 +17,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.SlashCommands = (function(self, Candy, $) {
-	/** Object: about
-	 * About SlashCommands plugin
-	 *
-	 * Contains:
-	 *	 (String) name - Candy Plugin SlashCommands
-	 *	 (Float) version - andy Plugin Available Rooms version
-	 */
-	self.about = {
-		name: 'Candy Plugin SlashCommands',
-		version: '0.1.0'
-	};
-
 	self.commands = [
 		'join',
 		'part',

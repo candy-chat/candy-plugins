@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.RoomBar = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Add MUC Management Bar
-   *  (Float) version - Candy Plugin Add MUC Management Bar
-   */
-  self.about = {
-    name: 'Candy Plugin Add MUC Management Bar',
-    version: '1.0'
-  };
-
   /**
    * Initializes the RoomBar plugin with the default settings.
    */

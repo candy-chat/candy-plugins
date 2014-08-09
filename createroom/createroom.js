@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.CreateRoom = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Create Room
-   *  (Float) version - Candy Plugin Create Room
-   */
-  self.about = {
-    name: 'Candy Plugin Create Room',
-    version: '1.0'
-  };
-
   /**
    * Initializes the CreateRoom plugin with the default settings.
    */

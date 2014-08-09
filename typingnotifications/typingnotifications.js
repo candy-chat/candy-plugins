@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.TypingNotifications = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Typing Notifications
-   *  (Float) version - Candy Plugin Typing Notifications
-   */
-  self.about = {
-    name: 'Candy Plugin Typing Notifications',
-    version: '1.0'
-  };
-
   /**
    * Initializes the Typing Notifications plugin with the default settings.
    */

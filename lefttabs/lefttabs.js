@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.LeftTabs = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Layout with Left Tabs + Bootstrap3
-   *  (Float) version - Candy Plugin Layout with Left Tabs + Bootstrap3
-   */
-  self.about = {
-    name: 'Candy Plugin Layout with Left Tabs + Bootstrap3',
-    version: '1.0'
-  };
-
   /**
    * Initializes the LeftTabs plugin with the default settings.
    */

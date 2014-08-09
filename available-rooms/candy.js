@@ -13,18 +13,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.AvailableRooms = (function(self, Candy, $) {
-	/** Object: about
-	 * About Game API
-	 *
-	 * Contains:
-	 *   (String) name - Candy Plugin Available Rooms
-	 *   (Float) version - andy Plugin Available Rooms version
-	 */
-	self.about = {
-		name: 'Candy Plugin Available Rooms',
-		version: '1.0.1'
-	};
-
 	/** Array: rooms
 	 * all rooms
 	 *

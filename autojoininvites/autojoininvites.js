@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.AutoJoinInvites = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Auto-Join Incoming MUC Invites
-   *  (Float) version - Candy Plugin Auto-Join Incoming MUC Invites
-   */
-  self.about = {
-    name: 'Candy Plugin Auto-Join Incoming MUC Invites',
-    version: '1.0'
-  };
-
   /**
    * Initializes the AutoJoinInvites plugin with the default settings.
    */

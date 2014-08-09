@@ -8,17 +8,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Bookmark = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin - Bookmark rooms
-   *  (Float) version - Candy Plugin - Bookmark rooms
-   */
-  self.about = {
-    name: 'Candy Plugin - Bookmark rooms',
-    version: '0.1'
-  };
-
   self.init = function(){
     $(Candy).on('candy:view.connection.status-5', function(){
       self._createBookmarksNode();
