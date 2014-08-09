@@ -28,6 +28,7 @@
     "tests"
   ],
   "dependencies": {
-    "candy": "1.7.0"
+    "candy": "1.7.0",
+    "jquery": "~1.10.2"
   }
 }

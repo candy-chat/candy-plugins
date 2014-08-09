@@ -26,7 +26,7 @@ CandyShop.AutoJoinInvites = (function(self, Candy, $) {
       // but Room.Join expects unescaped JID
       var roomJid = Candy.Util.unescapeJid(obj.roomJid);
 
-      Candy.Core.Action.Jabber.Room.Join(roomJid, null);
+      Candy.Core.Action.Jabber.Room.Join(roomJid, obj.password);
     })
   };
 
