@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		jshint: {
-			all: ['Gruntfile.js', '**/*.js'],
+			all: ['Gruntfile.js', '**/*.js', '!node_modules/**', '!bower_components/**'],
 			options: {
 				jshintrc: "./.jshintrc",
 				reporter: require('jshint-stylish')
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 		},
 		todo: {
 			options: {},
-			all: ['**/*.js']
+			all: ['**/*.js', '!node_modules/**', '!bower_components/**']
 		}
 	});
 

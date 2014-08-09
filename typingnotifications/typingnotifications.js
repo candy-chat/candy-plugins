@@ -3,6 +3,8 @@
  * Author: Melissa Adamaitis <melissa@melissanoelle.com>
  */
 
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.TypingNotifications = (function(self, Candy, $) {
@@ -43,12 +45,12 @@ CandyShop.TypingNotifications = (function(self, Candy, $) {
       case 'gone': return name + ' has closed the window.';
       default: return '';
     }
-  }
+  };
 
   self.addTypingNotificationDiv = function(obj){
     var pane_html = Candy.View.Pane.Room.getPane(obj.roomJid),
         typing_notification_div_html = '<div class="typing-notification-area"></div>';
     $(pane_html).find('.message-form-wrapper').append(typing_notification_div_html);
-  }
+  };
   return self;
 }(CandyShop.TypingNotifications || {}, Candy, jQuery));

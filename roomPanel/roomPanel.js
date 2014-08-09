@@ -1,3 +1,5 @@
+/* global Candy, jQuery, Strophe, Mustache, $iq */
+
 var CandyShop = (function(self) {return self;}(CandyShop || {}));
 
 /**
@@ -53,20 +55,20 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
         }
         if(_options.showTab === true) {
             var chatTabs = $('#chat-tabs'),
-                html = '<li id="roomPanel-tab"><a href="#" class="label">+</a></li>';
-            chatTabs.append(html);
+                tabsHtml = '<li id="roomPanel-tab"><a href="#" class="label">+</a></li>';
+            chatTabs.append(tabsHtml);
             var el = $('#roomPanel-tab');
             $('#roomPanel-tab').click(function() {
                 self.showRoomPanel();
             });
-            $(Candy).on('candy:view.room.after-add', function(_evt, args) {
+            $(Candy).on('candy:view.room.after-add', function() {
                 chatTabs.remove('#roomPanel-tab').append(el);
             });
         }
 
         $(Candy).on('candy:core.chat.connection', function(obj, data) {
-            if (Strophe.Status.CONNECTED == data.status ||
-                Strophe.Status.ATTACHED == data.status) {
+            if (Strophe.Status.CONNECTED === data.status ||
+                Strophe.Status.ATTACHED === data.status) {
                 /* only show room window if not already in a room, timeout is to let some time for auto join to execute */
                 setTimeout(CandyShop.RoomPanel.showRoomPanelIfAllClosed, 500);
             } //if
@@ -79,16 +81,16 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
 
         var roomCount = 0;
         var rooms = Candy.Core.getRooms();
-        for (k in rooms) {
+        for (var k in rooms) {
             if (rooms.hasOwnProperty(k)) {
                 roomCount++;
             } //if
         } //for
 
-        if (roomCount == 0) {
+        if (roomCount === 0) {
             self.showRoomPanel();
         } //if
-    }
+    };
 
     self.updateRoomList = function (iq) {
 
@@ -97,7 +99,7 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
             var name = $(value).attr('name');
             var jid = $(value).attr('jid');
 
-            if (typeof name == 'undefined') {
+            if (typeof name === 'undefined') {
                 name = jid.split('@')[0];
             } //if
 

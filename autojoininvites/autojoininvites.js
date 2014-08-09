@@ -3,6 +3,8 @@
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.AutoJoinInvites = (function(self, Candy, $) {
@@ -27,7 +29,7 @@ CandyShop.AutoJoinInvites = (function(self, Candy, $) {
       var roomJid = Candy.Util.unescapeJid(obj.roomJid);
 
       Candy.Core.Action.Jabber.Room.Join(roomJid, obj.password);
-    })
+    });
   };
 
   return self;

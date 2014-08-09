@@ -3,6 +3,8 @@
  * Author: Ben Langfeld <blangfeld@mojolingo.com>
  */
 
+/* global Candy, jQuery, Strophe, $iq */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Bookmark = (function(self, Candy, $) {
@@ -22,7 +24,7 @@ CandyShop.Bookmark = (function(self, Candy, $) {
       self._createBookmarksNode();
       return true;
     });
-  }
+  };
 
   /** Function: add
    * Adds a bookmark for the provided MUC room
@@ -40,7 +42,7 @@ CandyShop.Bookmark = (function(self, Candy, $) {
       .c('storage', {xmlns: Strophe.NS.BOOKMARKS})
       .c('conference', {autojoin: 'true', jid: roomJid})
     );
-  }
+  };
 
   /** Function: remove
    * Removes a bookmark for the provided MUC room
@@ -56,7 +58,7 @@ CandyShop.Bookmark = (function(self, Candy, $) {
       .c('retract', {node: Strophe.NS.BOOKMARKS})
       .c('item', {id: roomJid})
     );
-  }
+  };
 
   self._createBookmarksNode = function() {
     // We do this instead of using publish-options because this is not mandatory to implement according to XEP-0060
@@ -70,7 +72,7 @@ CandyShop.Bookmark = (function(self, Candy, $) {
       .c('field', {var: 'pubsub#persist_items'}).c('value').t('1').up().up()
       .c('field', {var: 'pubsub#access_model'}).c('value').t('whitelist')
     );
-  }
+  };
 
   return self;
 }(CandyShop.Bookmark || {}, Candy, jQuery));

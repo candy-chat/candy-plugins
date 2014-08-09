@@ -9,6 +9,9 @@
  * (c) 2012 Geek Squad. All rights reserved.
  * (c) 2014 Power Home Remodeling Group. All rights reserved.
  */
+
+/* global document, Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.NameComplete

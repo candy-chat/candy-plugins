@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.RemoveIgnore
@@ -21,7 +24,7 @@ CandyShop.RemoveIgnore = (function(self, Candy, $) {
         $(Candy).bind('candy:view.roster.context-menu', function(e, args) {
             // override the ignore so that nobody has permission
             args.menulinks.ignore = {
-                requiredPermission: function(user, me) { return false; }
+                requiredPermission: function() { return false; }
             };
         });
     };

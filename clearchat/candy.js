@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.ClearChat
@@ -37,12 +40,12 @@ CandyShop.ClearChat = (function(self, Candy, $) {
 	    $(Candy).on('candy:view.message.before-send', function(e, args) {
 		    // (strip colors)
 		    // if it matches '/clear', clear the chat window and don't send anything
-            if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() == '/clear') {
+            if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() === '/clear') {
                 self.clearCurrentTab();
 	            args.message = '';
             }
         });
-    }
+    };
 
 	/** Function: clearCurrentTab
 	 * Clear the current tab's content
@@ -53,7 +56,7 @@ CandyShop.ClearChat = (function(self, Candy, $) {
             $('.room-pane').filter(':visible').find('.message-pane').empty();
         } catch (e) {
         }
-    }
+    };
 
 	/** Function: applyTranslations
 	 * Apply translations to this plugin

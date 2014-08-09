@@ -8,6 +8,8 @@
  * inside of Candy.
  */
 
+/* global Candy, jQuery, Image */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
@@ -96,7 +98,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Array) args
 	 */
-	var handleOnShow = function(e, args) {
+	var handleOnShow = function() {
 		$('.inlineimages-loader').each(function(index, element) {
 			$(element).removeClass('inlineimages-loader');
 			var url = $(element).attr('longdesc');
@@ -105,13 +107,14 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 			$(imageLoader).load(function() {
 				var origWidth = this.width;
 				var origHeight = this.height;
+				var width, height;
 				if(origWidth > _maxImageSize || origHeight > _maxImageSize) {
 					var ratio = Math.min(_maxImageSize / origWidth, _maxImageSize / origHeight);
-					var width = Math.round(ratio * origWidth);
-					var height = Math.round(ratio * origHeight);
+					width = Math.round(ratio * origWidth);
+					height = Math.round(ratio * origHeight);
 				}
 
-				$(element).replaceWith(buildImageSource(url, width, height))
+				$(element).replaceWith(buildImageSource(url, width, height));
 			});
 
 			imageLoader.src = url;
@@ -135,7 +138,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 
 		var dotPosition = match.lastIndexOf(".");
 		if(dotPosition > -1) {
-			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) != -1) {
+			if(_fileExtensions.indexOf(match.substr(dotPosition+1)) !== -1) {
 				result = buildImageLoaderSource(match);
 			}
 		}
