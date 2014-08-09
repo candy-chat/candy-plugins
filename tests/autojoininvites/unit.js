@@ -8,7 +8,7 @@ define([
 	, 'intern/order!jquery'
 	, 'intern/order!candy/libs/libs.bundle'
 	, 'intern/order!candy/candy.bundle'
-	, 'intern/order!candy-plugins/autojoininvites/autojoininvites.js'
+	, 'intern/order!candy-shop/autojoininvites/autojoininvites.js'
 ], function (bdd, expect, sinon, $) {
 	bdd.describe('CandyShop.AutoJoinInvites', function () {
 		bdd.describe('receiving an invite', function () {
