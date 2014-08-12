@@ -21,9 +21,7 @@ define([
 				$(Candy).triggerHandler('candy:core:chat:invite', invite);
 			};
 
-			bdd.before(function () {
-				CandyShop.AutoJoinInvites.init();
-			});
+			bdd.before(CandyShop.AutoJoinInvites.init);
 
 			bdd.it('joins the room', function () {
 				var mock = sinon.mock(Candy.Core.Action.Jabber.Room);
