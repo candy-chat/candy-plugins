@@ -41,7 +41,7 @@
     "grunt-coveralls": "^0.3.0",
     "intern": "^2.0.1",
     "jshint-stylish": "^0.2.0",
-    "sinon": "^1.10.3",
+    "sinon": "git+https://github.com/cjohansen/Sinon.JS.git",
     "sinon-chai": "^2.5.0",
     "grunt-todo": "~0.4.0",
     "grunt-clear": "~0.2.1"
