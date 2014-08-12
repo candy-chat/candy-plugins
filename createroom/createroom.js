@@ -3,20 +3,11 @@
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.CreateRoom = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Create Room
-   *  (Float) version - Candy Plugin Create Room
-   */
-  self.about = {
-    name: 'Candy Plugin Create Room',
-    version: '1.0'
-  };
-
   /**
    * Initializes the CreateRoom plugin with the default settings.
    */
@@ -28,7 +19,7 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
   };
 
   self.appendButton = function(){
-    if($('#create-group').length == 0) {
+    if($('#create-group').length === 0) {
       var create_room_html = '<div id="create-group"><div class="click">+ Create Group</div></div>';
       $('#chat-tabs').after(create_room_html);
       $('#create-group').click(function () {
@@ -65,21 +56,21 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
         self.hideModal();
       }
     });
-  }
+  };
 
   self.hideModal = function(){
     $('#group-form-wrapper').addClass('hidden');
     $('#group-form-wrapper').removeClass('show');
-  }
+  };
 
   self.showModal = function(){
     $('#group-form-wrapper').removeClass('hidden');
     $('#group-form-wrapper').addClass('show');
     self.addFormHandler();
-  }
+  };
 
   self.addModal = function(){
-    if($('#group-form-wrapper').length == 0) {
+    if($('#group-form-wrapper').length === 0) {
       var modal_html = '<div id="group-form-wrapper" class="hidden group-form"><div class="inner-wrapper"><div class="inner-inner-wrapper"><form id="create-group-form"><div class="close-button">X</div><p>Name:</p><div class="form-group group-form-name-group"><input class="form-control" type="text" name="room-name" id="create-group-form-name" /></div><button type="submit">Create</button></form></div></div></div>';
       $('#candy').after(modal_html);
     }

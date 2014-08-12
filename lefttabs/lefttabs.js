@@ -3,20 +3,11 @@
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
+/* global window, Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.LeftTabs = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Layout with Left Tabs + Bootstrap3
-   *  (Float) version - Candy Plugin Layout with Left Tabs + Bootstrap3
-   */
-  self.about = {
-    name: 'Candy Plugin Layout with Left Tabs + Bootstrap3',
-    version: '1.0'
-  };
-
   /**
    * Initializes the LeftTabs plugin with the default settings.
    */
@@ -78,7 +69,7 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
     // Make sure that the window heights are the right size after a new room is added.
     $(Candy).on('candy:view.room.after-add', function() {
       self.heights();
-      if(typeof CandyShop.CreateRoom == "object") {
+      if(typeof CandyShop.CreateRoom === "object") {
         self.createRoomPluginCompatibility();
       }
     });
@@ -102,12 +93,12 @@ CandyShop.LeftTabs = (function(self, Candy, $) {
     $('.message-pane-wrapper').height(message_pane_wrapper_height + 'px');
     $('.message-pane').height(message_pane_height + 'px');
     $('.roster-pane').height(barless_height + 'px');
-  }
+  };
 
   self.createRoomPluginCompatibility = function() {
     $('#create-group-form button').addClass('btn');
     $('#create-group-form .close-button').html('<span class="glyphicon glyphicon-remove"></span>');
-  }
+  };
 
   return self;
 }(CandyShop.LeftTabs || {}, Candy, jQuery));

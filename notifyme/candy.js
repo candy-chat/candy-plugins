@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.NotifyMe
@@ -37,7 +40,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
 		$.extend(true, _options, options);
-		
+
 		// get the nick from the current user
 		var nick = Candy.Core.getUser().getNick();
 
@@ -47,30 +50,30 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-show', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
-			
+			var searchRegExp = new RegExp('^(.*)(\\s?' + searchTerm + ')', 'ig');
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.message) && args.name != nick) {
+			if (searchRegExp.test(args.message) && args.name !== nick) {
 				// play the sound if specified
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
 				}
-				
+
 				// Save that I'm mentioned in args
 				args.forMe = true;
 			}
-			
+
 			return args.message;
 		});
-		
+
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
-			
+			var searchRegExp = new RegExp('^(.*)(\\s?' + searchTerm + ')', 'ig');
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {
+			if (searchRegExp.test(args.templateData.message) && args.templateData.name !== nick) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
 					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');

@@ -2,3 +2,6 @@
 ._*
 .idea
 .*.sw*
+bower_components
+node_modules
+lcov.info

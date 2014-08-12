@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global document, Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.ChatRecall
@@ -50,7 +53,7 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
                     // if we're under the cap of max messages and the cap of the messages currently stored, recall
                     if (_currentMessageIndex < _options.messagesToKeep && _currentMessageIndex < _messages.length) {
                         // if we're at blank (the bottom), move it up to 0
-                        if (_currentMessageIndex == -1) {
+                        if (_currentMessageIndex === -1) {
                             _currentMessageIndex++;
                         }
                         // set the value to what we stored
@@ -66,11 +69,11 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
                 case 40:
                     // if we're back to the bottom, clear the field
                     // else move it down
-                    if (_currentMessageIndex == -1) {
+                    if (_currentMessageIndex === -1) {
                         $(this).val('');
                     } else {
                         // if we're at the cap already, move it down initially (don't want to have to hit it twice)
-                        if (_currentMessageIndex == _options.messagesToKeep - 1 || _currentMessageIndex == _messages.length - 1) {
+                        if (_currentMessageIndex === _options.messagesToKeep - 1 || _currentMessageIndex === _messages.length - 1) {
                             _currentMessageIndex--;
                         }
                         // set the value to the one that's stored
@@ -101,7 +104,7 @@ CandyShop.ChatRecall = (function(self, Candy, $) {
      */
     self.addMessage = function(message) {
         // pop one off the end if it's too many
-        if (_messages.length == _options.messagesToKeep) {
+        if (_messages.length === _options.messagesToKeep) {
             _messages.pop();
         }
 

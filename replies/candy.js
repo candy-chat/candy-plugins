@@ -7,6 +7,8 @@
  * conversations.
  */
 
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Replies = (function(self, Candy, $) {
@@ -28,7 +30,7 @@ CandyShop.Replies = (function(self, Candy, $) {
 
       el.addClass("mention");
     }
-  }
+  };
 
   return self;
 }(CandyShop.Replies || {}, Candy, jQuery));

@@ -4,6 +4,9 @@
  * Authors
  *   - Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: InlineVideos
@@ -17,11 +20,11 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Object) options - An options packet to apply to this plugin
 	 */
-	self.init = function(options) {
+	self.init = function() {
 		// add a listener to these events
 		$(Candy.View.Pane).on('candy:view.message.beforeShow', self.handleBeforeShow);
 	};
-	
+
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
 	 *
@@ -32,7 +35,10 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 	 *   (String)
 	 */
 	self.handleBeforeShow = function(e, args) {
-		args.message = args.message.replace(/\>(https?:\/\/w{0,3}\.?youtube.com\/watch\?v=([^\s^&]*)([^\s]*))\<\/a\>/i, '>$1<br /><iframe width="300" height="200" src="http://www.youtube.com/embed/$2" frameborder="0" allowfullscreen></iframe></a><br />');
+		args.message = args.message.replace(
+			/\>(https?:\/\/w{0,3}\.?youtube.com\/watch\?v=([^\s^&]*)([^\s]*))<\/a\>/i,
+			'>$1<br /><iframe width="300" height="200" src="http://www.youtube.com/embed/$2" frameborder="0" allowfullscreen></iframe></a><br />'
+		);
 	};
 
 	return self;

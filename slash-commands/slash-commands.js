@@ -12,21 +12,11 @@
  *	- (c) 2014 Mojo Lingo LLC. All rights reserved.
  */
 
+/* global alert, Candy, jQuery, $build */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.SlashCommands = (function(self, Candy, $) {
-	/** Object: about
-	 * About SlashCommands plugin
-	 *
-	 * Contains:
-	 *	 (String) name - Candy Plugin SlashCommands
-	 *	 (Float) version - andy Plugin Available Rooms version
-	 */
-	self.about = {
-		name: 'Candy Plugin SlashCommands',
-		version: '0.1.0'
-	};
-
 	self.commands = [
 		'join',
 		'part',
@@ -51,7 +41,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			}
 
 			// Ensure we have a leading "@"
-			if (self.defaultConferenceDomain.indexOf('@') == -1) {
+			if (self.defaultConferenceDomain.indexOf('@') === -1) {
 				self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
 			}
 		});
@@ -61,14 +51,14 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				// (strip colors)
 				var input = args.message.replace(/\|c:\d+\|/, '');
 
-				if (input[0] == '/') {
+				if (input[0] === '/') {
 					var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
 					if (match !== null) {
 						var command = match[1];
 						var data = match[2];
 
 						// Match only whitelisted commands
-						if ($.inArray(command, self.commands) != -1) {
+						if ($.inArray(command, self.commands) !== -1) {
 							self[command](data);
 						} else {
 							// TODO: Better way to notify the user of the invalid command
@@ -96,8 +86,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		var room = args[0];
 		var password = args[1];
 
-		if(typeof room != 'undefined' && room !== '') {
-			if(room.indexOf("@") == -1) {
+		if(typeof room !== 'undefined' && room !== '') {
+			if(room.indexOf("@") === -1) {
 				room += self.defaultConferenceDomain;
 			}
 			if (typeof password !== 'undefined' && password !== '') {
@@ -138,7 +128,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 * 	(String) message Optional message to set with availability
 	 */
-	self.available = function(message) {
+	self.available = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence();
 	};
@@ -148,7 +138,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 * 	(String) message Optional message to set with availability
 	 */
-	self.away = function(message) {
+	self.away = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'away'));
 	};
@@ -158,7 +148,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 * 	(String) message Optional message to set with availability
 	 */
-	self.dnd = function(message) {
+	self.dnd = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'dnd'));
 	};

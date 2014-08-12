@@ -3,20 +3,11 @@
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
 
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.RoomBar = (function(self, Candy, $) {
-  /** Object: about
-   *
-   * Contains:
-   *  (String) name - Candy Plugin Add MUC Management Bar
-   *  (Float) version - Candy Plugin Add MUC Management Bar
-   */
-  self.about = {
-    name: 'Candy Plugin Add MUC Management Bar',
-    version: '1.0'
-  };
-
   /**
    * Initializes the RoomBar plugin with the default settings.
    */
@@ -45,7 +36,7 @@ CandyShop.RoomBar = (function(self, Candy, $) {
 
   self.showTopic = function(topic, element) {
     $(element).find(' .message-pane-wrapper .roombar .topic').html(topic);
-  }
+  };
 
   self.updateRoomTopic = function(roomJid, element, current_topic) {
     // If we're a room moderator, be able to edit the room topic.
@@ -78,13 +69,13 @@ CandyShop.RoomBar = (function(self, Candy, $) {
         });
       }
     }
-  }
+  };
 
   // Display the set topic modal and add submit handler.
   self.sendNewTopic = function(roomJid, topic) {
     if(topic === '') { topic = ' '; }
     // Even though it does the exact same thing, Candy.View.Pane.Room.setSubject(roomJid, topic) was not sending the stanza out.
     Candy.Core.getConnection().muc.setTopic(Candy.Util.escapeJid(roomJid), topic);
-  }
+  };
   return self;
 }(CandyShop.RoomBar || {}, Candy, jQuery));

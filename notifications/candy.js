@@ -6,6 +6,8 @@
  * Notify user if new messages come in.
  */
 
+/* global window, document, Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Notifications = (function(self, Candy, $) {
@@ -22,32 +24,32 @@ CandyShop.Notifications = (function(self, Candy, $) {
 		notifyPersonalMessage: true,
 		closeTime: 3000
 	};
-	
+
 	/** Function: init
 	 * Initializes the notifications plugin.
-	 * 
+	 *
 	 * Parameters:
 	 *   (Object) options - The options to apply to this plugin
-	 *   
+	 *
 	 * @return void
 	 */
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
 		$.extend(true, _options, options);
-		
+
 		// Just init if notifications are supported
 		if (window.webkitNotifications) {
 			// Setup Permissions (has to be kicked on with some user-events)
 			jQuery(document).one('click keydown', setupPermissions);
-			
+
 			// Add Listener for Notifications
 			$(Candy).on('candy:view.message.after-show', handleOnShow);
 		}
 	};
-	
+
 	/** Function: checkPermissions
 	 * Check if the plugin has permission to send notifications.
-	 * 
+	 *
 	 * @return boid
 	 */
 	function setupPermissions() {
@@ -57,14 +59,14 @@ CandyShop.Notifications = (function(self, Candy, $) {
 			window.webkitNotifications.requestPermission();
 		}
 	}
-	
+
 
 	/** Function: handleOnShow
 	 * Descriptions
 	 *
 	 * Parameters:
 	 *   (Array) args
-	 * 
+	 *
 	 * @return void
 	 */
 	function handleOnShow(e, args) {
@@ -73,21 +75,21 @@ CandyShop.Notifications = (function(self, Candy, $) {
 			// Check if notifications are allowed
 			if (window.webkitNotifications.checkPermission() === 0) { // 0 is PERMISSION_ALLOWED
 				var sendNotification = _options.notifyNormalMessage;
-				
+
 				if(_options.notifyPersonalMessage && args.forMe !== undefined && args.forMe) {
 					sendNotification = true;
 				}
-				
+
 				if(sendNotification) {
 					var message = args.message;
-					
+
 					// Send Notification
 					var notification = window.webkitNotifications.createNotification(
 							window.location + '/' + Candy.View.getOptions().assets + '/img/favicon.png',
 							args.name,
 							message);
 					notification.show();
-					
+
 					// Close it after 3 Seconds
 					if(_options.closeTime) {
 						window.setTimeout(function() { notification.close(); }, _options.closeTime);

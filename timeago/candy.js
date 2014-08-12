@@ -6,16 +6,18 @@
  * Integrates the jQuery Timeago plugin (http://timeago.yarp.com/) with Candy.
  */
 
+/* global document, Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Timeago = (function(self, Candy, $) {
 
 	self.init = function() {
 
-		Candy.View.Template.Chat['adminMessage'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="adminmessage"><span class="label">{{sender}}</span><span class="spacer">▸</span>{{subject}} {{message}}</div></li>';
-		Candy.View.Template.Chat['infoMessage'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="infomessage"><span class="spacer">•</span>{{subject}} {{message}}</div></li>';
-		Candy.View.Template.Room['subject'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="subject"><span class="label">{{roomName}}</span><span class="spacer">▸</span>{{_roomSubject}} {{subject}}</div></li>';
-		Candy.View.Template.Message['item'] = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div><a class="label" href="#" class="name">{{displayName}}</a><span class="spacer">▸</span>{{{message}}}</div></li>';
+		Candy.View.Template.Chat.adminMessage = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="adminmessage"><span class="label">{{sender}}</span><span class="spacer">▸</span>{{subject}} {{message}}</div></li>';
+		Candy.View.Template.Chat.infoMessage = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="infomessage"><span class="spacer">•</span>{{subject}} {{message}}</div></li>';
+		Candy.View.Template.Room.subject = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="subject"><span class="label">{{roomName}}</span><span class="spacer">▸</span>{{_roomSubject}} {{subject}}</div></li>';
+		Candy.View.Template.Message.item = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div><a class="label" href="#" class="name">{{displayName}}</a><span class="spacer">▸</span>{{{message}}}</div></li>';
 
 		Candy.Util.localizedTime = function(dateTime) {
 			if (dateTime === undefined) {
