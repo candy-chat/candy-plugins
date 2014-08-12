@@ -1,5 +1,8 @@
 # Candy Plugins
 
+[![Build Status](https://travis-ci.org/candy-chat/candy-plugins.png)](https://travis-ci.org/candy-chat/candy-plugins)
+[![Coverage Status](https://coveralls.io/repos/candy-chat/candy-plugins/badge.png)](https://coveralls.io/r/candy-chat/candy-plugins)
+
 This is the official plugin repository for [Candy](http://candy-chat.github.com/candy), a JavaScript based multi-user chat client.
 
 ## List of available plugins
