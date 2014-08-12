@@ -5,7 +5,7 @@ env:
   global:
   - SAUCE_USERNAME: michaelweibel
   - CANDY_VAGRANT: false
-  - secure: "e32tnzC3ZRA7CTqek48Xm5rfUczBExV0UW+2nrkLGoiV548+Ui0YlERcbkdmlby4RIzjVf9sKRlgMyYnmD/MvE6VVumX0nEDGJN21Ojxf/xWCPavdX1nU+zGHxE5AUl8dReOWXtvpkxuJRy3rNsvNUaLc8sGkK+5eQhA3KBTO8o="
+  - secure: mELRCguJsVl1j5gABX94o1Zfds8c870Mr7dXVWJRVOBYdkVEHAH6HQtcKt5nYxHG/eh960ZeSNbDXy8XMN4Fxp7J2UR+vOXk9mIKEVsZOvwsVYv26GRUizez3AohsELdsg3KDyscZLXQLA9tgvG2s38ImnocsjO/7KoJ/R/37UA=
 before_script:
 - npm install -g grunt-cli bower
 - npm install
