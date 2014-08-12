@@ -60,6 +60,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-todo');
 
 	grunt.registerTask('test', ['intern:unit']);
-	grunt.registerTask('ci', ['todo', 'jshint', 'intern', 'coveralls:all']);
+	grunt.registerTask('ci', ['todo', 'jshint', 'intern:all', 'coveralls:all']);
 	grunt.registerTask('default', ['jshint', 'intern:unit']);
 };
