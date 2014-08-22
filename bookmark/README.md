@@ -21,3 +21,10 @@ When you wish to bookmark a room, simply:
 ```JavaScript
 CandyShop.Bookmark.add('someroom@conference.example.com');
 ```
+
+If you would like for bookmarks to destroy when the room is closed, add this to your main JS file:
+```JavaScript
+  $(Candy).on('candy:view.room.after-close', function (ev, obj) {
+    CandyShop.Bookmark.remove(obj.roomJid);
+  });
+```
