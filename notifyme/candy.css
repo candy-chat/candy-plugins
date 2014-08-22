@@ -1,3 +1,22 @@
 .candy-notifyme-highlight {
-    background: #FFFF00;
+  background: rgba(126, 245, 96, 0.1);
+  border: 1px solid rgba(86, 165, 66, 0.5);
+  border-radius: 3px;
+  padding: 2px 3px;
+}
+
+#chat-tabs .mentions {
+  background-color: #149B1F;
+  border-radius: 50%;
+  color: white;
+  cursor: default;
+  font-size: 10px;
+  font-weight: bold;
+  height: 17px;
+  padding: 1px 4px;
+  position: absolute;
+  right: 41px;
+  top: 3px;
+  text-align: center;
+  width: 17px;
 }
