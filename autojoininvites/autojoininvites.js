@@ -1,6 +1,7 @@
 /** File: autojoininvites.js
  * Candy Plugin Auto-Join Incoming MUC Invites
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
+ * Integrates with Bookmark plugin.
  */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
@@ -22,12 +23,11 @@ CandyShop.AutoJoinInvites = (function(self, Candy, $) {
    */
   self.init = function(){
     $(Candy).on('candy:core:chat:invite',function(ev, obj) {
-      // JIDs in automatic invitations are escaped,
-      // but Room.Join expects unescaped JID
-      var roomJid = Candy.Util.unescapeJid(obj.roomJid);
-
-      Candy.Core.Action.Jabber.Room.Join(roomJid, null);
-    })
+      if (CandyShop.Bookmark) {
+        CandyShop.Bookmark.add(obj.roomJid);
+      }
+      Candy.Core.Action.Jabber.Room.Join(obj.roomJid, null);
+    });
   };
 
   return self;
