@@ -1,0 +1,49 @@
+.message-form-dropzone {
+  display: none;
+}
+
+.message-form-dropzone.show {
+  background: palegreen;
+  border: 2px dashed rgb(52, 167, 52);
+  display: initial;
+  font-weight: bold;
+  height: 30px;
+  line-height: 50px;
+  margin-bottom: 5px;
+  text-align: center;
+  width: 100%;
+}
+
+.message-form-dropzone.show.in.hover {
+  background: rgb(202, 235, 202);
+  border-color: rgb(98, 196, 98);
+}
+
+.message-form-dropzone {
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  opacity: 1;
+}
+
+.roomtype-lobby .message-form-dropzone {
+  display: none !important;
+}
+
+#fileupload {
+  display: none;
+}
+
+/* Style progress bar. */
+.file-progress-bar {
+  background: rgba(23, 99, 176, 0.24);
+  height: 20px;
+  width: 100%;
+}
+
+.file-progress-bar .bar {
+  background: #1763b0;
+  height: 100%;
+}
