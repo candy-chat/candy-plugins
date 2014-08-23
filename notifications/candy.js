@@ -80,7 +80,6 @@ CandyShop.Notifications = (function(self, Candy, $) {
         (self.mentionsMe(args.message) && _options.notifyMention) ||
         (_options.notifyPersonalMessage && Candy.View.Pane.Chat.rooms[args.roomJid].type === 'chat')) {
         // Create the notification.
-        console.log(args);
         var title = !_options.title ? args.name : _options.title ,
           notification = new window.Notification(title, {
           icon: _options.icon,
