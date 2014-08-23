@@ -71,7 +71,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				}
 			} catch (ex) {
 				// Without an exception catcher, the page will reload and the user will be logged out
-				console.log(ex);
+				Candy.Core.log(ex);
 			}
 		});
 	};
