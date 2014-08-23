@@ -1,4 +1,4 @@
-/** File: autojoininvites.js
+/** File: keyboardshortcuts.js
  * Candy Plugin Keyboard Shortcuts
  * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
@@ -6,17 +6,6 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.KeyboardShortcuts = (function(self, Candy, $) {
-  /** Object: _options
-   * Options for this plugin's operation
-   *
-   * Options:
-   *   (Boolean) notifyNormalMessage - Notification on normalmessage. Defaults to false
-   *   (Boolean) notifyPersonalMessage - Notification for private messages. Defaults to true
-   *   (Boolean) notifyMention - Notification for mentions. Defaults to true
-   *   (Integer) closeTime - Time until closing the Notification. (0 = Don't close) Defaults to 3000
-   *   (String)  title - Title to be used in notification popup. Set to null to use the contact's name.
-   *   (String)  icon - Path to use for image/icon for notification popup.
-   */
   var _options = {
     joinNewRoom: {
       altKey: true,
