@@ -32,6 +32,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		'part',
 		'clear',
 		'topic',
+		'kick',
 		'available',
 		'away',
 		'dnd',
@@ -44,44 +45,47 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.init = function(){
 
-		$(Candy).on('candy:view.connection.status-5', function() {
-			// When connected to the server, default the conference domain if unspecified
-			if (!self.defaultConferenceDomain) {
-				self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
-			}
-
-			// Ensure we have a leading "@"
-			if (self.defaultConferenceDomain.indexOf('@') == -1) {
-				self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
-			}
-		});
+		$(Candy).on('candy:view.connection.status-5', self.setDefaultConferenceDomain);
+		$(Candy).on('candy:view.connection.status-8', self.setDefaultConferenceDomain);
 
 		$(Candy).bind('candy:view.message.before-send', function(e, args) {
 			try {
 				// (strip colors)
 				var input = args.message.replace(/\|c:\d+\|/, '');
 
-				if (input[0] == '/') {
+				if (input[0] === '/') {
 					var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
 					if (match !== null) {
 						var command = match[1];
 						var data = match[2];
 
 						// Match only whitelisted commands
-						if ($.inArray(command, self.commands) != -1) {
+						if ($.inArray(command, self.commands) !== -1) {
 							self[command](data);
 						} else {
 							// TODO: Better way to notify the user of the invalid command
-							alert("Invalid command: " + command);
+							window.alert("Invalid command: " + command);
 						}
 					}
 					args.message = '';
 				}
 			} catch (ex) {
 				// Without an exception catcher, the page will reload and the user will be logged out
-				Candy.Core.log(ex);
+				console.log(ex);
 			}
 		});
+	};
+
+	self.setDefaultConferenceDomain = function() {
+		// When connected to the server, default the conference domain if unspecified
+		if (!self.defaultConferenceDomain) {
+			self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
+		}
+
+		// Ensure we have a leading "@"
+		if (self.defaultConferenceDomain.indexOf('@') === -1) {
+			self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
+		}
 	};
 
 	/** Function: join
@@ -96,8 +100,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		var room = args[0];
 		var password = args[1];
 
-		if(typeof room != 'undefined' && room !== '') {
-			if(room.indexOf("@") == -1) {
+		if(typeof room !== 'undefined' && room !== '') {
+			if(room.indexOf("@") === -1) {
 				room += self.defaultConferenceDomain;
 			}
 			if (typeof password !== 'undefined' && password !== '') {
@@ -124,6 +128,24 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.topic = function(topic) {
 		Candy.Core.Action.Jabber.Room.Admin.SetSubject(self.currentRoom(), topic);
+	};
+
+	/** Function: kick
+	 * Kick the given user out of the current chat room
+	 *
+	 * Parameters:
+	 * 	(String) args The username or JID of the person to be kicked. If only a username is given, then domain of the current user is assumed/appended. An optional reason can also be supplied.
+	 */
+	self.kick = function(args) {
+		args = args.split(' ', 2);
+		var	username = args[0],
+				reason = args[1];
+
+		if (username.indexOf('@') === -1) {
+			username += "@" + Candy.Core.getConnection().domain;
+		}
+
+		Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), username, 'kick', reason);
 	};
 
 	/** Function: clear
