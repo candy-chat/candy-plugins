@@ -6,6 +6,9 @@
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.CreateRoom = (function(self, Candy, $) {
+  self._options = {
+    subdomain: 'conference'
+  }
   /** Object: about
    *
    * Contains:
@@ -20,7 +23,10 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
   /**
    * Initializes the CreateRoom plugin with the default settings.
    */
-  self.init = function(){
+  self.init = function(options){
+    // apply the supplied options to the defaults specified
+    $.extend(true, self._options, options);
+
     $(Candy).on('candy:view.room.after-add', function() {
       self.appendButton();
     });
@@ -54,7 +60,7 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
       } else {
         var roomName = $('#create-group-form-name').val().trim();
         // Create a valid roomjid.
-        var roomJid = roomName.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@conference.' +
+        var roomJid = roomName.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@' + self._options.subdomain + '.' +
                        Candy.Core.getConnection().domain;
 
         // Once we've joined the room, send configuration information.
