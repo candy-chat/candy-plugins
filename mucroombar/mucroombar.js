@@ -42,8 +42,8 @@ CandyShop.RoomBar = (function(self, Candy, $) {
 
   self.addRoomBar = function(obj){
     if($('div.room-pane.roomtype-groupchat[data-roomjid="' + obj.roomJid + '"] .message-pane-wrapper .roombar').length === 0) {
-      var roombar_html = self.Template.roombar;
-      $('div.room-pane.roomtype-groupchat[data-roomjid="' + obj.roomJid + '"] .message-pane-wrapper').prepend(roombar_html);
+      var roombarHtml = self.Template.roombar;
+      $('div.room-pane.roomtype-groupchat[data-roomjid="' + obj.roomJid + '"] .message-pane-wrapper').prepend(roombarHtml);
     }
     $('#' + obj.element.context.id + ' .message-pane-wrapper .roombar .topic').click(function() {
       self.updateRoomTopic(obj.roomJid, obj.element.context.id, $(this).html());
@@ -54,32 +54,32 @@ CandyShop.RoomBar = (function(self, Candy, $) {
     $(element).find(' .message-pane-wrapper .roombar .topic').html(topic);
   };
 
-  self.updateRoomTopic = function(roomJid, element_id, current_topic) {
+  self.updateRoomTopic = function(roomJid, elementId, currentTopic) {
     // If we're a room moderator, be able to edit the room topic.
     if(Candy.Core.getRoom(roomJid) !== null && Candy.Core.getRoom(roomJid).user !== null && Candy.Core.getRoom(roomJid).user.getRole() === 'moderator') {
       // If there isn't an active input for room topic already, create input interface.
-      if($('#' + element_id + ' .message-pane-wrapper .roombar .topic input').length === 0) {
+      if($('#' + elementId + ' .message-pane-wrapper .roombar .topic input').length === 0) {
         // Replace topic with an input field
-        if(current_topic === ' ') { current_topic = ''; }
-        var field_html = '<input type="text" value="' + current_topic + '" />';
-        $('#' + element_id + ' .message-pane-wrapper .roombar .topic').html(field_html);
+        if(currentTopic === ' ') { currentTopic = ''; }
+        var fieldHtml = '<input type="text" value="' + currentTopic + '" />';
+        $('#' + elementId + ' .message-pane-wrapper .roombar .topic').html(fieldHtml);
         // Add focus to the new element.
-        $('#' + element_id + ' .message-pane-wrapper .roombar .topic input').focus();
+        $('#' + elementId + ' .message-pane-wrapper .roombar .topic input').focus();
         // Set listener for on return press or lose focus.
-        $('#' + element_id + ' .message-pane-wrapper .roombar .topic input').blur(function() {
-          if(current_topic !== $(this).val()) {
+        $('#' + elementId + ' .message-pane-wrapper .roombar .topic input').blur(function() {
+          if(currentTopic !== $(this).val()) {
             CandyShop.RoomBar.sendNewTopic(roomJid, $(this).val());
           } else {
-            $('#' + element_id + ' .message-pane-wrapper .roombar .topic').html(current_topic);
+            $('#' + elementId + ' .message-pane-wrapper .roombar .topic').html(currentTopic);
           }
         });
-        $('#' + element_id + ' .message-pane-wrapper .roombar .topic input').keypress(function(ev) {
+        $('#' + elementId + ' .message-pane-wrapper .roombar .topic input').keypress(function(ev) {
           var keycode = (ev.keyCode ? ev.keyCode : ev.which);
           if(keycode === 13) {
-            if(current_topic !== $(this).val()) {
+            if(currentTopic !== $(this).val()) {
               CandyShop.RoomBar.sendNewTopic(roomJid, $(this).val());
             } else {
-              $('#' + element_id + ' .message-pane-wrapper .roombar .topic').html(current_topic);
+              $('#' + elementId + ' .message-pane-wrapper .roombar .topic').html(currentTopic);
             }
           }
         });
@@ -87,15 +87,15 @@ CandyShop.RoomBar = (function(self, Candy, $) {
     }
   };
 
-  self.appendInviteUsersButton = function(room_jid) {
-    var pane_heading = $('#chat-rooms > div.roomtype-groupchat[data-roomjid="' + room_jid + '"] .roster-wrapper .pane-heading');
-    if ($(pane_heading).find('.invite-users').length === 0) {
-      var html = self.Template.invite_button;
-      $(pane_heading).append(html);
-      $(pane_heading).find('.invite-users').click(function() {
+  self.appendInviteUsersButton = function(roomJid) {
+    var paneHeading = $('#chat-rooms > div.roomtype-groupchat[data-roomjid="' + roomJid + '"] .roster-wrapper .pane-heading');
+    if ($(paneHeading).find('.invite-users').length === 0) {
+      var html = self.Template.inviteButton;
+      $(paneHeading).append(html);
+      $(paneHeading).find('.invite-users').click(function() {
         // Pop up a modal with an invite-users dialogue.
-        Candy.View.Pane.Chat.Modal.show(Mustache.to_html(self.Template.invite_modal, {
-          roomjid: room_jid
+        Candy.View.Pane.Chat.Modal.show(Mustache.to_html(self.Template.inviteModal, {
+          roomjid: roomJid
         }), true, false);
 
         self.centerModal(true);
@@ -156,11 +156,11 @@ CandyShop.RoomBar = (function(self, Candy, $) {
         $('#invite-users-muc').submit(function(ev) {
           ev.preventDefault();
           // Get all of the users chosen.
-          var user_tags = $('.tagholder .input-tag');
+          var userTags = $('.tagholder .input-tag');
           // Send them invites.
-          for (var i = 0; i < user_tags.length; i++) {
-              CandyShop.StaticLobby.Invite.Send($(user_tags[i]).attr('data-userjid'), room_jid);
-            $('.tagholder .input-tag[data-userjid="' + $(user_tags[i]).attr('data-userjid') + '"]').remove();
+          for (var i = 0; i < userTags.length; i++) {
+              CandyShop.StaticLobby.Invite.Send($(userTags[i]).attr('data-userjid'), roomJid);
+            $('.tagholder .input-tag[data-userjid="' + $(userTags[i]).attr('data-userjid') + '"]').remove();
           }
           Candy.View.Pane.Chat.Modal.hide();
           return false;
@@ -171,21 +171,21 @@ CandyShop.RoomBar = (function(self, Candy, $) {
 
   self.centerModal = function(first) {
     // Center the modal better
-    var window_h = $(window).height(),
-        window_w = $(window).width(),
-        object_h = $('#chat-modal').outerHeight(),
-        object_w = $('#chat-modal').outerWidth(),
-        new_top  = (window_h / 2) - (object_h / 2),
-        new_left = (window_w / 2) + (object_w / 2);
+    var windowHeight = $(window).height(),
+        windowWidth = $(window).width(),
+        objectHeight = $('#chat-modal').outerHeight(),
+        objectWidth = $('#chat-modal').outerWidth(),
+        newTop  = (windowHeight / 2) - (objectHeight / 2),
+        newLeft = (windowWidth / 2) + (objectWidth / 2);
     if (first) {
       $('#chat-modal').css({
-        left: new_left,
-        top: new_top
+        left: newLeft,
+        top: newTop
       });
     } else {
       $('#chat-modal').animate({
-        left: new_left,
-        top: new_top
+        left: newLeft,
+        top: newTop
       }, 'fast');
     }
   };
@@ -201,8 +201,8 @@ CandyShop.RoomBar = (function(self, Candy, $) {
     tagholder: '<div class="tagholder"></div>',
     tag: '<span class="input-tag" data-userjid={{userjid}}>{{username}}<span class="close-input-tag">x</span></span>',
     roombar: '<div class="roombar"><div class="topic"></div></div>',
-    invite_button: '<button class="invite-users btn btn-default btn-sm">Invite Users</button>',
-    invite_modal: '<h4>Invite Users</h4><form id="invite-users-muc" data-roomjid={{roomjid}}><div class="form-group">' +
+    inviteButton: '<button class="invite-users btn btn-default btn-sm">Invite Users</button>',
+    inviteModal: '<h4>Invite Users</h4><form id="invite-users-muc" data-roomjid={{roomjid}}><div class="form-group">' +
                   '<input type="text" name="bhUsers" class="tm-input form-control" ' +
                   'id="users-input"/></div><button class="btn btn-default" type="submit">Send Invitations</button></form>'
   };
