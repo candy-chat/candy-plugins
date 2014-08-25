@@ -2,12 +2,12 @@
  * Candy - Chats are not dead yet.
  *
  * Authors:
- *	 - Troy McCabe <troy.mccabe@geeksquad.com>
- *	 - Ben Klang <bklang@mojolingo.com>
+ *  - Troy McCabe <troy.mccabe@geeksquad.com>
+ *  - Ben Klang <bklang@mojolingo.com>
  *
  * Copyright:
- *	 (c) 2012 Geek Squad. All rights reserved.
- *	 (c) 2014 Power Home Remodeling Group. All rights reserved.
+ *  (c) 2012 Geek Squad. All rights reserved.
+ *  (c) 2014 Power Home Remodeling Group. All rights reserved.
  */
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
@@ -17,8 +17,8 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.NameComplete = (function(self, Candy, $) {
 	/** Object: _options
 	 * Options:
-	 *	 (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *	 (Integer) completeKeyCode - Which key to use to complete
+	 *  (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+	 *  (Integer) completeKeyCode - Which key to use to complete
 	 */
 	var _options = {
 		nameIdentifier: '@',
