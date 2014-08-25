@@ -28,7 +28,7 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
 
   self.appendButton = function(){
     if ($('#create-group').length === 0) {
-      $('#chat-tabs').after(self.Template.create_button);
+      $('#chat-tabs').after(self.Template.createButton);
       $('#create-group').click(function () {
         self.showModal();
         $('#create-group-form').click(function(event) {
@@ -52,44 +52,44 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
           $('.form-group.group-form-name-group').removeClass('has-error');
         });
       } else {
-        var room_name = $('#create-group-form-name').val().trim();
+        var roomName = $('#create-group-form-name').val().trim();
         // Create a valid roomjid.
-        var room_jid = room_name.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@conference.' +
+        var roomJid = roomName.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@conference.' +
                        Candy.Core.getConnection().domain;
 
         // Once we've joined the room, send configuration information.
         $(Candy).on('candy:view.room.after-add', function(ev, obj) {
-          if (obj.roomJid.toUpperCase() === room_jid.toUpperCase()) {
+          if (obj.roomJid.toUpperCase() === roomJid.toUpperCase()) {
             // Configuration items for setting room name.
-            var config_form_type = $build('field', { 'var': 'FORM_TYPE' })
+            var configFormType = $build('field', { 'var': 'FORM_TYPE' })
                                     .c('value').t('http://jabber.org/protocol/muc#roomconfig');
-            var config_room_name = $build('field', { 'var': 'muc#roomconfig_roomname' }).c('value').t(room_name);
-            var config = [config_form_type.tree(), config_room_name.tree()];
+            var configRoomName = $build('field', { 'var': 'muc#roomconfigRoomName' }).c('value').t(roomName);
+            var config = [configFormType.tree(), configRoomName.tree()];
             // Send the configuration form to the server, and on success update our DOM.
-            Candy.Core.getConnection().muc.saveConfiguration(room_jid, config, function(stanza) {
+            Candy.Core.getConnection().muc.saveConfiguration(roomJid, config, function(stanza) {
               var jid = $(stanza).attr('from');
-              if (jid === room_jid) {
-                Candy.View.Pane.Chat.getTab(room_jid).find('.label').html(room_name);
+              if (jid === roomJid) {
+                Candy.View.Pane.Chat.getTab(roomJid).find('.label').html(roomName);
               }
             });
           }
         });
 
         // Join the room and close the modal.
-        Candy.Core.Action.Jabber.Room.Join(room_jid, null);
+        Candy.Core.Action.Jabber.Room.Join(roomJid, null);
         Candy.View.Pane.Chat.Modal.hide();
       }
     });
   };
 
   self.showModal = function(){
-    Candy.View.Pane.Chat.Modal.show(self.Template.modal_form, true, false);
+    Candy.View.Pane.Chat.Modal.show(self.Template.modalForm, true, false);
     self.addFormHandler();
   };
 
   self.Template = {
-    create_button: '<div id="create-group"><div class="click">+ Create Room</div></div>',
-    modal_form: '<h4>Create Room</h4><form id="create-group-form">' +
+    createButton: '<div id="create-group"><div class="click">+ Create Room</div></div>',
+    modalForm: '<h4>Create Room</h4><form id="create-group-form">' +
                 '<div class="form-group group-form-name-group">' +
                 '<label for="create-group-form-name" class="control-label">Name:</label>' +
                 '<input class="form-control" type="text" name="room-name" id="create-group-form-name" />' +
