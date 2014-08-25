@@ -1,13 +1,22 @@
 /** File: typingnotifications.js
  * Candy Plugin Typing Notifications
- * Author: Melissa Adamaitis <melissa@melissanoelle.com>
+ * Author: Melissa Adamaitis <madamei@mojolingo.com>
  */
-
-/* global Candy, jQuery */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.TypingNotifications = (function(self, Candy, $) {
+  /** Object: about
+   *
+   * Contains:
+   *  (String) name - Candy Plugin Typing Notifications
+   *  (Float) version - Candy Plugin Typing Notifications
+   */
+  self.about = {
+    name: 'Candy Plugin Typing Notifications',
+    version: '1.0'
+  };
+
   /**
    * Initializes the Typing Notifications plugin with the default settings.
    */
@@ -41,5 +50,6 @@ CandyShop.TypingNotifications = (function(self, Candy, $) {
         typing_notification_div_html = '<div class="typing-notification-area"></div>';
     $(pane_html).find('.message-form-wrapper').append(typing_notification_div_html);
   };
+
   return self;
 }(CandyShop.TypingNotifications || {}, Candy, jQuery));
