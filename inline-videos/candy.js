@@ -19,7 +19,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 	 */
 	self.init = function(options) {
 		// add a listener to these events
-		$(Candy.View.Pane).on('candy:view.message.beforeShow', self.handleBeforeShow);
+		$(Candy).on('candy:view.message.before-show', self.handleBeforeShow);
 	};
 	
 	/** Function: handleBeforeShow
