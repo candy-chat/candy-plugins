@@ -67,6 +67,17 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 			return args.message;
 		});
 
+		// Show unread messages indicator
+		$(Candy).on('candy:view.message.notify', function(e, args) {
+			// Notify the user about a new private message
+			if(Candy.View.getCurrent().roomJid !== args.roomJid || !self.Window.hasFocus()) {
+				self.Chat.increaseUnreadMessages(args.roomJid);
+				if(Candy.View.Pane.Chat.rooms[args.roomJid].type === 'chat' && !self.Window.hasFocus()) {
+					self.Chat.Toolbar.playSound();
+				}
+			}
+		});
+
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			var searchRegExp = new RegExp('^(.*)(\\s?' + searchTerm + ')', 'ig');
