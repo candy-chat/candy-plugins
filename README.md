@@ -16,6 +16,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __jQuery-Ui__ - jQuery UI lightness theme
 * __Left Tabs__ - Moves the tabs to the left side and uses a bit of Bootstrap3-friendly theme elements.
 * __Modify Role__ - Adds **add moderator** and **remove moderator** context menu links.
+* __Me Does__ - special formatting for /me messages
 * __Namecomplete__ - Autocompletes names of users within room
 * __Nickchange__ - Enable your users to change the nick using a toolbar icon
 * __Notifications__ - OS Notifications in webkit
