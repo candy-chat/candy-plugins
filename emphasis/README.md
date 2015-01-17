@@ -1,6 +1,6 @@
-# Emphesis
+# Emphasis
 
-Basic message formatting, with xhtml conversion.
+Basic message formatting, with xhtml conversion, compatible with XEP-0071. Standard messages are converted to Textile-style formatting.
 
 Textile, BBCode, and Html Variants are supported:
 
@@ -36,11 +36,15 @@ _italic_
 <del>strikethrough</del>
 ```
 
+This plugin is compatible with colors-xhtml.
+
+
+
 ## Usage
 Include the JavaScript file:
 
 ```HTML
-<script type="text/javascript" src="candyshop/emphesis/candy.js"></script>
+<script type="text/javascript" src="candyshop/emphasis/candy.js"></script>
 ```
 
 Call its `init()` method after Candy has been initialized:
@@ -48,8 +52,8 @@ Call its `init()` method after Candy has been initialized:
 ```javascript
 Candy.init('/http-bind/', {});
 
-// enable /me handling
-CandyShop.Emphesis.init();
+// enable basic textile/BBCode/Html handling
+CandyShop.Emphasis.init();
 
 Candy.Core.connect();
 ```

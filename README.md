@@ -10,7 +10,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Colors__ - Send and receive colored messages.
 * __Colors XHTML__ - Send and receive colored messages formatted with XHTML.
 * __Create Room__ - Creates a clickable UI for creating and joining rooms.
-* __Emphesis__ - basic text formatting via textile, BBcode, or xhtml
+* __Emphasis__ - basic text formatting via textile, BBcode, or xhtml
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 * __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
 * __join__ A plugin that allows to type `/join room [password]` to join a room.
