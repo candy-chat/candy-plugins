@@ -20,7 +20,7 @@ CandyShop.Emphasis = (function(self, Candy, $) {
 		{ plain: '[u]underline[/u]', regex: /(\[u\](.*?)\[\/u\])/igm, plain: "+$2+", xhtml: "<span style='text-decoration: underline;'>$2</span>" },
 		{ plain: '&lt;u&gt;underline&lt;/u&gt;', regex: /(\&lt;u\&gt;(.*?)\&lt;\/u\&gt;)/igm, plain: "+$2+", xhtml: "<span style='text-decoration: underline;'>$2</span>" },
 		{ plain: '&lt;ins&gt;underline&lt;/ins&gt;', regex: /(\&lt;ins\&gt;(.*?)\&lt;\/ins\&gt;)/igm, plain: "+$2+", xhtml: "<span style='text-decoration: underline;'>$2</span>" }
-		]
+	];
 
 	self.init = function() {
 
