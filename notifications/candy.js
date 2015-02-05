@@ -48,7 +48,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
       jQuery(document).one('click keydown', self.setupPermissions);
 
       // Add Listener for Notifications
-      $(Candy).on('candy:view.message.after-show', self.handleOnShow);
+      $(Candy).on('candy:view.message.notify', self.handleNotification);
     }
   };
 
@@ -65,7 +65,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
     }
   };
 
-  /** Function: handleOnShow
+  /** Function: handleNotification
    * Descriptions
    *
    * Parameters:
@@ -73,7 +73,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
    *
    * @return void
    */
-  self.handleOnShow = function(e, args) {
+  self.handleNotification = function(e, args) {
     // Check if window has focus, so no notification needed
     if (!document.hasFocus()) {
       if(_options.notifyNormalMessage ||
