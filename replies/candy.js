@@ -1,8 +1,8 @@
 /*
  * candy-replies-plugin
- * @version 0.2 (2014-01-05)
+ * @version 0.4 (2015-02-05)
  * @author Drew Harry (drew.harry@gmail.com)
- *
+ * 
  * Adds @reply highlighting to chat messages to help with high velocity
  * conversations.
  */
@@ -11,24 +11,35 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Replies = (function(self, Candy, $) {
 
-	self.init = function() {
+	var requireAt = true,
+		prefix = '',
+		suffix = '';
 
-    $(Candy).on('candy:view.message.after-show', handleOnShow);
+	self.init = function( requireAtValue, prefixValue, suffixValue ) {
+		requireAt = typeof requireAtValue !== 'undefined' ? requireAtValue : true;
+		prefix = typeof prefixValue !== 'undefined' ? prefixValue : '';
+		suffix = typeof suffixValue !== 'undefined' ? suffixValue : '';
 
-	  return self;
-  };
+		$(Candy).on('candy:view.message.after-show', handleOnShow);
+		return self;
+	};
 
-  var handleOnShow = function(e, args) {
-    var localNick = Candy.Core.getUser().getNick();
+	var handleOnShow = function(e, args) {
+		var possibleNicks = $('.me').map(function(){ return $(this).attr('data-nick'); });
+		possibleNicks.push(Candy.Core.getUser().getNick());
+		
+		$.unique(possibleNicks).each(function(key,nick) {
+			if( RegExp("(\\W|^)" + ( requireAt ? '@' : '' ) + nick + "(\\W|$)" , "im").test(args.message) ) {
+				$(args.element).addClass("mention");
+			}
+			if( prefix != '' || suffix != '') {
+				var shortNick = nick.replace( RegExp("^" + prefix), "").replace( RegExp( suffix + "$"), "");
+				if( RegExp("(\\W|^)" + ( requireAt ? '@' : '' ) + shortNick + "(\\W|$)" , "im").test(args.message) ) {
+					$(args.element).addClass("mention");
+				}
+			}
+		});
+	}
 
-    var re = new RegExp("@" + localNick + "([ .!><\":\/@-]|$)", 'im');
-
-    if(re.test(args.message)) {
-      var el = args.element;
-
-      el.addClass("mention");
-    }
-  }
-
-  return self;
+	return self;
 }(CandyShop.Replies || {}, Candy, jQuery));
