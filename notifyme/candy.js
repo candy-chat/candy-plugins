@@ -27,13 +27,14 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		highlightInRoom: true
 	};
 	
+	var _getNick = function() {
+		return Candy.Core.getUser().getNick();
+	};
+	
 	var _getSearchTerm = function() {
-		// get the nick from the current user
-		var nick = Candy.Core.getUser().getNick();
-
 		// make it what is searched
 		// search for <identifier>name in the whole message
-		return _options.nameIdentifier + nick;
+		return _options.nameIdentifier + _getNick();
 	};
 
 	/** Function: init
@@ -53,7 +54,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.message) && args.name != nick) {
+			if (searchRegExp.test(args.message) && args.name != _getNick()) {
 				// play the sound if specified
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
@@ -68,11 +69,12 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(\s?' + _getSearchTerm() + ')', 'ig');
+			var searchTerm = _getSearchTerm();
+			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {
+			if (searchRegExp.test(args.templateData.message) && args.templateData.name != _getNick()) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
 					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
