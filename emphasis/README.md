@@ -36,6 +36,12 @@ _italic_
 <del>strikethrough</del>
 ```
 
+Textile can be escaped like so:
+
+```
+==-strikethrough-==
+``
+
 This plugin is compatible with colors-xhtml.
 
 
@@ -56,4 +62,17 @@ Candy.init('/http-bind/', {});
 CandyShop.Emphasis.init();
 
 Candy.Core.connect();
+```
+
+Optionally, different formats can be disabled.
+
+
+```javascript
+CandyShop.Emphasis.init({ textile: false, bbcode: true, html: true });
+```
+
+Or just
+
+```javascript
+CandyShop.Emphasis.init({ textile: false });
 ```
