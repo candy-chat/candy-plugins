@@ -40,7 +40,7 @@ Textile can be escaped like so:
 
 ```
 ==-strikethrough-==
-``
+```
 
 This plugin is compatible with colors-xhtml.
 
