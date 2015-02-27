@@ -20,8 +20,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * About SlashCommands plugin
 	 *
 	 * Contains:
-	 *	 (String) name - Candy Plugin SlashCommands
-	 *	 (Float) version - Candy Plugin Available Rooms version
+	 *    (String) name - Candy Plugin SlashCommands
+	 *    (Float) version - Candy Plugin Available Rooms version
 	 */
 	self.about = {
 		name: 'Candy Plugin SlashCommands',
@@ -102,7 +102,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Joins a room
 	 *
 	 * Parameters:
-	 *	 (String) args The name of the room and the optional password, separated by a space
+	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.join = function(args) {
 		if(args === undefined || args == ''){
@@ -131,7 +131,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Sets Nickname
 	 *
 	 * Parameters:
-	 *	 (String) args The name of the room and the optional password, separated by a space
+	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.nick = function(args) {
 		if(args !== undefined && args != '') {
@@ -162,7 +162,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Sets the topic (subject) for the current chat room
 	 *
 	 * Parameters:
-	 *	 (String) topic The new topic for the room
+	 *    (String) topic The new topic for the room
 	 */
 	self.topic = function(topic) {
 		// TODO: .isModerator() && allowed checks
@@ -179,7 +179,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	/** Function: available
 	 * Change the current user's XMPP status to "available" with an optional message
 	 * Parameters:
-	 *	 (String) message Optional message to set with availability
+	 *    (String) message Optional message to set with availability
 	 */
 	self.available = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
@@ -189,7 +189,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	/** Function: away
 	 * Change the current user's XMPP status to "away" with an optional message
 	 * Parameters:
-	 *	 (String) message Optional message to set with availability
+	 *    (String) message Optional message to set with availability
 	 */
 	self.away = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
@@ -199,7 +199,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	/** Function: dnd
 	 * Change the current user's XMPP status to "dnd" with an optional message
 	 * Parameters:
-	 *	 (String) message Optional message to set with availability
+	 *    (String) message Optional message to set with availability
 	 */
 	self.dnd = function(message) {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
@@ -210,9 +210,9 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * invite another user to the current chat room, with lookups for real room & user jids
 	 *
 	 *Parameters:
-	 *	(String) user Nickname of user, or JID - all currently connected rooms will be checked
-	 *	(String) room Optional room name, must already exist
-	 *	(String) password Optional room password, if room requires one
+	 *    (String) user Nickname of user, or JID - all currently connected rooms will be checked
+	 *    (String) room Optional room name, must already exist
+	 *    (String) password Optional room password, if room requires one
 	 */
 	self.invite = function(args) {
 		if(args === undefined || args == ''){
@@ -282,8 +282,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Kick user from current room. Admins only. 
 	 *
 	 * Parameters:
-	 *	 (String) user Nickname of user, or JID - all currently connected rooms will be checked
-	 *	(String) comment Optional comment as to why they were kicked
+	 *    (String) user Nickname of user, or JID - all currently connected rooms will be checked
+	 *    (String) comment Optional comment as to why they were kicked
 	 */
 	self.kick = function(args) {
 		if(args === undefined || args == ''){
@@ -322,6 +322,6 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.currentRoom = function() {
 		return Candy.View.getCurrent().roomJid;
 	};
-	
+
 	return self;
 }(CandyShop.SlashCommands || {}, Candy, jQuery));
