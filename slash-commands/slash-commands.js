@@ -136,6 +136,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.nick = function(args) {
 		if(args === undefined || args == '') {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /nick newNickname");
+			return;
 		}
 
 		Candy.Core.Action.Jabber.SetNickname(args);
