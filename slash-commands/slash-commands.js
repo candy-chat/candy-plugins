@@ -134,12 +134,11 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.nick = function(args) {
-		if(args !== undefined && args != '') {
-			Candy.Core.Action.Jabber.SetNickname(args);
-		}
-		else {
+		if(args === undefined || args == '') {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /nick newNickname");
 		}
+
+		Candy.Core.Action.Jabber.SetNickname(args);
 	};
 
 	/** Function: part
