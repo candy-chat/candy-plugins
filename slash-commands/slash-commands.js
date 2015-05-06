@@ -151,11 +151,11 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	};
 	
 	/** Function: leave
-	 * Exits the current chat room
+	 * /part alias
 	 *
 	 */
 	self.leave = function() {
-		Candy.Core.Action.Jabber.Room.Leave(self.currentRoom());
+		self.part();
 	};
 
 	/** Function: topic
