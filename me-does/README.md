@@ -27,3 +27,5 @@ Now all messages starting with '/me 'will use infoMessage formatting.
 ```
 
 ![Color Picker](me-does-screenshot.png)
+
+**Please note**: As `me-does` reroutes message output, it's call to `init()` should happen after the `init()` of most other plugins, including, `inline-images`. 
