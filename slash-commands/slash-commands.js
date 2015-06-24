@@ -288,15 +288,21 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.kick = function(args) {
 		if(args === undefined || args == ''){
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname [comment] ");
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt:nickname&gt; comment");
 			return false;
 		}
-		args = args.split(' ');
-		
-		var user = new RegExp("^" + args[0] + "$", "i");
+		args_regex = args.match(/\<(.+)\>(.*)/);
+
 		var userJid = null;
-		var comment = args[1];
-	 
+
+		if(args_regex === null){
+			var user = new RegExp("^" + args + "$", "i");
+			var comment = null;
+		}
+		else {
+			var user = new RegExp("^" + args_regex[1] + "$", "i");
+			var comment = args_regex[2].trim();
+		}
 	 
 		$.each(Candy.Core.getRooms()[self.currentRoom()].roster.getAll(), function(userName, userData) { 
 			if( !userJid && userData.getJid().match(user) ) {
@@ -310,9 +316,13 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				}
 			});
 	 
-
 		if(userJid !== undefined && userJid !== null && userJid !== '') {
+			if(comment === null or comment == '') {
+				Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick");
+			}
+			else {
 			Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick", comment);
+			}
 		}
 	};
 
