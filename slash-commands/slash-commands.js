@@ -106,7 +106,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.join = function(args) {
 		if(args === undefined || args == ''){
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /join room [roomPassword] ");
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /join room OR /join room roomPassword");
 			return false;
 		}
 		args = args.split(' ');
@@ -216,16 +216,25 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.invite = function(args) {
 		if(args === undefined || args == ''){
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user [room] [roomPassword] ");
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user (from the room) OR /invite &lt;user&lt; room roomPassword");
 			return false;
 		}
-		args = args.split(' ');
+		args_regex = args.match(/\<(.+)\>(.*)/);
 
-		var user = new RegExp("^" + args[0] + "$", "i");
 		var userJid = null;
-		var room = new RegExp("^" + args[1] + "$", "i");
 		var roomJid = null;
-		var password = args[2];
+        
+		if(args_regex === null){
+			var user = new RegExp("^" + args + "$", "i");
+			var room = null;
+			var password = null;
+			roomJid = self.currentRoom();
+		}
+		else {
+			var user = new RegExp("^" + args_regex[1] + "$", "i");
+			var room = new RegExp("^" + args_regex[2].split(' ')[0] + "$", "i");
+			var password = args_regex[2].split(' ')[1];
+		}
 		
 		// loop through all rooms with current connections
 		$.each(Candy.Core.getRooms(), function(roomName, roomData) {
@@ -287,7 +296,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.kick = function(args) {
 		if(args === undefined || args == ''){
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt:nickname&gt; comment");
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt;nickname&gt; comment");
 			return false;
 		}
 		args_regex = args.match(/\<(.+)\>(.*)/);
