@@ -317,7 +317,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			});
 	 
 		if(userJid !== undefined && userJid !== null && userJid !== '') {
-			if(comment === null or comment == '') {
+			if(comment === null || comment == '') {
 				Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick");
 			}
 			else {
