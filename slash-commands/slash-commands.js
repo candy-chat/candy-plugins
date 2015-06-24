@@ -165,8 +165,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) topic The new topic for the room
 	 */
 	self.topic = function(topic) {
-		// TODO: .isModerator() && allowed checks
-		//   onInfoMessage user if \topic not available with current permissions
+		// this may not actually set the topic. it's up to the server to notify if that is the case.
 		Candy.Core.Action.Jabber.Room.Admin.SetSubject(self.currentRoom(), topic);
 	};
 
