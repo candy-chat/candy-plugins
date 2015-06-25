@@ -71,26 +71,29 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				// (strip colors)
 				var input = args.message.replace(/\|c:\d+\|/, '');
 
-				if (input[0] == '/') {
-					var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
-					if (match !== null) {
-						var command = match[1];
-						var data = match[2];
-
-						// pass though some commands, they only merit formatting elsewhere
-						if ($.inArray(command, self.passthrough) != -1) { } 
-						// Match only whitelisted commands
-						else if ($.inArray(command, self.commands) != -1) {
-							self[command](data);
-							args.message = '';
-						}
-						else {
-							Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invalid command: " + command);
-							args.message = '';
-						}
-					}
-					
+				if (input[0] != '/') {
+					return;
 				}
+				var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
+				if (match === null) {
+					return;
+				}
+
+				var command = match[1];
+				var data = match[2];
+
+				// pass though some commands, they only merit formatting elsewhere
+				if ($.inArray(command, self.passthrough) != -1) { }
+					// Match only whitelisted commands
+				else if ($.inArray(command, self.commands) != -1) {
+					self[command](data);
+					args.message = '';
+				}
+				else {
+					Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invalid command: " + command);
+					args.message = '';
+				}
+
 			} catch (ex) {
 				// Without an exception catcher, the page will reload and the user will be logged out
 				Candy.Core.log(ex);
@@ -109,21 +112,24 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /join room OR /join room roomPassword");
 			return false;
 		}
-		args = args.split(' ');
+		args = args.trim().split(' ');
 
 		var room = args[0];
 		var password = args[1];
 
-		if(typeof room != 'undefined' && room !== '') {
-			if(room.indexOf("@") == -1) {
-				room += self.defaultConferenceDomain;
-			}
-			if (typeof password !== 'undefined' && password !== '') {
-				Candy.Core.Action.Jabber.Room.Join(room, password);
-			} else {
-				Candy.Core.Action.Jabber.Room.Join(room);
-			}
+		if(room === undefined || room === null || room === '') {
+			return;
 		}
+
+		if(room.indexOf("@") == -1) {
+			room += self.defaultConferenceDomain;
+		}
+
+		if (password === undefined || password === null || password === '') {
+			Candy.Core.Action.Jabber.Room.Join(room);
+		}
+
+		Candy.Core.Action.Jabber.Room.Join(room, password);
 	};
 	
 	
@@ -134,7 +140,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.nick = function(args) {
-		if(args === undefined || args == '') {
+		if(args === undefined || args === null || args == '') {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /nick newNickname");
 			return;
 		}
@@ -215,25 +221,28 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) password Optional room password, if room requires one
 	 */
 	self.invite = function(args) {
-		if(args === undefined || args == ''){
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user (from the room) OR /invite &lt;user&lt; room roomPassword");
+		if(args === undefined || args === null || args == ''){
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user (from the room) OR /invite &lt;user&gt; room roomPassword");
 			return false;
 		}
 		args_regex = args.match(/\<(.+)\>(.*)/);
 
 		var userJid = null;
-		var roomJid = null;
-        
+
 		if(args_regex === null){
-			var user = new RegExp("^" + args + "$", "i");
+			var user_text = args;
+			var user = new RegExp("^" + user_text + "$", "i");
 			var room = null;
 			var password = null;
-			roomJid = self.currentRoom();
+			var roomJid = self.currentRoom();
 		}
 		else {
-			var user = new RegExp("^" + args_regex[1] + "$", "i");
-			var room = new RegExp("^" + args_regex[2].split(' ')[0] + "$", "i");
-			var password = args_regex[2].split(' ')[1];
+			var user_text = args_regex[1];
+			var user = new RegExp("^" + user_text + "$", "i");
+			var room_text = args_regex[2].trim().split(' ')[0];
+			var room = new RegExp("^" + room_text + "$", "i");
+			var password = args_regex[2].trim().split(' ')[1];
+			var roomJid = null;
 		}
 		
 		// loop through all rooms with current connections
@@ -241,6 +250,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			if( !roomJid && roomData && roomData.room.name.match(room) ) {
 				roomJid = roomName;
 				}
+
 			if( !roomJid && roomName.match(room) ) {
 				roomJid = roomName;
 				}
@@ -260,30 +270,36 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				});
 			});
 
+		 // ok, that's all the checks.
 
-		if(userJid !== undefined && userJid !== null && userJid !== '') {
-			if(room !== undefined && room !== '') {
-				if(password !== undefined && password !== '') {
-					Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + roomJid + " (with password)");
-					var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
-					stanza.c("password").t(password);
-					Candy.Core.getConnection().send(stanza.tree());
-				}
-				else {
-					Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + roomJid);
-					var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
-					Candy.Core.getConnection().send(stanza.tree());
-				}
-			}
-			else {
-				Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + self.currentRoom());
-				var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': self.currentRoom()});
-				Candy.Core.getConnection().send(stanza.tree());
-			}
+		if(userJid === undefined || userJid === null || userJid === '') {
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find " + user_text + " to invite");
+			return;
 		}
-		else {
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find " + args[0] + " to invite");
+
+		if(roomJid === undefined || roomJid === null || roomJid === '') {
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find room " + room_text);
+			return;
 		}
+
+		if(roomJid == self.currentRoom() && (password=== undefined || password === null || password === '')) {
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + self.currentRoom());
+			var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': self.currentRoom()});
+			Candy.Core.getConnection().send(stanza.tree());
+			return;
+		}
+
+		if(password=== undefined || password === null || password === '') {
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + roomJid);
+			var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
+			Candy.Core.getConnection().send(stanza.tree());
+			return;
+		} 
+
+		Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + roomJid + " (with password)");
+		var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
+		stanza.c("password").t(password);
+		Candy.Core.getConnection().send(stanza.tree());
 
 	};
 
@@ -295,7 +311,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) comment Optional comment as to why they were kicked
 	 */
 	self.kick = function(args) {
-		if(args === undefined || args == ''){
+		if(args === undefined || args === null || args == ''){
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt;nickname&gt; comment");
 			return false;
 		}
@@ -324,14 +340,15 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				}
 			});
 	 
-		if(userJid !== undefined && userJid !== null && userJid !== '') {
-			if(comment === null || comment == '') {
-				Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick");
-			}
-			else {
-			Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick", comment);
-			}
+		if(userJid === undefined || userJid === null || userJid === '') {
+			return;
 		}
+
+		if(comment === null || comment == '') {
+			Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick");
+		}
+
+		Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick", comment);
 	};
 
 	
