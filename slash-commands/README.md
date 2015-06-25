@@ -6,21 +6,19 @@ To use any of the following, just type them into the chat input text area. Note 
 
 ### Room Management
 
-* `/join room [password]` - Joins the MUC room "room" with an optional password.
-* `/part` - Leaves the current MUC room.
-* `/leave` - Leaves the current MUC room.
-* `/clear` - Clears the scrollback in the current room.
+* `/join room` OR `/join room roomPassword` - Joins the MUC room "room" with an optional password.
+* `/nick newNickname` - Change the name displayed to everybody
+* `/part` OR `/leave` - Leaves the current MUC room.
 * `/topic This will be the new topic` - Sets the topic for the current room to "This will be the new topic". May not work due to server settings.
-* `/invite user [room] [password]` - Invites the user/nickname to the specified room, or current room, with optional password.
-* `/kick username` - Ejects the user "username" from the current room. Must be a MUC admin for this to work
+* `/clear` - Clears the scrollback in the current room.
+* `/invite user` (from the room) OR `/invite &lt;user&gt; room roomPassword` - Invites the user/nickname to the specified room, or current room, with optional password.
+* `/kick nickname` OR `/kick &lt;nickname&gt; comment` - Ejects the user "username" from the current room. Must be a MUC admin for this to work.
 
 ### Presence
 
 * `/available`
 * `/away`
 * `/dnd` - Do Not Disturb
-
-## Todo
 
 ## Configuration
 
