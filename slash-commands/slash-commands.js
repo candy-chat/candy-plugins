@@ -54,24 +54,15 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.init = function(){
 
-		$(Candy).on('candy:view.connection.status-5', function() {
-			// When connected to the server, default the conference domain if unspecified
-			if (!self.defaultConferenceDomain) {
-				self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
-			}
-
-			// Ensure we have a leading "@"
-			if (self.defaultConferenceDomain.indexOf('@') == -1) {
-				self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
-			}
-		});
+		$(Candy).on('candy:view.connection.status-5', self.setDefaultConferenceDomain);
+		$(Candy).on('candy:view.connection.status-8', self.setDefaultConferenceDomain);
 
 		$(Candy).bind('candy:view.message.before-send', function(e, args) {
 			try {
 				// (strip colors)
 				var input = args.message.replace(/\|c:\d+\|/, '');
 
-				if (input[0] != '/') {
+				if (input[0] !== '/') {
 					return;
 				}
 				var match = input.match(/^\/([^\s]+)(?:\s+(.*))?$/m);
@@ -83,9 +74,9 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				var data = match[2];
 
 				// pass though some commands, they only merit formatting elsewhere
-				if ($.inArray(command, self.passthrough) != -1) { }
+				if ($.inArray(command, self.passthrough) !== -1) { }
 					// Match only whitelisted commands
-				else if ($.inArray(command, self.commands) != -1) {
+				else if ($.inArray(command, self.commands) !== -1) {
 					self[command](data);
 					args.message = '';
 				}
@@ -108,7 +99,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.join = function(args) {
-		if(args === undefined || args == ''){
+		if(args === undefined || args === ''){
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /join room OR /join room roomPassword");
 			return false;
 		}
@@ -121,7 +112,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			return;
 		}
 
-		if(room.indexOf("@") == -1) {
+		if(room.indexOf("@") === -1) {
 			room += self.defaultConferenceDomain;
 		}
 
@@ -140,7 +131,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) args The name of the room and the optional password, separated by a space
 	 */
 	self.nick = function(args) {
-		if(args === undefined || args === null || args == '') {
+		if(args === undefined || args === null || args === '') {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /nick newNickname");
 			return;
 		}
@@ -221,7 +212,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) password Optional room password, if room requires one
 	 */
 	self.invite = function(args) {
-		if(args === undefined || args === null || args == ''){
+		if(args === undefined || args === null || args === ''){
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user (from the room) OR /invite &lt;user&gt; room roomPassword");
 			return false;
 		}
@@ -282,7 +273,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			return;
 		}
 
-		if(roomJid == self.currentRoom() && (password=== undefined || password === null || password === '')) {
+		if(roomJid === self.currentRoom() && (password=== undefined || password === null || password === '')) {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + self.currentRoom());
 			var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': self.currentRoom()});
 			Candy.Core.getConnection().send(stanza.tree());
@@ -311,7 +302,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 *    (String) comment Optional comment as to why they were kicked
 	 */
 	self.kick = function(args) {
-		if(args === undefined || args === null || args == ''){
+		if(args === undefined || args === null || args === ''){
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt;nickname&gt; comment");
 			return false;
 		}
@@ -344,7 +335,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			return;
 		}
 
-		if(comment === null || comment == '') {
+		if(comment === null || comment === '') {
 			Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick");
 		}
 
@@ -357,6 +348,18 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 */
 	self.currentRoom = function() {
 		return Candy.View.getCurrent().roomJid;
+	};
+
+	self.setDefaultConferenceDomain = function() {
+		// When connected to the server, default the conference domain if unspecified
+		if (!self.defaultConferenceDomain) {
+			self.defaultConferenceDomain = "@conference." + Candy.Core.getConnection().domain;
+		}
+
+		// Ensure we have a leading "@"
+		if (self.defaultConferenceDomain.indexOf('@') === -1) {
+			self.defaultConferenceDomain = "@" + self.defaultConferenceDomain;
+		}
 	};
 
 	return self;
