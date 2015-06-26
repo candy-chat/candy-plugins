@@ -2,6 +2,8 @@
  * candy-replies-plugin
  * @version 0.4 (2015-02-05)
  * @author Drew Harry (drew.harry@gmail.com)
+ * Contributors:
+ *	- Sudrien <_+github@sudrien.net>
  * 
  * Adds @reply highlighting to chat messages to help with high velocity
  * conversations.
@@ -17,8 +19,8 @@ CandyShop.Replies = (function(self, Candy, $) {
 
 	self.init = function( requireAtValue, prefixValue, suffixValue ) {
 		requireAt = typeof requireAtValue !== 'undefined' ? requireAtValue : true;
-		prefix = typeof prefixValue !== 'undefined' ? prefixValue : '';
-		suffix = typeof suffixValue !== 'undefined' ? suffixValue : '';
+		prefix = prefixValue !== undefined ? prefixValue : '';
+		suffix = suffixValue !== undefined ? suffixValue : '';
 
 		$(Candy).on('candy:view.message.after-show', handleOnShow);
 		return self;
@@ -32,7 +34,7 @@ CandyShop.Replies = (function(self, Candy, $) {
 			if( RegExp("(\\W|^)" + ( requireAt ? '@' : '' ) + nick + "(\\W|$)" , "im").test(args.message) ) {
 				$(args.element).addClass("mention");
 			}
-			if( prefix != '' || suffix != '') {
+			if( prefix !== '' || suffix !== '') {
 				var shortNick = nick.replace( RegExp("^" + prefix), "").replace( RegExp( suffix + "$"), "");
 				if( RegExp("(\\W|^)" + ( requireAt ? '@' : '' ) + shortNick + "(\\W|$)" , "im").test(args.message) ) {
 					$(args.element).addClass("mention");
