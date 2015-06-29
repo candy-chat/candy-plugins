@@ -26,6 +26,16 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		playSound: true,
 		highlightInRoom: true
 	};
+	
+	var _getNick = function() {
+		return Candy.Core.getUser().getNick();
+	};
+	
+	var _getSearchTerm = function() {
+		// make it what is searched
+		// search for <identifier>name in the whole message
+		return _options.nameIdentifier + _getNick();
+	};
 
 	/** Function: init
 	 * Initialize the NotifyMe plugin
@@ -37,21 +47,14 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	self.init = function(options) {
 		// apply the supplied options to the defaults specified
 		$.extend(true, _options, options);
-		
-		// get the nick from the current user
-		var nick = Candy.Core.getUser().getNick();
-
-		// make it what is searched
-		// search for <identifier>name in the whole message
-		var searchTerm = _options.nameIdentifier + nick;
 
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-show', function(e, args) {
-			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
+			var searchRegExp = new RegExp('^(.*)(\s?' + _getSearchTerm() + ')', 'ig');
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.message) && args.name != nick) {
+			if (searchRegExp.test(args.message) && args.name != _getNick()) {
 				// play the sound if specified
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
@@ -66,11 +69,12 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
+			var searchTerm = _getSearchTerm();
 			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.templateData.message) && args.templateData.name != nick) {
+			if (searchRegExp.test(args.templateData.message) && args.templateData.name != _getNick()) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
 					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
