@@ -11,8 +11,10 @@ Include the JavaScript and CSS files:
 <link rel="stylesheet" type="text/css" href="candyshop/createroom/createroom.css" />
 ```
 
-To enable this Left Tabs plugin, add its `init` method _before_ you `init` Candy:
+To enable the Create Room plugin, add its `init` method _before_ you `init` Candy. You can pass it your chat subdomain as well:
 ```JavaScript
-CandyShop.CreateRoom.init();
+CandyShop.CreateRoom.init({
+  subdomain: 'chat'
+});
 Candy.init('/http-bind', { ...
 ```

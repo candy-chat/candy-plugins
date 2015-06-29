@@ -2,6 +2,9 @@
 
 A plugin for Candy Chat to automatically join any and all incoming MUC room invites.
 
+## Integrations/Dependencies
+Integrates with the Bookmark plugin.
+
 
 ## Usage
 Include the JavaScript file:
