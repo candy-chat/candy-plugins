@@ -216,23 +216,23 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /invite user (from the room) OR /invite &lt;user&gt; room roomPassword");
 			return false;
 		}
-		args_regex = args.match(/\<(.+)\>(.*)/);
+		argsRegex = args.match(/\<(.+)\>(.*)/);
 
 		var userJid = null;
 
-		if(args_regex === null){
-			var user_text = args;
-			var user = new RegExp("^" + user_text + "$", "i");
+		if(argsRegex === null){
+			var userText = args;
+			var user = new RegExp("^" + userText + "$", "i");
 			var room = null;
 			var password = null;
 			var roomJid = self.currentRoom();
 		}
 		else {
-			var user_text = args_regex[1];
-			var user = new RegExp("^" + user_text + "$", "i");
-			var room_text = args_regex[2].trim().split(' ')[0];
-			var room = new RegExp("^" + room_text + "$", "i");
-			var password = args_regex[2].trim().split(' ')[1];
+			var userText = argsRegex[1];
+			var user = new RegExp("^" + userText + "$", "i");
+			var roomText = argsRegex[2].trim().split(' ')[0];
+			var room = new RegExp("^" + roomText + "$", "i");
+			var password = argsRegex[2].trim().split(' ')[1];
 			var roomJid = null;
 		}
 		
@@ -264,12 +264,12 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		 // ok, that's all the checks.
 
 		if(userJid === undefined || userJid === null || userJid === '') {
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find " + user_text + " to invite");
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find " + userText + " to invite");
 			return;
 		}
 
 		if(roomJid === undefined || roomJid === null || roomJid === '') {
-			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find room " + room_text);
+			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Could not find room " + roomText);
 			return;
 		}
 
@@ -306,17 +306,17 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "usage: /kick nickname OR /kick &lt;nickname&gt; comment");
 			return false;
 		}
-		args_regex = args.match(/\<(.+)\>(.*)/);
+		argsRegex = args.match(/\<(.+)\>(.*)/);
 
 		var userJid = null;
 
-		if(args_regex === null){
+		if(argsRegex === null){
 			var user = new RegExp("^" + args + "$", "i");
 			var comment = null;
 		}
 		else {
-			var user = new RegExp("^" + args_regex[1] + "$", "i");
-			var comment = args_regex[2].trim();
+			var user = new RegExp("^" + argsRegex[1] + "$", "i");
+			var comment = argsRegex[2].trim();
 		}
 	 
 		$.each(Candy.Core.getRooms()[self.currentRoom()].roster.getAll(), function(userName, userData) { 
