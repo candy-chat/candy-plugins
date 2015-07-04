@@ -77,7 +77,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 			if (searchRegExp.test(args.templateData.message) && args.templateData.name != _getNick()) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
-					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
+					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">$2</span>');
 				}
 			}
 		});
