@@ -20,6 +20,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
 	 *   (Boolean) playSound - Whether to play a sound when identified. Defaults to true
 	 *   (Boolean) highlightInRoom - Whether to highlight the name in the room. Defaults to true
+	 *   (Boolean) normalizeNickname - Whether to normalize the casing of the nickname to the way you entered it.  Otherwise, leave the casing as the sender wrote it. Defaults to true
 	 */
 	var _options = {
 		nameIdentifier: '@',
