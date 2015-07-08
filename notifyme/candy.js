@@ -24,7 +24,8 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	var _options = {
 		nameIdentifier: '@',
 		playSound: true,
-		highlightInRoom: true
+		highlightInRoom: true,
+		normalizeNickname: true
 	};
 	
 	var _getNick = function() {
@@ -77,7 +78,11 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 			if (searchRegExp.test(args.templateData.message) && args.templateData.name != _getNick()) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
-					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">$2</span>');
+					if (_options.normalizeNickname) {
+						args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
+					} else {
+						args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">$2</span>');
+					}
 				}
 			}
 		});
