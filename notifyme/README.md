@@ -16,6 +16,8 @@ This plugin will notify users when their names are mentioned and prefixed with a
 
 `highlightInRoom` - Boolean - Whether to highlight the username when it is mentioned. Defaults to `true`
 
+`normalizeNickname` - Boolean - Whether to normalize the casing of the nickname to the way you entered it.  Otherwise, leave the casing as the sender wrote it. Defaults to `true`
+
 ### Example configurations
 
     // Highlight my name when it's prefixed with a '+'
