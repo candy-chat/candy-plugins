@@ -84,7 +84,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 					if (!_options.normalizeNickname) {
 						displayNickName = searchMatch[2];
 					}
-					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + displayNickName + '</span>');
+					args.templateData.message = args.templateData.message.replace(searchMatch[2], '<span class="candy-notifyme-highlight">' + displayNickName + '</span>');
 				}
 			}
 		});
