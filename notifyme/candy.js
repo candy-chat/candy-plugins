@@ -72,8 +72,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			var searchTerm = _getSearchTerm();
-			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
-			var searchMatch = searchRegExp.exec(args.templateData.message);
+			var searchMatch = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig').exec(args.templateData.message);
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
