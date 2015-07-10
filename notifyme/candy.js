@@ -20,11 +20,13 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
 	 *   (Boolean) playSound - Whether to play a sound when identified. Defaults to true
 	 *   (Boolean) highlightInRoom - Whether to highlight the name in the room. Defaults to true
+	 *   (Boolean) normalizeNickname - Whether to normalize the casing of the nickname to the way you entered it.  Otherwise, leave the casing as the sender wrote it. Defaults to true
 	 */
 	var _options = {
 		nameIdentifier: '@',
 		playSound: true,
-		highlightInRoom: true
+		highlightInRoom: true,
+		normalizeNickname: true
 	};
 	
 	var _getNick = function() {
@@ -70,14 +72,18 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			var searchTerm = _getSearchTerm();
-			var searchRegExp = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig');
+			var searchMatch = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig').exec(args.templateData.message);
 			
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
-			if (searchRegExp.test(args.templateData.message) && args.templateData.name != _getNick()) {
+			if (searchMatch != null && args.templateData.name != _getNick()) {
 				// highlight if specified
 				if (_options.highlightInRoom) {
-					args.templateData.message = args.templateData.message.replace(searchRegExp, '$1<span class="candy-notifyme-highlight">' + searchTerm + '</span>');
+					var displayNickName = searchTerm;
+					if (!_options.normalizeNickname) {
+						displayNickName = searchMatch[2];
+					}
+					args.templateData.message = args.templateData.message.replace(searchMatch[2], '<span class="candy-notifyme-highlight">' + displayNickName + '</span>');
 				}
 			}
 		});
