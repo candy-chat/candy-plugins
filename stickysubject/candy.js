@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.StickySubject
@@ -25,7 +28,7 @@ CandyShop.StickySubject = (function(self, Candy, $) {
 
             // if we don't have the subject container yet, add it
             // else just update the content
-            if ($('.candy-subject-container:visible').length == 0) {
+            if ($('.candy-subject-container:visible').length === 0) {
                 $messagePane.prepend('<div class="candy-subject-container">' + subjectText + '</div>');
                 $messagePane.find('.message-pane-wrapper').addClass('candy-has-subject');
             } else {

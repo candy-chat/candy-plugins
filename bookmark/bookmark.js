@@ -3,6 +3,22 @@
  * Author: Ben Langfeld <blangfeld@mojolingo.com>
  */
 
+/* global Candy, jQuery, Strophe, $iq */
+
+var CandyShop = (function(self) { return self; }(CandyShop || {}));
+
+CandyShop.Bookmark = (function(self, Candy, $) {
+  self.init = function(){
+    $(Candy).on('candy:view.connection.status-5', function(){
+      self._createBookmarksNode();
+      return true;
+    });
+  };
+/** File: bookmark.js
+ * Candy Plugin - Bookmark rooms
+ * Author: Ben Langfeld <blangfeld@mojolingo.com>
+ */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Bookmark = (function(self, Candy, $) {

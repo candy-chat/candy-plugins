@@ -1,5 +1,8 @@
 # Candy Plugins
 
+[![Build Status](https://travis-ci.org/candy-chat/candy-plugins.png)](https://travis-ci.org/candy-chat/candy-plugins)
+[![Coverage Status](https://coveralls.io/repos/candy-chat/candy-plugins/badge.png)](https://coveralls.io/r/candy-chat/candy-plugins)
+
 This is the official plugin repository for [Candy](http://candy-chat.github.com/candy), a JavaScript based multi-user chat client.
 
 ## List of available plugins
@@ -38,6 +41,21 @@ Please submit a pull request with your plugin or your changes to a plugin. We'll
 After a successful merge of a pull request, we will give you **push access** to this repository. You can then update your plugin on your own. If you update other plugins, please consider creating a pull request in order to inform the original plugin owner.
 
 When contributing, please make sure that your code is of **high quality** and similar to other code in this repository. Also please submit a **screenshot** and a **README.md**.
+
+1. [Setup the Vagrant environment from Candy core](https://github.com/candy-chat/candy/blob/dev/CONTRIBUTING.md)
+2. Install [Node.js](http://nodejs.org/)
+3. Install [Grunt](http://gruntjs.com/) (`npm install -g grunt-cli`)
+4. Install [Bower](http://bower.io/) (`npm install -g bower`)
+5. Install npm dependencies (`npm install` in candy-plugins root directory)
+6. Install bower dependencies (`bower install` in candy-plugins root directory)
+7. Run `grunt watch` to automatically run jshint (syntax checker) and the tests while developing.
+
+### Running tests
+
+* Tests are run using [Intern](http://theintern.io).
+* `grunt` and `grunt watch` will each run unit tests in Chrome on Linux (for fast feedback).
+* `grunt test` will run both unit and integration tests in a variety of environments. Tests are run using Selenium Standalone and Phantom.JS while developing, and on Sauce Labs in CI or using `grunt test`.
+* If you don't want to use the Vagrant box to run Selenium/PhantomJS, set `CANDY_VAGRANT='false'` to run tests.
 
 ## Support & Community
 Take a look at our [FAQ](https://github.com/candy-chat/candy/wiki/Frequently-Asked-Questions). If it doesn't solve your questions, you're welcome to join our [Mailinglist on Google Groups](http://groups.google.com/group/candy-chat).

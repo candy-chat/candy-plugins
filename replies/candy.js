@@ -4,10 +4,12 @@
  * @author Drew Harry (drew.harry@gmail.com)
  * Contributors:
  *	- Sudrien <_+github@sudrien.net>
- * 
+ *
  * Adds @reply highlighting to chat messages to help with high velocity
  * conversations.
  */
+
+/* global Candy, jQuery */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
@@ -29,7 +31,7 @@ CandyShop.Replies = (function(self, Candy, $) {
 	var handleOnShow = function(e, args) {
 		var possibleNicks = $('.me').map(function(){ return $(this).attr('data-nick'); });
 		possibleNicks.push(Candy.Core.getUser().getNick());
-		
+
 		$.unique(possibleNicks).each(function(key,nick) {
 			if( RegExp("(\\W|^)" + ( requireAt ? '@' : '' ) + nick + "(\\W|$)" , "im").test(args.message) ) {
 				$(args.element).addClass("mention");
@@ -44,4 +46,5 @@ CandyShop.Replies = (function(self, Candy, $) {
 	}
 
 	return self;
+
 }(CandyShop.Replies || {}, Candy, jQuery));

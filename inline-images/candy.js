@@ -8,6 +8,8 @@
  * inside of Candy.
  */
 
+/* global Candy, jQuery, Image */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
@@ -193,4 +195,5 @@ CandyShop.InlineImages = (function(self, Candy, $) {
   };
 
   return self;
+
 }(CandyShop.InlineImages || {}, Candy, jQuery));

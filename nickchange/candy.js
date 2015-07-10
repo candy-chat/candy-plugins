@@ -5,6 +5,9 @@
  *
  * License: MIT
  */
+
+/* global Candy, jQuery, Mustache */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Nickchange = (function(self, Candy, $) {
@@ -14,7 +17,7 @@ CandyShop.Nickchange = (function(self, Candy, $) {
 
 		var html = '<li id="nickchange-control" data-tooltip="' + $.i18n._('candyshopNickchange') + '"></li>';
 		$('#emoticons-icon').after(html);
-		$('#nickchange-control').click(function(event) {
+		$('#nickchange-control').click(function() {
 			self.showModal();
 		});
 	};

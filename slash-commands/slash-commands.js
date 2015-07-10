@@ -13,6 +13,8 @@
  *	- (c) 2014 Mojo Lingo LLC. All rights reserved.
  */
 
+/* global alert, Candy, jQuery, $build */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.SlashCommands = (function(self, Candy, $) {
@@ -41,7 +43,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		'invite',
 		'kick'
 	];
-	
+
 	/* This is not a command. me-does can handle /me formatting */
 	self.passthrough = [
 		'me',
@@ -122,8 +124,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 		Candy.Core.Action.Jabber.Room.Join(room, password);
 	};
-	
-	
+
+
 	/** Function: nick
 	 * Sets Nickname
 	 *
@@ -146,7 +148,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	self.part = function() {
 		Candy.Core.Action.Jabber.Room.Leave(self.currentRoom());
 	};
-	
+
 	/** Function: leave
 	 * /part alias
 	 *
@@ -178,7 +180,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 *    (String) message Optional message to set with availability
 	 */
-	self.available = function(message) {
+	self.available = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence();
 	};
@@ -188,7 +190,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 *    (String) message Optional message to set with availability
 	 */
-	self.away = function(message) {
+	self.away = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'away'));
 	};
@@ -198,11 +200,11 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	 * Parameters:
 	 *    (String) message Optional message to set with availability
 	 */
-	self.dnd = function(message) {
+	self.dnd = function() {
 		// TODO: The message field is currently unsupported by Candy.Core.Action.Jabber.Presence
 		Candy.Core.Action.Jabber.Presence(null, $build('show', 'dnd'));
 	};
-	
+
 	/** Function: invite
 	 * invite another user to the current chat room, with lookups for real room & user jids
 	 *
@@ -235,7 +237,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			var password = argsRegex[2].trim().split(' ')[1];
 			var roomJid = null;
 		}
-		
+
 		// loop through all rooms with current connections
 		$.each(Candy.Core.getRooms(), function(roomName, roomData) {
 			if( !roomJid && roomData && roomData.room.name.match(room) ) {
@@ -248,7 +250,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 
 			// loop through all users in a room
 			// compare jids, nicks and previous nicks
-			$.each(roomData.roster.getAll(), function(userName, userData) { 
+			$.each(roomData.roster.getAll(), function(userName, userData) {
 				if( !userJid && userData.getJid().match(user) ) {
 					userJid = userData.data.jid;
 					}
@@ -285,7 +287,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
 			Candy.Core.getConnection().send(stanza.tree());
 			return;
-		} 
+		}
 
 		Candy.View.Pane.Chat.onInfoMessage(self.currentRoom(), '', "Invited " + userJid + " to " + roomJid + " (with password)");
 		var stanza = $msg({'from': Candy.Core.getUser().data.jid, 'to': userJid, 'xmlns': 'jabber:client'}).c('x', {'xmlns': 'jabber:x:conference', 'jid': roomJid});
@@ -295,7 +297,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 	};
 
 	/** Function: kick
-	 * Kick user from current room. Admins only. 
+	 * Kick user from current room. Admins only.
 	 *
 	 * Parameters:
 	 *    (String) user Nickname of user, or JID - all currently connected rooms will be checked
@@ -318,8 +320,8 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 			var user = new RegExp("^" + argsRegex[1] + "$", "i");
 			var comment = argsRegex[2].trim();
 		}
-	 
-		$.each(Candy.Core.getRooms()[self.currentRoom()].roster.getAll(), function(userName, userData) { 
+
+		$.each(Candy.Core.getRooms()[self.currentRoom()].roster.getAll(), function(userName, userData) {
 			if( !userJid && userData.getJid().match(user) ) {
 				userJid = userData.data.jid;
 				}
@@ -330,7 +332,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 				userJid = userData.data.jid;
 				}
 			});
-	 
+
 		if(userJid === undefined || userJid === null || userJid === '') {
 			return;
 		}
@@ -342,7 +344,7 @@ CandyShop.SlashCommands = (function(self, Candy, $) {
 		Candy.Core.Action.Jabber.Room.Admin.UserAction(self.currentRoom(), userJid, "kick", comment);
 	};
 
-	
+
 	/** Function: currentRoom
 	 * Helper function to get the current room
 	 */

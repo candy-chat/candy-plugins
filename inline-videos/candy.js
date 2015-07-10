@@ -4,6 +4,9 @@
  * Authors
  *   - Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: InlineVideos
@@ -17,11 +20,11 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 	 * Parameters:
 	 *   (Object) options - An options packet to apply to this plugin
 	 */
-	self.init = function(options) {
+	self.init = function() {
 		// add a listener to these events
 		$(Candy).on('candy:view.message.before-show', self.handleBeforeShow);
 	};
-	
+
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
 	 *

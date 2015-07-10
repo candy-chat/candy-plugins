@@ -9,6 +9,9 @@
  * Copyright:
  *   (c) 2014 Michael Weibel. All rights reserved.
  */
+
+/* global Candy, jQuery, Strophe, $iq */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.ModifyRole
@@ -86,7 +89,7 @@ CandyShop.ModifyRole = (function(self, Candy, $) {
                 'callback' : function(e, roomJid, user) {
                     modifyRole('participant', roomJid, user);
                 }
-            }
+            };
         });
     };
 

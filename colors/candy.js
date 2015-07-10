@@ -1,3 +1,5 @@
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.Colors = (function(self, Candy, $) {
@@ -28,7 +30,7 @@ CandyShop.Colors = (function(self, Candy, $) {
 		}
 		var html = '<li id="colors-control" data-tooltip="' + $.i18n._('candyshopColorsMessagecolor') + '"><span class="color-' + _currentColor + '" id="colors-control-indicator"></span></li>';
 		$('#emoticons-icon').after(html);
-		$('#colors-control').click(function(event) {
+		$('#colors-control').click(function() {
 			CandyShop.Colors.showPicker(this);
 		});
 	};

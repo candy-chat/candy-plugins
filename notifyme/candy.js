@@ -7,6 +7,9 @@
  * Copyright:
  *   (c) 2012 Geek Squad. All rights reserved.
  */
+
+/* global Candy, jQuery */
+
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.NotifyMe
@@ -28,11 +31,11 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		highlightInRoom: true,
 		normalizeNickname: true
 	};
-	
+
 	var _getNick = function() {
 		return Candy.Core.getUser().getNick();
 	};
-	
+
 	var _getSearchTerm = function() {
 		// make it what is searched
 		// search for <identifier>name in the whole message
@@ -53,7 +56,7 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-show', function(e, args) {
 			var searchRegExp = new RegExp('^(.*)(\s?' + _getSearchTerm() + ')', 'ig');
-			
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
 			if (searchRegExp.test(args.message) && args.name != _getNick()) {
@@ -61,19 +64,19 @@ CandyShop.NotifyMe = (function(self, Candy, $) {
 				if (_options.playSound) {
 					Candy.View.Pane.Chat.Toolbar.playSound();
 				}
-				
+
 				// Save that I'm mentioned in args
 				args.forMe = true;
 			}
-			
+
 			return args.message;
 		});
-		
+
 		// bind to the beforeShow event
 		$(Candy).on('candy:view.message.before-render', function(e, args) {
 			var searchTerm = _getSearchTerm();
 			var searchMatch = new RegExp('^(.*)(\s?' + searchTerm + ')', 'ig').exec(args.templateData.message);
-			
+
 			// if it's in the message and it's not from me, do stuff
 			// I wouldn't want to say 'just do @{MY_NICK} to get my attention' and have it knock...
 			if (searchMatch != null && args.templateData.name != _getNick()) {
