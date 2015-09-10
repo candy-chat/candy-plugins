@@ -17,11 +17,11 @@ CandyShop.MeDoes = (function(self, Candy, $) {
 	
         if(CandyShop.Timeago === undefined) {
 		Candy.View.Template.Chat.userInfoMessage = '<li><small>{{time}}</small><div class="infomessage">' +
-		'<span class="spacer">•</span>&nbsp;<span><strong>{{name}}</strong>&nbsp;{{message}}</span></div></li>';
+		'<span class="spacer">•</span>&nbsp;<span><strong>{{name}}</strong>&nbsp;{{{message}}}</span></div></li>';
 	}
 	else {
 		Candy.View.Template.Chat.userInfoMessage = '<li><small><abbr title="{{time}}">{{time}}</abbr></small><div class="infomessage">' +
-		'<span class="spacer">•</span>&nbsp;<span><strong>{{name}}</strong>&nbsp;{{message}}</span></div></li>';
+		'<span class="spacer">•</span>&nbsp;<span><strong>{{name}}</strong>&nbsp;{{{message}}}</span></div></li>';
 	}
 	
 	//Using logic from real infoMessage function and inserting custom template
