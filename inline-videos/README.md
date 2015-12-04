@@ -1,5 +1,5 @@
 # Inline Videos Plugin
-If a user posts a URL to a youtube video, that video gets rendered directly inside of Candy.
+If a user posts a URL to a youtube or vimeo video, that video gets rendered directly inside of Candy.
 
 ## Usage
 Include the JavaScript file:

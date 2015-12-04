@@ -32,7 +32,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 	 * converts youtube's t= parameter value to seconds
 	 *
 	 * Parameters:
-	 *   (String) timeString - either seconds os 00h00m00s format
+	 *   (String) timeString - either seconds or 00h00m00s format
 	 *
 	 * Returns:
 	 *   (Integer) - seconds
@@ -51,7 +51,6 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 			ret += times[4] ? parseInt(times[4]) * 60 : 0; //minutes
 			ret += times[6] ? parseInt(times[6]) : 0; //seconds
 		}
-		console.info(timeString, times, ret);
 		return ret;
 	};
 
@@ -72,34 +71,55 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 				switch(a.hostname) { // a link with an href
 				case "youtube.com":
 				case "www.youtube.com":
+				case "youtu.be":
 					if(a.pathname == "/watch") {
 						var v = a.search.match(/v=([a-zA-Z0-9_-]{11})/);
-						if(v) {
-							var start = timeToSeconds(a.search.match(/t=([hms0-9]+)/));
-							var list = a.search.match(/list=([^&]+)/);
-							var main_url = "https://youtu.be/" + (v ? v[1] : "") + "?start=" + (start ? start : "") + "&list=" + (list ? list[1] : "");
-							var embed_url = "https://www.youtube.com/embed/" + (v ? v[1] : "") + "?start=" + (start ? start[1] : "") + "&list=" + (list ? list[1] : "");
-							return "<a href='" + main_url + "'>" + main_url + "<br /><iframe width='300' height='200' src='" + embed_url + "' frameborder='0' allowfullscreen></iframe></a>";
-						}
-						else {
-							return a.outerHTML;
-						}
 					}
 					else {
-						return a.outerHTML;
+						var v = a.pathname.match(/^\/([a-zA-Z0-9_-]{11})/);
+					}
+					var start = timeToSeconds(a.search.match(/t=([hms0-9]+)/));
+					var list = a.search.match(/list=([^&]+)/);
+					var main_url = "https://youtu.be/" + (v ? v[1] : "");
+					var embed_url = "https://www.youtube.com/embed/" + (v ? v[1] : "");
+
+					if(start || list) {
+						main_url += "?";
+						embed_url += "?";
+					}
+					if(start > 0) {
+						main_url += "t=" + start;
+						embed_url += "start=" + start;
+					}
+					if(start && list) {
+						main_url += "&";
+						embed_url += "&";
+					}
+					if(list) {
+						main_url += "list=" + list[1];
+						embed_url += "list=" + list[1];
 					}
 					break;
-				case "youtu.be":
-					var v = a.pathname.match(/\/([a-zA-Z0-9_-]{11})/);
-					var start = timeToSeconds(a.search.match(/t=([hms0-9]+)/));
-					var list = a.search.match(/list=([^&]+)/); 
-					var main_url = "https://youtu.be/" + (v ? v[1] : "") + "?start=" + (start ? start : "") + "&list=" + (list ? list[1] : "");
-					var embed_url = "https://www.youtube.com/embed/" + (v ? v[1] : "") + "?start=" + (start ? start[1] : "") + "&list=" + (list ? list[1] : "");
-					return "<a href='" + main_url + "'>" + main_url + "<br /><iframe width='300' height='200' src='" + embed_url + "' frameborder='0' allowfullscreen></iframe></a>";
-					break;
-				default:  //undefined - not a link
+				case "vimeo.com":
+				case "player.vimeo.com":
+					if(a.pathname.match(/video/)) {
+						var v = a.pathname.match(/\/video\/(\d+)/);
+					}
+					else {
+						var v = a.pathname.match(/^\/(\d+)/);
+					}
+					var main_url = "https://vimeo.com/" + (v ? v[1] : "");
+					var embed_url = "https://player.vimeo.com/video/" + (v ? v[1] : "");
+				}
+				
+				if (v) {
+					return "<a href='" + main_url + "'>" + main_url + "<br /><iframe width='360' height='202' src='" + embed_url + "' frameborder='0' allowfullscreen></iframe></a>";
+				}
+				else {
 					return a.outerHTML;
 				}
+				
+				
 			}
 			else { //this is a string that has to be wrapped in somthing
 				return a.textContent;
