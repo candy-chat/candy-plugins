@@ -99,6 +99,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 						main_url += "list=" + list[1];
 						embed_url += "list=" + list[1];
 					}
+					var aspect = "16by9";
 					break;
 				case "vimeo.com":
 				case "player.vimeo.com":
@@ -110,10 +111,35 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 					}
 					var main_url = "https://vimeo.com/" + (v ? v[1] : "");
 					var embed_url = "https://player.vimeo.com/video/" + (v ? v[1] : "");
+					var aspect = "16by9";
+					break;
+				case "dailymotion.com":
+				case "www.dailymotion.com":
+					if(a.pathname.match(/video\/x/)) {
+						var v = a.pathname.match(/\/video\/(x[\da-z]+)(_|$)/);
+					}
+					var main_url = "https://www.dailymotion.com/video/" + (v ? v[1] : "");
+					var embed_url = "https://www.dailymotion.com/embed/video/" + (v ? v[1] : "");
+					var aspect = "16by9";
+					break;
+				case "vine.co":
+				case "www.vine.co":
+					if(a.pathname.match(/v\//)) {
+						var v = a.pathname.match(/v\/([\da-z]+)(\/|$)/i);
+					}
+					var main_url = "https://vine.co/v/" + (v ? v[1] : "");
+					var embed_url = "https://vine.co/v/" + (v ? v[1] : "") + "/embed/simple";
+					var aspect = "1by1";
+					break;
 				}
 				
 				if (v) {
-					return "<a href='" + main_url + "'>" + main_url + "<br /><iframe width='360' height='202' src='" + embed_url + "' frameborder='0' allowfullscreen></iframe></a>";
+					return "<a href='" + main_url + "'>" + main_url + "<br />\
+					<div class='inline-video inline-video-" + aspect + "'>\
+					<iframe src='" + embed_url + "' allowfullscreen='true'>\
+					</iframe>\
+					</div>\
+					</a>";
 				}
 				else {
 					return a.outerHTML;
