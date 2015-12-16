@@ -19,6 +19,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
    *   (Boolean) notifyMention - Notification for mentions. Defaults to true
    *   (Integer) closeTime - Time until closing the Notification. (0 = Don't close) Defaults to 3000
    *   (String)  title - Title to be used in notification popup. Set to null to use the contact's name.
+   *   (Boolean) requireInteraction - Enables the use of  closetime 0 to let notifications remain visible.
    *   (String)  icon - Path to use for image/icon for notification popup.
    */
   var _options = {
@@ -27,6 +28,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
     notifyMention: true,
     closeTime: 3000,
     title: null,
+    requireInteraction: true,
     icon: window.location.origin + '/' + Candy.View.getOptions().assets + '/img/favicon.png'
   };
 
@@ -84,6 +86,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
           notification = new window.Notification(title, {
           icon: _options.icon,
           body: args.message
+          requireInteraction: _options.requireInteraction
         });
 
         // Close it after 3 Seconds
