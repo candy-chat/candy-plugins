@@ -103,7 +103,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 					break;
 				case "vimeo.com":
 				case "player.vimeo.com":
-					if(a.pathname.match(/video/)) {
+					if(a.pathname.match(/\/video\//)) {
 						var v = a.pathname.match(/\/video\/(\d+)/);
 					}
 					else {
@@ -115,7 +115,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 					break;
 				case "dailymotion.com":
 				case "www.dailymotion.com":
-					if(a.pathname.match(/video\/x/)) {
+					if(a.pathname.match(/\/video\/x/)) {
 						var v = a.pathname.match(/\/video\/(x[\da-z]+)(_|$)/);
 					}
 					var main_url = "https://www.dailymotion.com/video/" + (v ? v[1] : "");
@@ -124,8 +124,8 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 					break;
 				case "vine.co":
 				case "www.vine.co":
-					if(a.pathname.match(/v\//)) {
-						var v = a.pathname.match(/v\/([\da-z]+)(\/|$)/i);
+					if(a.pathname.match(/^\/v\//)) {
+						var v = a.pathname.match(/^\/v\/([\da-z]+)(\/|$)/i);
 					}
 					var main_url = "https://vine.co/v/" + (v ? v[1] : "");
 					var embed_url = "https://vine.co/v/" + (v ? v[1] : "") + "/embed/simple";
