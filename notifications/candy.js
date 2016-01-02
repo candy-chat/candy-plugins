@@ -85,7 +85,7 @@ CandyShop.Notifications = (function(self, Candy, $) {
         var title = !_options.title ? args.name : _options.title ,
           notification = new window.Notification(title, {
           icon: _options.icon,
-          body: args.message
+          body: args.message,
           requireInteraction: _options.requireInteraction
         });
 
