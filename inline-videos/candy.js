@@ -51,7 +51,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 			ret += times[6] ? parseInt(times[6]) : 0; //seconds
 		}
 		return ret;
-	};	
+	};
 
 	/** Function: linkReplace
 	 * The logic to our link replacement, which uses browser link parsing
@@ -71,78 +71,78 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 		var a = document.createElement('a');
 		a.href = href;
 
+		var v, mainUrl, embedUrl, aspect = "16by9";
+
 		switch(a.hostname) { // a link with an href
 		case "youtube.com":
 		case "www.youtube.com":
 		case "youtu.be":
 			if(a.pathname == "/watch") {
-				var v = a.search.match(/v=([a-zA-Z0-9_-]{11})/);
+				v = a.search.match(/v=([a-zA-Z0-9_-]{11})/);
 			}
 			else {
-				var v = a.pathname.match(/^\/([a-zA-Z0-9_-]{11})/);
+				v = a.pathname.match(/^\/([a-zA-Z0-9_-]{11})/);
 			}
+			mainUrl = "https://youtu.be/" + (v ? v[1] : "");
+			embedUrl = "https://www.youtube.com/embed/" + (v ? v[1] : "");
+
+			// Youtube special features
 			var start = timeToSeconds(a.search.match(/t=([hms0-9]+)/));
 			var list = a.search.match(/list=([^&]+)/);
-			var main_url = "https://youtu.be/" + (v ? v[1] : "");
-			var embed_url = "https://www.youtube.com/embed/" + (v ? v[1] : "");
-
 			if(start || list) {
-				main_url += "?";
-				embed_url += "?";
+				mainUrl += "?";
+				embedUrl += "?";
 			}
 			if(start > 0) {
-				main_url += "t=" + start;
-				embed_url += "start=" + start;
+				mainUrl += "t=" + start;
+				embedUrl += "start=" + start;
 			}
 			if(start && list) {
-				main_url += "&";
-				embed_url += "&";
+				mainUrl += "&";
+				embedUrl += "&";
 			}
 			if(list) {
-				main_url += "list=" + list[1];
-				embed_url += "list=" + list[1];
+				mainUrl += "list=" + list[1];
+				embedUrl += "list=" + list[1];
 			}
-			var aspect = "16by9";
 			break;
 		case "vimeo.com":
 		case "player.vimeo.com":
 			if(a.pathname.match(/video/)) {
-				var v = a.pathname.match(/\/video\/(\d+)/);
+				v = a.pathname.match(/\/video\/(\d+)/);
 			}
 			else {
-				var v = a.pathname.match(/^\/(\d+)/);
+				v = a.pathname.match(/^\/(\d+)/);
 			}
-			var main_url = "https://vimeo.com/" + (v ? v[1] : "");
-			var embed_url = "https://player.vimeo.com/video/" + (v ? v[1] : "");
-			var aspect = "16by9";
+			mainUrl = "https://vimeo.com/" + (v ? v[1] : "");
+			embedUrl = "https://player.vimeo.com/video/" + (v ? v[1] : "");
 			break;
 		case "dailymotion.com":
 		case "www.dailymotion.com":
 			if(a.pathname.match(/video\/x/)) {
-				var v = a.pathname.match(/\/video\/(x[\da-z]+)(_|$)/);
+				v = a.pathname.match(/\/video\/(x[\da-z]+)(_|$)/);
 			}
-			var main_url = "https://www.dailymotion.com/video/" + (v ? v[1] : "");
-			var embed_url = "https://www.dailymotion.com/embed/video/" + (v ? v[1] : "");
-			var aspect = "16by9";
+			mainUrl = "https://www.dailymotion.com/video/" + (v ? v[1] : "");
+			embedUrl = "https://www.dailymotion.com/embed/video/" + (v ? v[1] : "");
 			break;
 		case "vine.co":
 		case "www.vine.co":
 			if(a.pathname.match(/v\//)) {
-				var v = a.pathname.match(/v\/([\da-z]+)(\/|$)/i);
+				v = a.pathname.match(/v\/([\da-z]+)(\/|$)/i);
 			}
-			var main_url = "https://vine.co/v/" + (v ? v[1] : "");
-			var embed_url = "https://vine.co/v/" + (v ? v[1] : "") + "/embed/simple";
-			var aspect = "1by1";
+			mainUrl = "https://vine.co/v/" + (v ? v[1] : "");
+			embedUrl = "https://vine.co/v/" + (v ? v[1] : "") + "/embed/simple";
+			aspect = "1by1";
 			break;
 		}
-		
+
 		if (v) {
-			self.appender += "<div class='inline-video inline-video-" + aspect + "'><iframe src='" + embed_url + "' allowfullscreen='true'></iframe></div> ";
-			return "<a href='" + main_url + "'>" + main_url + "</a>";
+			self.appender += "<div class='inline-video inline-video-" + aspect + "'><iframe src='" + embedUrl + "' allowfullscreen='true'></iframe></div> ";
+			return "<a href='" + mainUrl + "'>" + mainUrl + "</a>";
 			}
 		return match;
 		}
-	
+
 	/** Function: handleBeforeShow
 	 * Handles the beforeShow event of a message.
 	 *
@@ -158,7 +158,7 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 		if(args.xhtmlMessage) {
 			args.xhtmlMessage = args.xhtmlMessage.replace(/\<a href="(.+?)".+?\<\/a\>/g, linkReplace);
 			if(self.appender != "") {
-				args.xhtmlMessage += "<br>";
+				args.xhtmlMessage += "<br />";
 				args.xhtmlMessage += self.appender;
 			}
 		}
@@ -167,12 +167,10 @@ CandyShop.InlineVideos = (function(self, Candy, $) {
 
 		args.message = args.message.replace(/\<a href="(.+?)".+?\<\/a\>/g, linkReplace);
 		if(self.appender != "") {
-			args.message += "<br>";
+			args.message += "<br />";
 			args.message += self.appender;
 		}
 	};
 
 	return self;
 }(CandyShop.InlineVideos || {}, Candy, jQuery));
-
-
