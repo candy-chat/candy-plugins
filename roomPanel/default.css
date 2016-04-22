@@ -2,6 +2,10 @@
     color: #333;
 }
 
+.roomList ul {
+	overflow: auto;
+}
+
 #roomPanel-control {
     width: 16px;
     background: url(images/room.png);
