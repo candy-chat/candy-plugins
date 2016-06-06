@@ -7,7 +7,7 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.CreateRoom = (function(self, Candy, $) {
   self._options = {
-    subdomain: 'conference'
+    domain: null
   }
   /** Object: about
    *
@@ -60,8 +60,10 @@ CandyShop.CreateRoom = (function(self, Candy, $) {
       } else {
         var roomName = $('#create-group-form-name').val().trim();
         // Create a valid roomjid.
-        var roomJid = roomName.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@' + self._options.subdomain + '.' +
-                       Candy.Core.getConnection().domain;
+        if(!self._options.domain) { // TODO: do this earlier. init() is *too* early because that happens before Candy connects, but maybe we could attach this in a post-connect event handler? That will require more research than I care for at the moment, though.
+            self._options.domain = "conference" + '.' + Candy.Core.getConnection().domain;
+        }
+        var roomJid = roomName.replace(/[^A-Z0-9]+/ig, "_").toLowerCase() + '@' + self._options.domain ;
 
         // Once we've joined the room, send configuration information.
         $(Candy).on('candy:view.room.after-add', function(ev, obj) {
