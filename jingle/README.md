@@ -22,7 +22,7 @@ Include the following lines into header section of your index.html ::
 
 ```
 
-To enable the plugin, add it's ´init´ method to your bootstrap (usually index.html), after you `init` Candy, but before `Candy.connect()`,include  STUN/TURN servers of your choice ::
+To enable the plugin, add it's `init` method to your bootstrap (usually index.html), after you `init` Candy, but before `Candy.connect()`,include  STUN/TURN servers of your choice ::
 
 ```JavaScript
 
