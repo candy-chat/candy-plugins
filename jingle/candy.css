@@ -1,0 +1,29 @@
+/**
+ * Candy Plugin for Video Conferencing based on XEP-0166: Jingle
+ *
+ * Copyright: 2015-2016 Andrey Prokopenko <andrey_prokopenko@terem.fr>
+ */
+#context-menu .jingle {
+	background-image: url('telephone.png');
+}
+
+#jingle-videos {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin-right: 200px;
+}
+
+#jingle-localView {
+	display: inline-block;
+	vertical-align: middle;
+	width:50%;
+	margin: 0 auto;
+}
+#jingle-remoteView {
+	display: inline-block;
+	vertical-align: middle;
+	width:50%;
+	margin: 0 auto;
+}
+
