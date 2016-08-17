@@ -1,6 +1,7 @@
 # Join Plugin
-Candy Plugin for Video Conferencing based on XEP-0166: Jingle
-After installing the pluging new video call option will appear in drop-down context list, provided your browser has WebRTC support
+Candy Plugin for Video Conferencing based on XEP-0166: Jingle.
+
+After instalation a new `Video call` option will appear in drop-down context list, provided your browser has WebRTC support
 
 ## Installing
 
