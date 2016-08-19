@@ -9,7 +9,6 @@ var RTC = null;
 var RTCPeerconnection = null;
 CandyShop.Jingle = (function(self, Candy, $) {
 		_initiator = false,		
-		_session = null,
 		_callinvite_accepted_ack = null,
 		_call_accepted_peerjid = null,
 		_peerjid = null,		
@@ -23,15 +22,17 @@ CandyShop.Jingle = (function(self, Candy, $) {
 			_onTerminate.call(Candy.Core.getConnection().jingle,$stanza.attr('from'));
 		},
 		_displayError = function(reason) {
-			Candy.View.Pane.Chat.Modal.show($.i18n._('jingleReason-' + reason), true);
+			Candy.View.Pane.Chat.Modal.show($.i18n._('Communication error : '+reason), true);
 		},
 		_onTerminate = function(jid) {
 			if (_peerjid && Candy.View.Pane.Chat.rooms[_peerjid]) Candy.View.Pane.Room.close(_peerjid);	
-			if (_session) {				
-				//_session.sendTerminate();
-				try { _session.terminate(); } catch(e) {}
-				_session=null;
-			};
+			try { 
+			    if (Candy.Core.getConnection().jingle.jid2session.hasOwnProperty(_peerjid)) {
+				var sid = Candy.Core.getConnection().jingle.jid2session[_peerjid].sid;
+				Candy.Core.getConnection().jingle.terminate(sid);				 
+			    }
+			    
+			} catch(e) {console.log("error while terminating session:"+e.stack);}
 			if (Candy.Core.getConnection().jingle.localStream) {
   				Candy.Core.getConnection().jingle.localStream.getTracks().forEach(function (track) {
 					console.log("stopping the track");
@@ -113,6 +114,10 @@ CandyShop.Jingle = (function(self, Candy, $) {
 				_onTerminate.call(Candy.Core.getConnection().jingle,_peerjid);
 				Candy.View.Pane.Chat.Modal.show($.i18n._('callInvitationDenied'), true, false);				
 			        break;
+			 case 'callinvite-busy': 
+				Candy.View.Pane.Chat.Modal.show($.i18n._('callInvitationBusy'), true, false);				
+				_onTerminate.call(Candy.Core.getConnection().jingle,_peerjid);
+			        break;
  			 case 'callinvite-accepted':
 				Candy.View.Pane.Chat.Modal.show($.i18n._('callInvitationAccepted'), true, false);				
 				getUserMediaWithConstraints(['audio', 'video']);
@@ -140,6 +145,11 @@ CandyShop.Jingle = (function(self, Candy, $) {
             //var sess = conn.jingle.sessions[sid];
             if (action == 'call-invitation') {
 		var ack = $iq({type: 'result', to: iq.getAttribute('from'), id: iq.getAttribute('id') });
+		if (_callinvite_accepted_ack) {
+			ack.c('jingle', {xmlns: 'urn:xmpp:jingle:1', action: 'callinvite-busy'});
+			conn.send(ack);
+			return;
+		}
 		var form_timeout = null;
 		   Candy.View.Pane.Chat.Modal.show(Mustache.to_html(_CallAcceptTemplate, {
 			_label: $.i18n._('labelCallConfirm', [_nick]),
@@ -181,13 +191,12 @@ CandyShop.Jingle = (function(self, Candy, $) {
 		Candy.View.Translation.en.calling = 'Establishing video call...';
 		Candy.View.Translation.en.hangup = 'Hangup';
 		Candy.View.Translation.en.callTerminated = 'Recipient terminated the call.';
-		Candy.View.Translation.en.callInvitationSent = 'Sent call invitation, awaiting 30 seconds on response';
-		Candy.View.Translation.en.callInvitationAccepted = 'Call invitation has been accepted, initiating the call';
-		Candy.View.Translation.en.callInvitationDenied = 'Call invitation has been denied';
-		Candy.View.Translation.en.callInvitationTimeout = 'Timeout on sending call invitation';
-		Candy.View.Translation.en.callInvitationError = 'Error on sending call invitation ';
-		Candy.View.Translation.en['jingleReason-service-unavailable'] = 'Recipient does not support video.';
-		Candy.View.Translation.en['jingleReason-resource-constraint'] = 'Recipient is already in a call.';
+		Candy.View.Translation.en.callInvitationSent = 'Sent call invitation, awaiting 30 seconds on response.';
+		Candy.View.Translation.en.callInvitationAccepted = 'Call invitation has been accepted, initiating the call.';
+		Candy.View.Translation.en.callInvitationDenied = 'Call invitation has been denied.';
+		Candy.View.Translation.en.callInvitationBusy = 'Recipient is already in a call.';
+		Candy.View.Translation.en.callInvitationTimeout = 'Timeout on sending call invitation.';
+		Candy.View.Translation.en.callInvitationError = 'Error on sending call invitation.';
     		RTC = setupRTC();
     		if (RTC !== null) {
 		    	console.log("RTC had been initialized");
@@ -236,7 +245,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
                   	RTC.attachMediaStream($('#jingle-localView'), stream);
 			$('#jingle-icons').removeClass('hidden');
 			if (_initiator) {
-				_session = conn.jingle.initiate(_peerjid,conn.jid);
+				conn.jingle.initiate(_peerjid,conn.jid);
 				_call_accepted_peerjid = _peerjid;
 			}
 			else {
@@ -250,10 +259,10 @@ CandyShop.Jingle = (function(self, Candy, $) {
 	        
 		//--------------------------------------------------------------------
                $(document).bind('callincoming.jingle', function(event, sid) {
-		   _session = Candy.Core.getConnection().jingle.sessions[sid];
+		   var sess = Candy.Core.getConnection().jingle.sessions[sid];
 		   _initiator = false;
-		   _session.sendAnswer();
-                   _session.accept();
+		   sess.sendAnswer();
+                   sess.accept();
                 });
                 $(document).bind('callterminated.jingle', function(event, sid, reason) {
 			if (_showterminate) Candy.View.Pane.Chat.Modal.show($.i18n._('callTerminated'), true);
@@ -362,7 +371,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
 		    var jingle_menu_elem = {
 		            requiredPermission: function(user, me) {
 				//console.log('ch0,user='+JSON.stringify(user, null, 2));
-		                return me.getNick() !== user.getNick() && !Candy.Core.getUser().isInPrivacyList('ignore', user.getJid()) && RTC;						
+		                return me.getNick() !== user.getNick() && !Candy.Core.getUser().isInPrivacyList('ignore', user.getJid()) && RTC && !_peerjid;						
 		            },
 		            'class': 'jingle',
 		            'label': 'Video call',

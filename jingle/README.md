@@ -36,3 +36,15 @@ To enable the plugin, add it's `init` method to your bootstrap (usually index.ht
 			CandyShop.Jingle.init(helper_srv_config);
 
 ```
+## Debug
+To get complete trace of WebRTC session all you need is minor update inside ` jingle/candy.js ` plugin. 
+Replace normal peerconnection with traceable one, as shown below:
+
+```JavaScript
+
+        	RTCPeerconnection = RTC.peerconnection;
+		//RTCPeerconnection = TraceablePeerConnection;
+
+```
+Next, you can open Javascript console (F12 in Mozilla/Chrome) and issue console.log(JSON.stringify(Candy.Core.getConnection().jingle.getLog()));
+to see consolidated logs of all active jingle/WebRTC sessions. 

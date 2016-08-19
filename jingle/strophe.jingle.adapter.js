@@ -10,7 +10,6 @@ function TraceablePeerConnection(ice_config, constraints) {
 
     // override as desired
     this.trace = function(what, info) {
-        console.log("peerconn=>"+what+";"+info);
         self.updateLog.push({
             time: new Date(),
             type: what,
@@ -26,7 +25,7 @@ function TraceablePeerConnection(ice_config, constraints) {
     };
     this.onaddstream = null;
     this.peerconnection.onaddstream = function (event) {
-        self.trace('+++++++++++++++++++++++++++onaddstream', event.stream.id);
+        self.trace('onaddstream', event.stream.id);
         if (self.onaddstream !== null) {
             self.onaddstream(event);
         }

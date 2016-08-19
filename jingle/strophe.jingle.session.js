@@ -66,7 +66,6 @@ JingleSession.prototype.initiate = function (peerjid, isInitiator) {
     try {
         this.peerconnection = new RTCPeerconnection(this.ice_config,this.pc_constraints);
 	//this.peerconnection = new TraceablePeerConnection(this.ice_config,this.pc_constraints);
-	Candy.Core.getConnection().jingle.updateLog = this.peerconnection.updateLog;
     } catch (e) {
         console.error('Failed to create PeerConnection, exception: ',
                       e.message);
