@@ -25,7 +25,7 @@ function JingleSession(me, sid, connection) {
 
     this.usetrickle = true;
     this.usepranswer = false; // early transport warmup -- mind you, this might fail. depends on webrtc issue 1718
-    this.usedrip = false; // dripping is sending trickle candidates not one-by-one
+    this.usedrip = true; // dripping is sending trickle candidates not one-by-one
 
     this.hadstuncandidate = false;
     this.hadturncandidate = false;
@@ -280,8 +280,7 @@ JingleSession.prototype.sendIceCandidates = function (candidates) {
         .c('jingle', {xmlns: 'urn:xmpp:jingle:1',
            action: 'transport-info',
            initiator: this.initiator,
-           sid: this.sid});
-    console.log("icecandidate iq to send="+cand.toString());
+           sid: this.sid});    
     for (var mid = 0; mid < this.localSDP.media.length; mid++) {
         var cands = candidates.filter(function (el) { return el.sdpMLineIndex == mid; });
         var mline = SDPUtil.parse_mline(this.localSDP.media[mid].split('\r\n')[0]);
@@ -364,7 +363,6 @@ JingleSession.prototype.createdOffer = function (sdp) {
 	try {
         this.localSDP.toJingle(init, this.initiator == this.me ? 'initiator' : 'responder');
 	} catch(e) {console.log("error while converting SDP to Jingle =>"+e); return;}
-	console.log("offer iq we are going to send="+Strophe.serialize(init));
         this.connection.sendIQ(init,
             function () {
 		console.log("succesfully sent iq offer and got response;");
@@ -443,10 +441,10 @@ JingleSession.prototype.setRemoteDescription = function (elem, desctype) {
 
     this.peerconnection.setRemoteDescription(remotedesc,
         function () {
-            console.log('>>>>>>>>>>>>>>>>>>>>>>>>>setRemoteDescription success,type='+remotedesc.type);
+            console.log('setRemoteDescription success,type='+remotedesc.type);
         },
         function (e) {
-            console.error('>>>>>>>>>>>>>>>>>>>>>>>>>>>>><setRemoteDescription error', e);
+            console.error('setRemoteDescription error', e);
         }
     );
 };
@@ -610,7 +608,6 @@ JingleSession.prototype.createdAnswer = function (sdp, provisional) {
                    responder: this.responder,
                    sid: this.sid });
             this.localSDP.toJingle(accept, this.initiator == this.me ? 'initiator' : 'responder');
-	    console.log("iq answer to be sent=>"+Strophe.serialize(accept));
             this.connection.sendIQ(accept,
                 function () {
                     var ack = {};

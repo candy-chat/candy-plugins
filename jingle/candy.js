@@ -14,47 +14,40 @@ CandyShop.Jingle = (function(self, Candy, $) {
 		_call_accepted_peerjid = null,
 		_peerjid = null,		
 		_nick = null,
-		_showterminate = true,		
+		_showterminate = true,
+		_iconsTimeout = null,
 		_handleError = function(stanza) {
 			var $stanza = $(stanza),
 				reason = $stanza.children('error').firstChild;
 			_displayError(reason);
-			_onTerminate($stanza.attr('from'));
+			_onTerminate.call(Candy.Core.getConnection().jingle,$stanza.attr('from'));
 		},
 		_displayError = function(reason) {
 			Candy.View.Pane.Chat.Modal.show($.i18n._('jingleReason-' + reason), true);
 		},
 		_onTerminate = function(jid) {
-			try {
-			if (!_peerjid) return;
-  			Candy.Core.getConnection().jingle.localStream.getTracks().forEach(function (track) {
-    				track.stop();
-  			});
-			if (document.getElementById('jingle-remoteView') != null) { 
-				$('#jingle-localView').attr('src', '');
-				$('#jingle-remoteView').attr('src', '');
-				//$('#jingle-videos').remove();
-			};
-			if (Candy.View.Pane.Chat.rooms[_peerjid]) Candy.View.Pane.Room.close(_peerjid);	
+			if (_peerjid && Candy.View.Pane.Chat.rooms[_peerjid]) Candy.View.Pane.Room.close(_peerjid);	
 			if (_session) {				
-				_session.sendTerminate();
+				//_session.sendTerminate();
 				try { _session.terminate(); } catch(e) {}
 				_session=null;
 			};
+			if (Candy.Core.getConnection().jingle.localStream) {
+  				Candy.Core.getConnection().jingle.localStream.getTracks().forEach(function (track) {
+					console.log("stopping the track");
+    					track.stop();
+  				});
+			}
 			_initiator = false;			
 			_peerjid = null;		
 			_nick = null;
 			_callinvite_accepted_ack = null;
 			_call_accepted_peerjid = null;
 			_showterminate = true;
-	  	    	} catch(e) { console.log("error while terminating session =>"+e.stack);}
 		},
-
-		_Template = {
-			callConfirm: '<strong>{{_label}}</strong>'
+		_CallAcceptTemplate ='<strong>{{_label}}</strong>'
 				+ '<p><button class="button" id="jingle-call-confirm-yes">{{_labelYes}}</button> '
-				+ '<button class="button" id="jingle-call-confirm-no">{{_labelNo}}</button></p>'
-		};
+				+ '<button class="button" id="jingle-call-confirm-no">{{_labelNo}}</button></p>';
 	        _addVideoPane = function(jid,nick) {
 		  Candy.View.Pane.PrivateRoom.open(jid, nick, true, false);
 		  $('#chat-rooms > div[data-roomjid="' + jid + '"] > div.message-pane-wrapper').remove();
@@ -62,12 +55,43 @@ CandyShop.Jingle = (function(self, Candy, $) {
 		  $('#chat-rooms > div[data-roomjid="' + jid + '"]').append(
 			  '<div id="jingle-videos">'
 			+ '<video id="jingle-localView" autoplay="true"></video>'
-			+ '<video id="jingle-remoteView" autoplay="true"></video>'
+			+ '<center><video id="jingle-remoteView" autoplay="true"></video></center>'
+
++ '  <div id="jingle-icons" class="hidden">'
++ '    <svg id="mute-audio" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">'
++ '    <title>title</title>'
++ '      <circle cx="24" cy="24" r="34">'
++ '        <title>Mute audio</title>'
++ '      </circle>'
++ '      <path class="on" transform="scale(0.6), translate(17,18)" d="M38 22h-3.4c0 1.49-.31 2.87-.87 4.1l2.46 2.46C37.33 26.61 38 24.38 38 22zm-8.03.33c0-.11.03-.22.03-.33V10c0-3.32-2.69-6-6-6s-6 2.68-6 6v.37l11.97 11.96zM8.55 6L6 8.55l12.02 12.02v1.44c0 3.31 2.67 6 5.98 6 .45 0 .88-.06 1.3-.15l3.32 3.32c-1.43.66-3 1.03-4.62 1.03-5.52 0-10.6-4.2-10.6-10.2H10c0 6.83 5.44 12.47 12 13.44V42h4v-6.56c1.81-.27 3.53-.9 5.08-1.81L39.45 42 42 39.46 8.55 6z" fill="white"/>'
++ '      <path class="off" transform="scale(0.6), translate(17,18)"  d="M24 28c3.31 0 5.98-2.69 5.98-6L30 10c0-3.32-2.68-6-6-6-3.31 0-6 2.68-6 6v12c0 3.31 2.69 6 6 6zm10.6-6c0 6-5.07 10.2-10.6 10.2-5.52 0-10.6-4.2-10.6-10.2H10c0 6.83 5.44 12.47 12 13.44V42h4v-6.56c6.56-.97 12-6.61 12-13.44h-3.4z"  fill="white"/>'
++ '    </svg>'
++ '    <svg id="mute-video" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">'
++ '      <circle cx="24" cy="24" r="34">'
++ '        <title>Mute video</title>'
++ '      </circle>'
++ '      <path class="on" transform="scale(0.6), translate(17,16)" d="M40 8H15.64l8 8H28v4.36l1.13 1.13L36 16v12.36l7.97 7.97L44 36V12c0-2.21-1.79-4-4-4zM4.55 2L2 4.55l4.01 4.01C4.81 9.24 4 10.52 4 12v24c0 2.21 1.79 4 4 4h29.45l4 4L44 41.46 4.55 2zM12 16h1.45L28 30.55V32H12V16z" fill="white"/>'
++ '      <path class="off" transform="scale(0.6), translate(17,16)" d="M40 8H8c-2.21 0-4 1.79-4 4v24c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm-4 24l-8-6.4V32H12V16h16v6.4l8-6.4v16z" fill="white"/>'
++ '    </svg>'
++ '    <svg id="fullscreen" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">'
++ '      <circle cx="24" cy="24" r="34">'
++ '        <title>Enter fullscreen</title>'
++ '      </circle>'
++ '      <path class="on" transform="scale(0.8), translate(7,6)" d="M10 32h6v6h4V28H10v4zm6-16h-6v4h10V10h-4v6zm12 22h4v-6h6v-4H28v10zm4-22v-6h-4v10h10v-4h-6z" fill="white"/>'
++ '      <path class="off" transform="scale(0.8), translate(7,6)"  d="M14 28h-4v10h10v-4h-6v-6zm-4-8h4v-6h6v-4H10v10zm24 14h-6v4h10V28h-4v6zm-6-24v4h6v6h4V10H28z" fill="white"/>'
++ '    </svg>'
++ '    <svg id="hangup" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewbox="-10 -10 68 68">'
++ '      <circle cx="24" cy="24" r="34">'
++ '        <title>Hangup</title>'
++ '      </circle>'
++ '      <path transform="scale(0.7), translate(11,10)" d="M24 18c-3.21 0-6.3.5-9.2 1.44v6.21c0 .79-.46 1.47-1.12 1.8-1.95.98-3.74 2.23-5.33 3.7-.36.35-.85.57-1.4.57-.55 0-1.05-.22-1.41-.59L.59 26.18c-.37-.37-.59-.87-.59-1.42 0-.55.22-1.05.59-1.42C6.68 17.55 14.93 14 24 14s17.32 3.55 23.41 9.34c.37.36.59.87.59 1.42 0 .55-.22 1.05-.59 1.41l-4.95 4.95c-.36.36-.86.59-1.41.59-.54 0-1.04-.22-1.4-.57-1.59-1.47-3.38-2.72-5.33-3.7-.66-.33-1.12-1.01-1.12-1.8v-6.21C30.3 18.5 27.21 18 24 18z" fill="white"/>'
++ '    </svg>'
++ '  </div>'
 			+ '</div>');
 			$('#chat-tabs li[data-roomjid="' + jid + '"] a.close')
 				.click(function() {
 					_showterminate=false;
-					_onTerminate(_peerjid);
+					_onTerminate.call(Candy.Core.getConnection().jingle,_peerjid);
 				});
 		 
 		},
@@ -86,7 +110,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
 			var action = $(stanza).find('jingle').attr('action');
 			switch(action) {
 			 case 'callinvite-denied': 
-				_onTerminate();
+				_onTerminate.call(Candy.Core.getConnection().jingle,_peerjid);
 				Candy.View.Pane.Chat.Modal.show($.i18n._('callInvitationDenied'), true, false);				
 			        break;
  			 case 'callinvite-accepted':
@@ -117,7 +141,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
             if (action == 'call-invitation') {
 		var ack = $iq({type: 'result', to: iq.getAttribute('from'), id: iq.getAttribute('id') });
 		var form_timeout = null;
-		   Candy.View.Pane.Chat.Modal.show(Mustache.to_html(_Template.callConfirm, {
+		   Candy.View.Pane.Chat.Modal.show(Mustache.to_html(_CallAcceptTemplate, {
 			_label: $.i18n._('labelCallConfirm', [_nick]),
 			_labelYes: $.i18n._('labelYes'),
 			_labelNo: $.i18n._('labelNo')
@@ -173,7 +197,8 @@ CandyShop.Jingle = (function(self, Candy, $) {
     		}
         	RTCPeerconnection = RTC.peerconnection;
 		//RTCPeerconnection = TraceablePeerConnection;
-
+		document.cancelFullScreen = document.webkitCancelFullScreen ||  document.mozCancelFullScreen || document.cancelFullScreen;
+		document.body.requestFullScreen = document.body.webkitRequestFullScreen || document.body.mozRequestFullScreen || document.body.requestFullScreen;
 		$(Candy).on('candy:core.chat.connection',function(event,p_status) {		  
 			try {
 			if (p_status.status == Strophe.Status.CONNECTED) {
@@ -200,7 +225,6 @@ CandyShop.Jingle = (function(self, Candy, $) {
                 //---------------------------------------------------------------------
 		$(document).bind('mediaready.jingle', function(event, stream) {
 		  console.log("meadiaready event fired");
-		  try {
 			if (document.getElementById('jingle-remoteView') == null) { 
 			  console.log("adding videopane for peer="+_peerjid+";nick="+_nick);
 			  _addVideoPane(_peerjid,_nick); 			  
@@ -210,6 +234,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
 			var conn = Candy.Core.getConnection();
                   	conn.jingle.localStream = stream;
                   	RTC.attachMediaStream($('#jingle-localView'), stream);
+			$('#jingle-icons').removeClass('hidden');
 			if (_initiator) {
 				_session = conn.jingle.initiate(_peerjid,conn.jid);
 				_call_accepted_peerjid = _peerjid;
@@ -219,16 +244,12 @@ CandyShop.Jingle = (function(self, Candy, $) {
 			       conn.send(_callinvite_accepted_ack);
 			       _callinvite_accepted_ack = null;
 			       _call_accepted_peerjid = _peerjid;
-			      //conn.jingle.onJingle.call(conn.jingle,_iq_preinit);
 			   }
 			}                                
-
-		  } catch(e) {console.log("error while adding video pane =>"+e); return true;}
                 });
 	        
 		//--------------------------------------------------------------------
                $(document).bind('callincoming.jingle', function(event, sid) {
-                   //var from=sess.peerjid;		   
 		   _session = Candy.Core.getConnection().jingle.sessions[sid];
 		   _initiator = false;
 		   _session.sendAnswer();
@@ -236,34 +257,77 @@ CandyShop.Jingle = (function(self, Candy, $) {
                 });
                 $(document).bind('callterminated.jingle', function(event, sid, reason) {
 			if (_showterminate) Candy.View.Pane.Chat.Modal.show($.i18n._('callTerminated'), true);
-			_onTerminate(_peerjid);
+			_onTerminate.call(Candy.Core.getConnection().jingle,_peerjid);
                 });
-                $(document).bind('callactive.jingle', function(event, sid) {
+                $(document).bind('callactive.jingle', function() {
+			console.log("inside callactive");
+			try {
 			Candy.View.Pane.Chat.Modal.hide();
-                });
+                	$('#jingle-remoteView').addClass('active');
+                        $('#jingle-localView').addClass('active');
+			$('#jingle-remoteView').get(0).oncanplay = undefined;
+                        $('#chat-rooms > div[data-roomjid="' + _peerjid + '"]').mousemove(function(event) {
+			if (!$('#jingle-icons').hasClass('active')) {
+			     $('#jingle-icons').addClass('active');
+			     if(_iconsTimeout) clearTimeout(_iconsTimeout);
+                             _iconsTimeout = setTimeout(function() { $('#jingle-icons').removeClass('active'); },5000);
+                           }
+                         });
+			 if (Candy.Core.getConnection().jingle.localStream.getVideoTracks().length === 0) $('#mute-video').addClass('hidden');
+			 if (Candy.Core.getConnection().jingle.localStream.getAudioTracks().length === 0) $('#mute-audio').addClass('hidden');
 
+                         $('#jingle-icons').mouseenter(function(event) { if(_iconsTimeout) clearTimeout(_iconsTimeout); });
+                         $('#jingle-icons').mouseleave(function(event) { 
+			   if(_iconsTimeout) clearTimeout(_iconsTimeout);
+                           _iconsTimeout = setTimeout(function() { $('#jingle-icons').removeClass('active'); },5000);
+			});
+			$('#mute-audio').click(function(event) {
+					console.log('muteaudio click,event=>'+$(this).text());
+                                        var audioTracks = Candy.Core.getConnection().jingle.localStream.getAudioTracks();
+                                        for (var i = 0; i < audioTracks.length; ++i) {
+                                          audioTracks[i].enabled = !audioTracks[i].enabled;
+                                        }
+					$('#mute-audio').get(0).classList.toggle('on');
+			});
+			$('#mute-video').click(function(event) {
+					console.log('mutevideo click,event=>'+$(this).text());
+                                        var videoTracks = Candy.Core.getConnection().jingle.localStream.getVideoTracks();
+                                        for (var i = 0; i < videoTracks.length; ++i) {
+                                          videoTracks[i].enabled = !videoTracks[i].enabled;
+                                        }
+					$('#mute-video').get(0).classList.toggle('on');
+			});
+  			$('#fullscreen').click(function() {
+				$('#jingle-videos').toggleClass('fullscreen');
+				$('#fullscreen').get(0).classList.toggle('on');
+				if ($('#jingle-videos').hasClass('fullscreen')) {
+			    		document.querySelector('svg#fullscreen title').textContent = 'Exit fullscreen';
+    					document.body.requestFullScreen();
+				} else {
+					document.querySelector('svg#fullscreen title').textContent = 'Enter fullscreen';
+    					document.cancelFullScreen();
+				}
+			});
+  			$('#hangup').click(function() { _showterminate=false; _onTerminate.call(Candy.Core.getConnection().jingle,_peerjid); });
+
+		  } catch(e) {console.log("error while processing callactive =>"+e); console.log(e.stack); return true;}
+                });
 
                 $(document).bind('remotestreamadded.jingle', function(event, data, sid) {
 			if (document.getElementById('jingle-remoteView') == null) { 
 			  _addVideoPane(_peerjid,_nick); 			  
 			} 
 			var conn = Candy.Core.getConnection();
-        		function waitForRemoteVideo(selector, sid) {
-            			var sess1 = conn.jingle.sessions[sid];
-            			var videoTracks1 = sess1.remoteStream.getVideoTracks();
-            			if (videoTracks1.length === 0 || selector.get(0).currentTime > 0 ) {  //
-                			RTC.attachMediaStream(selector, data.stream); // FIXME: why do i have to do this for FF?
-					$(document).trigger('callactive.jingle', [selector, sid]);
-                		
-            			} else {
-                			setTimeout(function() { waitForRemoteVideo(selector, sid); }, 100);
-            			}
+        		function waitForRemoteVideo() {
+            			if ($('#jingle-remoteView').get(0).readyState >= 2) $(document).trigger('callactive.jingle');
+            			 else $('#jingle-remoteView').get(0).oncanplay = waitForRemoteVideo.bind(this);
         		}
+
 			try {
                         var sel = $('#jingle-remoteView');
                         //sel.hide();
                         RTC.attachMediaStream(sel, data.stream);
-        		waitForRemoteVideo(sel, sid);
+        		waitForRemoteVideo();
 			} catch (e) {console.log("error while adding remote stream =>"+e);};
         		console.log(data.stream);
         		data.stream.addEventListener('ended', function() {
@@ -277,8 +341,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
                 });
 
       		$(document).bind('remotestreamremoved.jingle', function(event, data, sid) {
-			$('#jingle-remoteView').hide();
-        		// note that this isn't triggered when the peerconnection is closed
+			//$('#jingle-remoteView').hide();
       		});
 		
       		$(document).bind('ack.jingle', function (event, sid, ack) {
