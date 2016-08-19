@@ -42,8 +42,8 @@ Replace normal peerconnection with traceable one, as shown below:
 
 ```JavaScript
 
-        	RTCPeerconnection = RTC.peerconnection;
-		//RTCPeerconnection = TraceablePeerConnection;
+        	//RTCPeerconnection = RTC.peerconnection;
+		RTCPeerconnection = TraceablePeerConnection;
 
 ```
 Next, you can open Javascript console (F12 in Mozilla/Chrome) and issue console.log(JSON.stringify(Candy.Core.getConnection().jingle.getLog()));
