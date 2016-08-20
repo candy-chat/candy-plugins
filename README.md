@@ -15,6 +15,7 @@ This is the official plugin repository for [Candy](http://candy-chat.github.com/
 * __Create Room__ - Creates a clickable UI for creating and joining rooms.
 * __Emphasis__ - basic text formatting via textile, BBcode, or xhtml
 * __Fullscreen Display__ - Shows incoming messages to specified users starting with @ + username + : as large as the browser's content area, overlaying everything else.
+* __jingle__ one-to-one video/audio calls between users, based on WebRTC and XEP-0166: Jingle.
 * __Inline Images__ - If a user posts a URL to an image, that image gets rendered directly inside of Candy.
 * __Inline Videos__ - If a user posts a URL to youtube video, it embeds the youtube video iframe into Candy.
 * __join__ A plugin that allows to type `/join room [password]` to join a room.
