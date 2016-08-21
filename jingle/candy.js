@@ -307,9 +307,11 @@ CandyShop.Jingle = (function(self, Candy, $) {
 					$('#mute-video').get(0).classList.toggle('on');
 			});
   			$('#fullscreen').click(function() {
-				$('#jingle-videos').toggleClass('fullscreen');
+x				$('#chat-rooms > div[data-roomjid="' + _peerjid + '"] > div.roster-pane').toggleClass('hidden');
+				var room = $('#chat-rooms > div[data-roomjid="' + _peerjid + '"]');
+				room.toggleClass('fullscreen');
 				$('#fullscreen').get(0).classList.toggle('on');
-				if ($('#jingle-videos').hasClass('fullscreen')) {
+				if (room.hasClass('fullscreen')) {
 			    		document.querySelector('svg#fullscreen title').textContent = 'Exit fullscreen';
     					document.body.requestFullScreen();
 				} else {
@@ -370,7 +372,6 @@ CandyShop.Jingle = (function(self, Candy, $) {
 		    console.log("context menu event called");
 		    var jingle_menu_elem = {
 		            requiredPermission: function(user, me) {
-				//console.log('ch0,user='+JSON.stringify(user, null, 2));
 		                return me.getNick() !== user.getNick() && !Candy.Core.getUser().isInPrivacyList('ignore', user.getJid()) && RTC && !_peerjid;						
 		            },
 		            'class': 'jingle',
