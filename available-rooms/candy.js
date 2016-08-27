@@ -130,7 +130,13 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 
 		// add the matches to the list
 		for(var i in self.rooms) {
-			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + ' (' + self.rooms[i].people + ' Personen)</li>');
+			var room = self.rooms[i];
+			var people = "";
+			
+			if (room.people > 0) {
+				people = " (" + room.people + " Personen)";
+			}
+			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + people + '</li>');
 		}
 
 		content.find('li').click(self.joinChanel);
