@@ -3,9 +3,11 @@
  *
  * Authors:
  *  - Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
+ *  - Georg Jansing <georg.jansing@hhu.de>
  *
  * Copyright:
  *  - (c) 2012 Amiado Group AG. All rights reserved.
+ *  - (c) 2016 Georg Jansing. All rights reserved.
  */
 
 /* global Candy, jQuery, Strophe */
