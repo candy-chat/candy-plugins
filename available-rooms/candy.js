@@ -31,7 +31,8 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 */
 	self.init = function(){
 		  $(Candy.Core.Event).on('candy:core.chat.connection', function(e, args) {
-			 if(args.status === Strophe.Status.ATTACHED) {
+			 if(args.status === Strophe.Status.CONNECTED ||
+			         args.status === Strophe.Status.ATTACHED) {
 					// Load rooms
 					self.loadRooms();
 
