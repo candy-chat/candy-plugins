@@ -68,10 +68,18 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 					}
 				});
 				if(!allreadyIn) {
+					var name = $(room).attr('name');
+					var people = 0;
+					var pos = name.indexOf("(");
+					if (pos != -1) {
+						name = name.substr(0, name.indexOf('(') - 1);
+						people = name.substr(pos + 1, name.length - pos - 2);
+					}
+
 					CandyShop.AvailableRooms.rooms.push({
 							jid: $(room).attr('jid'),
-							name: $(room).attr('name').substr(0, $(room).attr('name').indexOf('(') - 1),
-							people: $(room).attr('name').substr($(room).attr('name').indexOf('(') + 1, $(room).attr('name').length - $(room).attr('name').indexOf('(') - 2)
+							name: name,
+							people: people,
 					});
 				}
 			});
