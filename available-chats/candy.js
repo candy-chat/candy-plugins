@@ -37,16 +37,16 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 	 * Initializes the available-rooms plugin with the default settings.
 	 */
 	self.init = function(){
-		  $(Candy).on('candy:core.chat.connection', function(e, args) {
-			 if(args.status === Strophe.Status.CONNECTED ||
-			         args.status === Strophe.Status.ATTACHED) {
+		$(Candy).on('candy:core.chat.connection', function(e, args) {
+			if (args.status === Strophe.Status.CONNECTED ||
+					args.status === Strophe.Status.ATTACHED) {
 					// Load rooms
 					self.loadRooms();
 
 					// Do it again all 10 seconds
 					setInterval(self.loadRooms, 10000);
-			 }
-		 });
+			}
+		});
 
 		// Add Handler
 		 $(Candy).on('candy:view.message.before-send', function(e, args) {
@@ -139,18 +139,18 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		for(var i in self.rooms) {
 			var room = self.rooms[i];
 			var people = "";
-			
 			if (room.people > 0) {
 				people = " (" + room.people + " Personen)";
 			}
+
 			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + people + '</li>');
 		}
 
 		content.find('li').click(self.joinChanel);
 
 		var pos = elem.offset(),
-			posLeft = Candy.Util.getPosLeftAccordingToWindowBounds(menu, pos.left + 7),
-			posTop = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
+				posLeft = Candy.Util.getPosLeftAccordingToWindowBounds(menu, pos.left + 7),
+				posTop = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
 
 		menu.css({'left': posLeft.px, 'top': '7px', backgroundPosition: posLeft.backgroundPositionAlignment + ' ' + posTop.backgroundPositionAlignment});
 		menu.fadeIn('fast');
