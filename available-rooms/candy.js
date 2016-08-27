@@ -22,7 +22,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 *   (Object List) rooms
 	 *     (String) jid
 	 *     (String) name
-	 *     (Integer) person
+	 *     (Integer) people (number of participants)
 	 */
 	self.rooms = [];
 
