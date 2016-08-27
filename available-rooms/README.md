@@ -8,7 +8,7 @@ Include the JavaScript and CSS files:
 <script type="text/javascript" src="candyshop/available-rooms/candy.js"></script>
 ```
 
-To enable the Paint Plugin, just add one of the ´init´ methods to your bootstrap:
+To enable the Available Rooms Plugin, just add one of the ´init´ methods to your bootstrap:
 
 ```JavaScript
 CandyShop.AvailableRooms.init();
