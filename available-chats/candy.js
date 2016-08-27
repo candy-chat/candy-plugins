@@ -12,6 +12,10 @@
  *  - (c) 2016 Georg Jansing. All rights reserved.
  */
 
+/**
+ * TODO: Properly translate ("Kontake", "Chatraum")
+ */
+
 /* global Candy, jQuery, Strophe */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
@@ -29,6 +33,12 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		                * full domain. */
 	}
 
+	/** Private chat or MUC */
+	self.RoomTypes = {
+		CONFERENCE: 1,
+		PRIVATE: 2,
+	};
+
 	/** Array: rooms
 	 * all rooms
 	 *
@@ -37,6 +47,7 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 	 *     (String) jid
 	 *     (String) name
 	 *     (Integer) people (number of participants)
+	 *     (Integer) type (private chat or muc)
 	 */
 	self.rooms = [];
 
@@ -49,11 +60,11 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		$(Candy).on('candy:core.chat.connection', function(e, args) {
 			if (args.status === Strophe.Status.CONNECTED ||
 					args.status === Strophe.Status.ATTACHED) {
-					// Load rooms
-					self.loadRooms();
+				// Load rooms
+				self.loadRooms();
 
-					// Do it again all 10 seconds
-					setInterval(self.loadRooms, 10000);
+				// Do it again all 10 seconds
+				setInterval(self.loadRooms, 10000);
 			}
 		});
 
@@ -90,7 +101,7 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 						return false;
 					}
 				});
-				if(! allreadyIn) {
+				if (! allreadyIn) {
 					var name = $(room).attr('name');
 					var people = 0;
 					var pos = name.indexOf("(");
@@ -100,15 +111,32 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 					}
 
 					CandyShop.AvailableChats.rooms.push({
-							jid: $(room).attr('jid'),
-							name: name,
-							people: people,
+						jid: $(room).attr('jid'),
+						name: name,
+						people: people,
+						type: CandyShop.AvailableChats.RoomTypes.CONFERENCE,
 					});
 				}
 			});
+
+			// Add roster items
+			$.each(Candy.Core.getRoster().items, function(jid, contact) {
+				CandyShop.AvailableChats.rooms.push({
+					jid: jid,
+					name: contact.data.name,
+					people: 2,
+					type: CandyShop.AvailableChats.RoomTypes.PRIVATE,
+				});
+			});
+			/** Sorting: private chats first, then MUC rooms, ordered by number of participants */
+
 			CandyShop.AvailableChats.rooms = CandyShop.AvailableChats.rooms.sort(function(a, b) {
-				if(a.people === b.people) {
+				if (a.people === b.people) {
 					return a.name < b.name ? -1 : 1;
+				} else if (a.type == CandyShop.AvailableChats.RoomTypes.PRIVATE) {
+					return -1;
+				} else if (b.type == CandyShop.AvailableChats.RoomTypes.PRIVATE) {
+					return 1;
 				} else {
 					return a.people < b.people ? 1 : -1;
 				}
@@ -146,7 +174,7 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 
 		// get the necessary items
 		var menu = $('#context-menu'),
-			content = $('ul', menu);
+				content = $('ul', menu);
 
 		// clear the content if needed
 		content.empty();
@@ -155,8 +183,14 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		for(var i in self.rooms) {
 			var room = self.rooms[i];
 			var people = "";
-			if (room.people > 0) {
-				people = " (" + room.people + " Personen)";
+			if (room.type == CandyShop.AvailableChats.RoomTypes.PRIVATE) {
+				people = ' (Kontakt)';
+			} else {
+				if (room.people > 0) {
+					people = ' (Chatraum, ' + room.people + ' Personen)';
+				} else {
+					people = ' (Chatraum)';
+				}
 			}
 
 			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + people + '</li>');
@@ -180,7 +214,13 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 	 */
 	self.joinChanel = function(e) {
 		$('#context-menu').hide();
-		Candy.Core.Action.Jabber.Room.Join($(e.currentTarget).attr('data-jid'));
+		if ($(e.currentTarget).attr('data-room-type') == CandyShop.AvailableChats.RoomTypes.PRIVATE) {
+			// Start private chat
+			Candy.View.Pane.PrivateRoom.open($(e.currentTarget).attr('data-jid'), $(e.currentTarget).attr("data-room-name"), true, true);
+		} else {
+			// Start muc
+			Candy.Core.Action.Jabber.Room.Join($(e.currentTarget).attr('data-jid'));
+		}
 		if($('#add-room').length > 0) {
 			$('#add-room').parent().remove();
 		}
