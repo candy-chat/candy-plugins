@@ -22,6 +22,13 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		version: '1.0',
 	};
 
+	self._options = {
+		domain: null, /** Prefix (e.g. "conference") or complete MUC Domain
+		                * to list rooms from. If domain ends with a dot (".")
+		                * it will be interpreted as a prefix, otherweise as
+		                * full domain. */
+	}
+
 	/** Array: rooms
 	 * all rooms
 	 *
@@ -36,7 +43,9 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 	/** Function: init
 	 * Initializes the available-rooms plugin with the default settings.
 	 */
-	self.init = function(){
+	self.init = function(options) {
+		$.extend(true, self._options, options);
+
 		$(Candy).on('candy:core.chat.connection', function(e, args) {
 			if (args.status === Strophe.Status.CONNECTED ||
 					args.status === Strophe.Status.ATTACHED) {
@@ -49,7 +58,7 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 		});
 
 		// Add Handler
-		 $(Candy).on('candy:view.message.before-send', function(e, args) {
+		$(Candy).on('candy:view.message.before-send', function(e, args) {
 			// (strip colors)
 			// if it matches '/list', show rooms and don't send anything
 			if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() === '/list') {
@@ -64,7 +73,14 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 	 * Load all public rooms
 	 */
 	self.loadRooms = function () {
-		Candy.Core.getConnection().muc.listRooms('conference.' + Candy.Core.getConnection().domain, function(roomsData) {
+		if(! self._options.domain) {
+			self._options.domain = "conference." + Candy.Core.getConnection().domain;
+		} else if (self._options.domain.charAt(self._options.domain.length - 1) == ".") {
+			self._options.domain = self._options.domain +
+					Candy.Core.getConnection().domain;
+		}
+		
+		Candy.Core.getConnection().muc.listRooms(self._options.domain, function(roomsData) {
 			CandyShop.AvailableChats.rooms = [];
 			$.each($(roomsData).find('item'), function(item, room) {
 				var allreadyIn = false;
@@ -74,7 +90,7 @@ CandyShop.AvailableChats = (function(self, Candy, $) {
 						return false;
 					}
 				});
-				if(!allreadyIn) {
+				if(! allreadyIn) {
 					var name = $(room).attr('name');
 					var people = 0;
 					var pos = name.indexOf("(");
