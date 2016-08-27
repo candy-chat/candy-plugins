@@ -1,5 +1,7 @@
 /** File: candy.js
- * Candy Show Available Rooms
+ * Candy: show available rooms on conference server and add roster items
+ * for private chats.
+ * Fork of available-rooms plugin.
  *
  * Authors:
  *  - Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
@@ -14,7 +16,12 @@
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
-CandyShop.AvailableRooms = (function(self, Candy, $) {
+CandyShop.AvailableChats = (function(self, Candy, $) {
+	self.about = {
+		name: 'Candy Plugin Available Chats',
+		version: '1.0',
+	};
+
 	/** Array: rooms
 	 * all rooms
 	 *
@@ -58,7 +65,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 */
 	self.loadRooms = function () {
 		Candy.Core.getConnection().muc.listRooms('conference.' + Candy.Core.getConnection().domain, function(roomsData) {
-			CandyShop.AvailableRooms.rooms = [];
+			CandyShop.AvailableChats.rooms = [];
 			$.each($(roomsData).find('item'), function(item, room) {
 				var allreadyIn = false;
 				$.each(Candy.Core.getRooms(), function(item, roomSearch) {
@@ -76,21 +83,21 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 						people = name.substr(pos + 1, name.length - pos - 2);
 					}
 
-					CandyShop.AvailableRooms.rooms.push({
+					CandyShop.AvailableChats.rooms.push({
 							jid: $(room).attr('jid'),
 							name: name,
 							people: people,
 					});
 				}
 			});
-			CandyShop.AvailableRooms.rooms = CandyShop.AvailableRooms.rooms.sort(function(a, b) {
+			CandyShop.AvailableChats.rooms = CandyShop.AvailableChats.rooms.sort(function(a, b) {
 				if(a.people === b.people) {
 					return a.name < b.name ? -1 : 1;
 				} else {
 					return a.people < b.people ? 1 : -1;
 				}
 			});
-			CandyShop.AvailableRooms.placePlusTab();
+			CandyShop.AvailableChats.placePlusTab();
 		});
 	};
 
@@ -165,4 +172,4 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	};
 
 	return self;
-}(CandyShop.AvailableRooms || {}, Candy, jQuery));
+}(CandyShop.AvailableChats || {}, Candy, jQuery));
