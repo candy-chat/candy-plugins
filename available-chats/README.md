@@ -1,4 +1,4 @@
-# Available Chat Plugin
+# Available Chats Plugin
 A plugin to join public rooms and start private chats with roster entries.
 
 ## Usage
