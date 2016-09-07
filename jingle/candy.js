@@ -307,7 +307,7 @@ CandyShop.Jingle = (function(self, Candy, $) {
 					$('#mute-video').get(0).classList.toggle('on');
 			});
   			$('#fullscreen').click(function() {
-x				$('#chat-rooms > div[data-roomjid="' + _peerjid + '"] > div.roster-pane').toggleClass('hidden');
+				$('#chat-rooms > div[data-roomjid="' + _peerjid + '"] > div.roster-pane').toggleClass('hidden');
 				var room = $('#chat-rooms > div[data-roomjid="' + _peerjid + '"]');
 				room.toggleClass('fullscreen');
 				$('#fullscreen').get(0).classList.toggle('on');
