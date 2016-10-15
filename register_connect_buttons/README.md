@@ -8,6 +8,8 @@ In this case, create a user on XMPP server with _visitor_ role in the desired ch
 
 Note that usually, XMPP servers only allow to assign a role to a user in a chatroom _after_ this user is connected. So you may have to write a chatbot with the username you wanna assign to your _visitors_, and to keep this bot always connected.
 
+Also, to allow many people to be connected with the same username, you need to use a different (for eg. timestamped) resource in `Candy.init()` for each one, see the example below.
+
 ## Dependencies
  Depends on `CandyShop.Register` plugin which allows registration.
 
@@ -24,7 +26,10 @@ Include the JavaScript and CSS files for the plugin:
 To enable this plugin, add its `init` method after you `init` Candy and the Register plugin:
 
 ```JavaScript
-Candy.init('/http-bind/', {core: {autojoin: []}});
+Candy.init('/http-bind/',
+  {core: {
+    autojoin: [],
+    resource: '<visitors_username>' + (new Date()).getTime()}});
 // enable Register plugin
 CandyShop.Register.init();
 // enable Register Connect Buttons plugin
