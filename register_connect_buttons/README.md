@@ -6,6 +6,8 @@ This is useful in the common scenario where you want to allow unregistered users
 
 In this case, create a user on XMPP server with _visitor_ role in the desired chatrooms. Connect such user with `Candy.Core.Connect('JID', 'password')` (or attach to authentified session on the server side with `Candy.Core.attach(jid, sid, rid)`). Then use this plugin to disable the message form, and to show instead a pair of buttons, allowing users to either register themselves if they don't have an account yet, or login in using an existing account.
 
+Note that usually, XMPP servers only allow to assign a role to a user in a chatroom _after_ this user is connected. So you may have to write a chatbot with the username you wanna assign to your _visitors_, and to keep this bot always connected.
+
 ## Dependencies
  Depends on `CandyShop.Register` plugin which allows registration.
 
