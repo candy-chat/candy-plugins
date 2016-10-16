@@ -12,12 +12,12 @@ To enable *Register* you have to include the Strophe registration plugin `stroph
 <script type="text/javascript" src="candyshop/register/register.js"></script>
 ```
 
-Call its `init()` method after Candy has been initialized, then just call its `showRegistrationForm()` method, where you would have called `Candy.Core.Connect() method to display usual Candy connection modal form:
+Call its `init()` method after Candy has been initialized, passing the XMMP server domain as parameter. Then just call its `showRegistrationForm()` method, where you would have called `Candy.Core.Connect() method to display usual Candy connection modal form:
 
 ```JavaScript
 Candy.init('/http-bind/', {core: {autojoin: []}});
 // enable Register plugin
-CandyShop.Register.init();
+CandyShop.Register.init({domain: 'my_jabber_domain.org'});
 
 CandyShop.Register.showRegistrationForm();
 ```

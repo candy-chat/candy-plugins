@@ -119,7 +119,7 @@ CandyShop.Register = (function(self, Candy, $) {
       };
 
       // Connect with Stophe.register plugin
-      connection.register.connect("pirenaica.fr", callback, 60, 1);
+      connection.register.connect(self._options.domain, callback, 60, 1);
     });
   }
 
