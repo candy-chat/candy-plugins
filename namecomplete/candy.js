@@ -1,260 +1,383 @@
-/** File: candy.js
+/** File: namecomplete.js
  * Candy - Chats are not dead yet.
  *
  * Authors:
- *	 - Troy McCabe <troy.mccabe@geeksquad.com>
- *	 - Ben Klang <bklang@mojolingo.com>
+ *   - Troy McCabe <troy.mccabe@geeksquad.com>
+ *   - Ben Klang <bklang@mojolingo.com>
  *
  * Copyright:
- * (c) 2012 Geek Squad. All rights reserved.
- * (c) 2014 Power Home Remodeling Group. All rights reserved.
+ *   (c) 2012 Geek Squad. All rights reserved.
+ *   (c) 2014 Power Home Remodeling Group. All rights reserved.
+ *
  */
-
-/* global document, Candy, jQuery */
-
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 /** Class: CandyShop.NameComplete
  * Allows for completion of a name in the roster
  */
 CandyShop.NameComplete = (function(self, Candy, $) {
-	/** Object: _options
-	 * Options:
-	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *   (Integer) completeKeyCode - Which key to use to complete
-	 */
-	var _options = {
-		nameIdentifier: '@',
-		completeKeyCode: 9
-	};
+  /** Object: _options
+   * Options:
+   *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+   *   (Integer) completeKeyCode - Which key to use to complete
+   *   (Integer) maxResults - Maximum of results to be shown at a time
+   */
+  var _options = {
+    nameIdentifier: '@',
+    completeKeyCode: 9,
+    maxResults: 12
+  };
 
-	/** Array: _nicks
-	 * An array of nicks to complete from
-	 * Populated after 'candy:core.presence'
-	 */
-	var _nicks = [];
+  /** String: _selector
+   * The selector for the visible message box
+   */
+  var _selector = 'textarea[name="message"]:visible';
 
-	/** String: _selector
-	 * The selector for the visible message box
-	 */
-	var _selector = 'input[name="message"]:visible';
+  /** RegExp: _matchLastMention
+   * Matches the last mention.
+   * Just matches if there is either a space or begin of input before "@".
+   * Example: "@foo and @bar" would match "@bar"
+   */
+  var _matchLastMention = new RegExp('(^|\ )(' + _options.nameIdentifier + '[^' + _options.nameIdentifier + ']*)$');
 
-	/** Boolean:_autocompleteStarted
-	 * Keeps track of whether we're in the middle of autocompleting a name
-	 */
-	var _autocompleteStarted = false;
+  /**
+   * This is to be used on replacing mention for user's name.
+   * If we don't, it will also replace the space before "@", causing an issue.
+   * e.g "Hey @name" -> "Hey Name LastName" instead of "HeyName LastName"
+   */
+  var _matchLastMentionWithoutSpace = new RegExp('(' + _options.nameIdentifier + '[^' + _options.nameIdentifier + ']*)$');
 
-	/** Function: init
-	 * Initialize the NameComplete plugin
-	 * Show options for auto completion of names
-	 *
-	 * Parameters:
-	 *   (Object) options - Options to apply to this plugin
-	 */
-	self.init = function(options) {
-		// apply the supplied options to the defaults specified
-		$.extend(true, _options, options);
+  /** Boolean:_autocompleteStarted
+   * Keeps track of whether we're in the middle of autocompleting a name
+   */
+  var _autocompleteStarted = false;
 
-		// listen for keydown when autocomplete options exist
-		$(document).on('keypress', _selector, function(e) {
-			if (e.which === _options.nameIdentifier.charCodeAt()) {
-				_autocompleteStarted = true;
-			}
+  /** Integer: _replacementSet
+   * Keeps track of how which names we need to replace with JIDs
+   */
+  var _replacementSet = [];
 
-			if (_autocompleteStarted) {
-				// update the list of nicks to grab
-				self.populateNicks();
+  /**
+   * Last text written by the user
+   */
+  var _lastText = '';
 
-				// set up the vars for this method
-				// break it on spaces, and get the last word in the string
-				var field = $(this);
-				var msgParts = field.val().split(' ');
-				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1] + String.fromCharCode(e.which), "i");
-				var matches = [];
+  var _keys = {
+    UP_ARROW: 38,
+    DOWN_ARROW: 40,
+    ESC: 27,
+    ENTER: 13
+  };
 
-				// go through each of the nicks and compare it
-				$(_nicks).each(function(index, item) {
-					// if we have results
-					if (item.match(lastWord) !== null) {
-						matches.push(item);
-					}
+  /** Function: init
+   * Initialize the NameComplete plugin
+   * Show options for auto completion of names
+   *
+   * Parameters:
+   *   (Object) options - Options to apply to this plugin
+   */
+  self.init = function(options) {
 
-				});
+    $.extend(true, _options, options);
 
-				// if we only have one match, no need to show the picker, just replace it
-				// else show the picker of the name matches
-				if (matches.length === 1) {
-					self.replaceName(matches[0]);
-					// Since the name will be autocompleted, throw away the last character
-					e.preventDefault();
-				} else if (matches.length > 1) {
-					self.showPicker(matches, field);
-				}
-			}
-		});
-	};
+    // Stop autocomplete on click anywhere in the document
+    $(document).on('focus click', function(e) {
+      self.endAutocomplete();
+    });
 
-	/** Function: keyDown
-	 * The listener for keydown in the menu
-	 */
-	self.keyDown = function(e) {
-		// get the menu and the content element
-		var menu = $('#context-menu');
-		var content = menu.find('ul');
-		var selected = content.find('li.selected');
+    $(document).on('focus click', _selector, function(e) {
+      e.stopPropagation();
+    });
 
-		if(menu.css('display') === 'none') {
-			$(document).unbind('keydown', self.keyDown);
-			return;
-		}
+    $(document).on('keyup', _selector, function(e) {
+      var field = $(this)
+      self.getUsers().then(function (users) {
+        if (!users) return;
+        users = self.processUsers(users);
 
-		// switch the key code
-		switch (e.which) {
-			// up arrow
-			case 38:
-			// down arrow
-			case 40:
-				var newEl;
-				if (e.which === 38) {
-					// move the selected thing up
-					newEl = selected.prev();
-				} else {
-					// move the selected thing down
-					newEl = selected.next();
-				}
-				// Prevent going off either end of the list
-				if ($(newEl).length > 0) {
-					selected.removeClass('selected');
-					newEl.addClass('selected');
-				}
-				// don't perform any key actions
-				e.preventDefault();
-				break;
+        var fieldText = field.val();
+        var imatch = fieldText.match(_matchLastMention);
 
-			// esc key
-			case 27:
-			// delete Key
-			case 8:
-			case 46:
-				self.endAutocomplete();
-				break;
+        if (imatch) {
+          fieldText = imatch[imatch.length - 1];
+        } else {
+          self.endAutocomplete();
+          return;
+        }
 
-			// the key code for completion
-			case _options.completeKeyCode:
-			case 13:
-				// get the text of the selected item
-				var val = content.find('li.selected').text();
-				// replace the last item with the selected item
-				self.replaceName(val);
-				// don't perform any key actions
-				e.preventDefault();
-				break;
-		}
-	};
+        var fieldTextMinusAt = fieldText.slice(1, fieldText.length);
 
-	/** Function: endAutocomplete
-	 * Disables autocomplete mode, hiding the context menu
-	 */
-	self.endAutocomplete = function() {
-		_autocompleteStarted = false;
-		$(_selector).unbind('keydown', self.keyDown);
-		$('#context-menu').hide();
-	};
+        if (fieldTextMinusAt.length === 0 || fieldTextMinusAt === _lastText) {
+          return;
+        }
+        _lastText = fieldTextMinusAt;
 
+        var matches = [];
 
+        for(var i in users) {
+          var user = users[i];
+          var searchTerm = user.goes_by + ' ' + user.last_name + ' ' + user.territory + ' ' + user.department  + ' - ' + user.title;
 
-	/** Function: selectOnClick
-	 * The listener for click on decision in the menu
-	 *
-	 * Parameters:
-	 *   (Event) e - The click event
-	 */
-	self.selectOnClick = function(e) {
-		self.replaceName($(e.currentTarget).text());
-		$(_selector).focus();
-		e.preventDefault();
-	};
+          if (searchTerm.match(new RegExp(fieldTextMinusAt, 'i')) !== null) {
+            matches.push(user);
 
-	/** Function: populateNicks
-	 * Populate the collection of nicks to autocomplete from
-	 */
-	self.populateNicks = function() {
-		// clear the nick collection
-		_nicks = [];
+            if (matches.length === _options.maxResults) {
+              break;
+            }
+          }
+        }
 
-		// grab the roster in the current room
-		var room = Candy.Core.getRoom(Candy.View.getCurrent().roomJid);
-		if (room !== null) {
-			var roster = room.getRoster().getAll();
+        self.startAutoComplete();
+        self.showPicker(matches, field);
+      });
+    });
 
-			// iterate and add the nicks to the collection
-			$.each(roster, function(index, item) {
-				_nicks.push(_options.nameIdentifier + item.getNick());
-			});
-		}
-	};
+    $(Candy).on('candy:view.message.before-send', function(ev, args) {
+      return self.replaceNamesWithId();
+    });
+  };
 
-	/** Function: replaceName
-	 *
-	 */
-	self.replaceName = function(replaceText) {
-		// get the parts of the message
-		var $msgBox = $(_selector);
-		var msgParts = $msgBox.val().split(' ');
+  self.getUsers = function () {
+    /**
+     * For replacements such as @all
+     * ...and eventually @here, etc.
+     */
+    var _specialUsers = {
+      'All': { id: 'All', jid: 'All', description: 'All users in this room', fullName: 'All Users', goes_by: 'All', last_name: 'Users', special: true}
+    };
 
-		// If the name is the first word, add a colon to the end
-		if (msgParts.length === 1) {
-			replaceText += ": ";
-		} else {
-			replaceText += " ";
-		}
+    var roomJid = Candy.View.getCurrent().roomJid;
+    var room = CandyShop.LeftPaneHead.RoomList._rooms[roomJid];
 
-		// replace the last part with the item
-		msgParts[msgParts.length - 1] = replaceText;
+    if (!room)
+      return new Promise(function() {});
 
-		// put the string back together on spaces
-		$msgBox.val(msgParts.join(' '));
-		self.endAutocomplete();
-	};
+    if (!room.is_private) {
+      return new Promise(function (resolve, reject) {
+        var users = $.extend(true, _specialUsers, CandyShop.NitroAjaxApiV1Users._cachedData);
+        resolve(users);
+      });
+    }
 
-	/** Function: showPicker
-	 * Show the picker for the list of names that match
-	 */
-	self.showPicker = function(matches, elem) {
-		// get the element
-		elem = $(elem);
+    return new Promise(function (resolve, reject) {
+      $.ajax({
+        type: 'GET',
+        context: this,
+        url: 'api/v1/connect/rooms/' + room.nitro_id + '.json'
+      })
+      .done(function(data) {
+        var users = data.users.map(function(user, i) {
+          return CandyShop.NitroAjaxApiV1Users.fetchByNitroId(user.id, true);
+        });
+        users = $.extend(true, _specialUsers, users);
+        resolve(users);
+      });
+    });
+  };
 
-		// get the necessary items
-		var pos = elem.offset(),
-			menu = $('#context-menu'),
-			content = $('ul', menu),
-			i;
+  self.processUsers = function (users) {
+    var currentUserBareJid = Strophe.getBareJidFromJid(Candy.Core.getUser().getJid());
 
-		// clear the content if needed
-		content.empty();
+    return _.reject(users, function (user) {
+      return user.jid === currentUserBareJid;
+    });
+  };
 
-		// add the matches to the list
-		for(i = 0; i < matches.length; i++) {
-			content.append('<li class="candy-namecomplete-option">' + matches[i] + '</li>');
-		}
+  self.startAutoComplete = function() {
+    if ($('#context-menu:visible').length > 0) return;
+    _autocompleteStarted = true;
 
-		// select the first item
-		$(content.find('li')[0]).addClass('selected');
+    _lastText = '';
+    _previousMatches = [];
 
-		content.find('li').click(self.selectOnClick);
+    // Disable auto-sending of the message on <enter> key
+    $(_selector).data('ready-to-send', false);
 
-		// bind the keydown to move around the menu
-		$(_selector).bind('keydown', self.keyDown);
+    // There is a mouseleave bind in Candy's code. Lets remove that out.
+    $('#context-menu').unbind('mouseleave');
+  };
 
-		var posLeft = elem.val().length * 7,
-			posTop  = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
+  /** Function: endAutocomplete
+   * Disables autocomplete mode, hiding the context menu
+   */
+  self.endAutocomplete = function() {
+    _autocompleteStarted = false;
 
-		// show it
-		menu.css({'left': posLeft, 'top': posTop.px, backgroundPosition: posLeft.backgroundPositionAlignment + ' ' + posTop.backgroundPositionAlignment});
-		menu.fadeIn('fast');
+    $('#context-menu').hide();
+    $(_selector).data('ready-to-send', true);
+  };
 
-		return true;
-	};
+  /** Function: keyDown
+   * The listener for keydown in the menu
+   */
+  self.keyDown = function(e) {
+    var menu = $('#context-menu');
+    var content = menu.find('ul');
+    var selected = content.find('li.selected');
 
-	return self;
+    if(menu.css('display') === 'none') {
+      $(document).unbind('keydown', self.keyDown);
+      return;
+    }
+
+    switch (e.which) {
+      case _keys.UP_ARROW:
+        var prevLi = selected.prev('li');
+        if (prevLi.length === 0) {
+          prevLi = selected.siblings('li:last');
+        }
+
+        selected.removeClass('selected');
+        prevLi.addClass('selected');
+
+        e.preventDefault();
+        break;
+
+      case _keys.DOWN_ARROW:
+        var nextLi = selected.next('li');
+        if (nextLi.length === 0) {
+          nextLi = selected.siblings('li:first');
+        }
+
+        selected.removeClass('selected');
+        nextLi.addClass('selected');
+
+        e.preventDefault();
+        break;
+
+      case _keys.ESC:
+        self.endAutocomplete();
+        break;
+
+      case _options.completeKeyCode:
+      case _keys.ENTER:
+        self.endAutocomplete();
+        var selected = content.find('li[data-nitroid].selected');
+
+        if (selected.length > 0) {
+          self.addNameFromTargetElement(selected);
+        } else {
+          $('form[class="message-form"]:visible').submit();
+        }
+        break;
+    }
+  };
+
+  /** Function: selectOnClick
+   * The listener for click on decision in the menu
+   *
+   * Parameters:
+   *   (Event) e - The click event
+   */
+  self.selectOnClick = function(e) {
+    self.addNameFromTargetElement($(e.currentTarget));
+
+    $(_selector).focus();
+    e.preventDefault();
+  };
+
+  self.addNameFromTargetElement = function(target) {
+    var userJid = target.attr('data-userjid');
+    if (!userJid)
+      return;
+
+    var userName = target.find('.name').text();
+
+    // Needs to immediately finish/enter in name in full so that we can replace it with the ajax call in a bit.
+    var msgBox = $(_selector);
+
+    msgBox.val(msgBox.val().replace(_matchLastMentionWithoutSpace, userName + ' ').replace(/@(?![\s\S]*@)/, '@'));
+
+    _replacementSet.push({'userJid': userJid, 'userName': userName});
+  };
+
+  // Called to replace each matched name with a hashtag
+  self.replaceNamesWithId = function(ev) {
+    if (_replacementSet.length == 0) {
+      // No more replacements, allow message to be sent
+      return true;
+    }
+
+    var replaced = 0;
+    $.each(_replacementSet, function(i, replacement) {
+      if (replacement.userJid === 'All') {
+        $(_selector).val($(_selector).val().replace(replacement.userName, 'U#all'));
+        if (++replaced >= _replacementSet.length) {
+          _replacementSet = [];
+          // Trigger the message to be sent now that all replacements are made
+          $('form[class="message-form"]:visible').submit();
+        }
+      } else {
+        var login = Strophe.getNodeFromJid(replacement.userJid);
+
+        CandyShop.NitroAjaxApiV1Users.fetchByUserNode(login).then(function (result) {
+          var nitroId = result.id;
+          nitroId = 'U#' + nitroId;
+          $(_selector).val($(_selector).val().replace(replacement.userName, nitroId));
+          if (++replaced >= _replacementSet.length) {
+            _replacementSet = [];
+            // Trigger the message to be sent now that all replacements are made
+            $('form[class="message-form"]:visible').submit();
+          }
+        });
+      }
+    });
+
+    // Prevent messages from being sent until all replacements are done
+    return false;
+  };
+
+  self.getListOfMatchesAsListItems = function (matches) {
+    if (matches.length === 0) {
+      return '<li class="candy-namecomplete-option">No results found</li>'
+    }
+
+    var liTemplate = '<li class="candy-namecomplete-option" data-nitroid="{{nitroId}}" data-userjid="{{userJid}}">' +
+        '{{#avatarUrl}}<img src="{{avatarUrl}}">{{/avatarUrl}}' +
+        '<div>' +
+          '<p class="name">{{fullName}}</p>' +
+          '<p>{{#territory}}{{territory}} {{department}} - {{title}}{{/territory}}{{description}}</p>' +
+        '</div>' +
+      '</li>';
+
+    var listItems = [];
+    for(var i in matches) {
+      var user = matches[i];
+
+      listItems.push(Mustache.to_html(liTemplate, {
+        nitroId: user.id,
+        userJid: user.jid,
+        avatarUrl: user.avatar_thumb_url,
+        fullName: user.goes_by + ' ' + user.last_name,
+        territory: user.territory,
+        department: user.department,
+        title: user.title,
+        description: user.description
+      }));
+    }
+
+    return listItems.join('');
+  };
+
+  /** Function: showPicker
+   * Show the picker for the list of names that match
+   */
+  self.showPicker = function(matches, elem) {
+    var menu = $('#context-menu'),
+        content = $('ul', menu);
+
+    content.html(self.getListOfMatchesAsListItems(matches));
+
+    $('li:first', content).addClass('selected');
+    $('li', content).bind('click', self.selectOnClick);
+
+    // bind the keydown to move around the menu
+    $(_selector).unbind('keydown', self.keyDown).bind('keydown', self.keyDown);
+
+    menu.fadeIn('fast');
+
+    return true;
+  };
+
+  return self;
 }(CandyShop.NameComplete || {}, Candy, jQuery));
