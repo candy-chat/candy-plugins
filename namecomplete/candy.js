@@ -56,8 +56,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$.extend(true, _options, options);
 
 		// listen for keydown when autocomplete options exist
-		$(document).on('keypress', _selector, function(e) {
-			if (e.which === _options.nameIdentifier.charCodeAt()) {
+		$(document).on('input', _selector, function(e) {
+			if (event.target.value.slice(-1) === _options.nameIdentifier) {
 				_autocompleteStarted = true;
 			}
 
@@ -68,8 +68,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 				// set up the vars for this method
 				// break it on spaces, and get the last word in the string
 				var field = $(this);
-				var msgParts = field.val().split(' ');
-				var lastWord = new RegExp( "^" + msgParts[msgParts.length - 1] + String.fromCharCode(e.which), "i");
+				var msgParts = field.val().split(_options.nameIdentifier);
+				var lastWord = new RegExp( "^" + _options.nameIdentifier + msgParts[msgParts.length - 1], "i");
 				var matches = [];
 
 				// go through each of the nicks and compare it
@@ -81,15 +81,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 				});
 
-				// if we only have one match, no need to show the picker, just replace it
-				// else show the picker of the name matches
-				if (matches.length === 1) {
-					self.replaceName(matches[0]);
-					// Since the name will be autocompleted, throw away the last character
-					e.preventDefault();
-				} else if (matches.length > 1) {
-					self.showPicker(matches, field);
-				}
+                self.showPicker(matches, field);
 			}
 		});
 	};
@@ -200,20 +192,17 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
 		var $msgBox = $(_selector);
-		var msgParts = $msgBox.val().split(' ');
+		var value = $msgBox.val()
 
 		// If the name is the first word, add a colon to the end
-		if (msgParts.length === 1) {
+		if (value[0] == _options.nameIdentifier) {
 			replaceText += ": ";
 		} else {
-			replaceText += " ";
+			replaceText = " " + replaceText + " ";
 		}
 
-		// replace the last part with the item
-		msgParts[msgParts.length - 1] = replaceText;
-
-		// put the string back together on spaces
-		$msgBox.val(msgParts.join(' '));
+        // put the string back
+        $msgBox.val(value.substr(0, value.lastIndexOf(_options.nameIdentifier)) + replaceText);
 		self.endAutocomplete();
 	};
 
