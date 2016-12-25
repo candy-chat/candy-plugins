@@ -14,7 +14,7 @@ CandyShop.Refocus = (function(self, Candy, $) {
 
     self.init = function() {
         Candy.Core.log('[Refocus] init');
-        $(Candy.View.Pane).on('candy:view.room.after-show', roomAfterShow);
+        $(Candy).on('candy:view.room.after-show', roomAfterShow);
     };
 
     function roomAfterShow() {
