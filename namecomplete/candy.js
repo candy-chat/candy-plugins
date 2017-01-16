@@ -81,7 +81,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 
 				});
 
-                self.showPicker(matches, field);
+				self.showPicker(matches, field);
 			}
 		});
 	};
@@ -192,7 +192,7 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 	self.replaceName = function(replaceText) {
 		// get the parts of the message
 		var $msgBox = $(_selector);
-		var value = $msgBox.val()
+		var value = $msgBox.val();
 
 		// If the name is the first word, add a colon to the end
 		if (value[0] == _options.nameIdentifier) {
@@ -201,8 +201,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 			replaceText = " " + replaceText + " ";
 		}
 
-        // put the string back
-        $msgBox.val(value.substr(0, value.lastIndexOf(_options.nameIdentifier)) + replaceText);
+		// put the string back
+		$msgBox.val(value.substr(0, value.lastIndexOf(_options.nameIdentifier)) + replaceText);
 		self.endAutocomplete();
 	};
 
