@@ -2,12 +2,12 @@
  * Candy - Chats are not dead yet.
  *
  * Authors:
- *	 - Troy McCabe <troy.mccabe@geeksquad.com>
- *	 - Ben Klang <bklang@mojolingo.com>
+ *  - Troy McCabe <troy.mccabe@geeksquad.com>
+ *  - Ben Klang <bklang@mojolingo.com>
  *
  * Copyright:
- * (c) 2012 Geek Squad. All rights reserved.
- * (c) 2014 Power Home Remodeling Group. All rights reserved.
+ *  (c) 2012 Geek Squad. All rights reserved.
+ *  (c) 2014 Power Home Remodeling Group. All rights reserved.
  */
 
 /* global document, Candy, jQuery */
@@ -20,8 +20,8 @@ var CandyShop = (function(self) { return self; }(CandyShop || {}));
 CandyShop.NameComplete = (function(self, Candy, $) {
 	/** Object: _options
 	 * Options:
-	 *   (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
-	 *   (Integer) completeKeyCode - Which key to use to complete
+	 *  (String) nameIdentifier - Prefix to append to a name to look for. '@' now looks for '@NICK', '' looks for 'NICK', etc. Defaults to '@'
+	 *  (Integer) completeKeyCode - Which key to use to complete
 	 */
 	var _options = {
 		nameIdentifier: '@',
@@ -153,8 +153,6 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		$('#context-menu').hide();
 	};
 
-
-
 	/** Function: selectOnClick
 	 * The listener for click on decision in the menu
 	 *
@@ -235,8 +233,8 @@ CandyShop.NameComplete = (function(self, Candy, $) {
 		// bind the keydown to move around the menu
 		$(_selector).bind('keydown', self.keyDown);
 
-		var posLeft = elem.val().length * 7,
-			posTop  = Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
+		var posLeft = '16%',
+			posTop	= Candy.Util.getPosTopAccordingToWindowBounds(menu, pos.top);
 
 		// show it
 		menu.css({'left': posLeft, 'top': posTop.px, backgroundPosition: posLeft.backgroundPositionAlignment + ' ' + posTop.backgroundPositionAlignment});
