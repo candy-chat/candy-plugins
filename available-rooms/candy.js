@@ -3,9 +3,11 @@
  *
  * Authors:
  *  - Jonatan Männchen <jonatan.maennchen@amiadogroup.com>
+ *  - Georg Jansing <georg.jansing@hhu.de>
  *
  * Copyright:
  *  - (c) 2012 Amiado Group AG. All rights reserved.
+ *  - (c) 2016 Georg Jansing. All rights reserved.
  */
 
 /* global Candy, jQuery, Strophe */
@@ -20,7 +22,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 *   (Object List) rooms
 	 *     (String) jid
 	 *     (String) name
-	 *     (Integer) person
+	 *     (Integer) people (number of participants)
 	 */
 	self.rooms = [];
 
@@ -28,8 +30,9 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 * Initializes the available-rooms plugin with the default settings.
 	 */
 	self.init = function(){
-		  $(Candy.Core.Event).on('candy:core.chat.connection', function(e, args) {
-			 if(args.status === Strophe.Status.ATTACHED) {
+		  $(Candy).on('candy:core.chat.connection', function(e, args) {
+			 if(args.status === Strophe.Status.CONNECTED ||
+			         args.status === Strophe.Status.ATTACHED) {
 					// Load rooms
 					self.loadRooms();
 
@@ -39,7 +42,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 		 });
 
 		// Add Handler
-		 $(Candy.View.Pane).bind('candy:view.message.beforeSend', function(e, args) {
+		 $(Candy).on('candy:view.message.before-send', function(e, args) {
 			// (strip colors)
 			// if it matches '/list', show rooms and don't send anything
 			if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() === '/list') {
@@ -47,7 +50,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 				args.message = '';
 			}
 		});
-		$(Candy.View.Pane).bind('candy:view.room.afterAdd', self.loadRooms);
+		$(Candy).on('candy:view.room.after-add', self.loadRooms);
 	};
 
 	/** Function: loadRooms
@@ -65,10 +68,18 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 					}
 				});
 				if(!allreadyIn) {
+					var name = $(room).attr('name');
+					var people = 0;
+					var pos = name.indexOf("(");
+					if (pos != -1) {
+						name = name.substr(0, name.indexOf('(') - 1);
+						people = name.substr(pos + 1, name.length - pos - 2);
+					}
+
 					CandyShop.AvailableRooms.rooms.push({
 							jid: $(room).attr('jid'),
-							name: $(room).attr('name').substr(0, $(room).attr('name').indexOf('(') - 1),
-							people: $(room).attr('name').substr($(room).attr('name').indexOf('(') + 1, $(room).attr('name').length - $(room).attr('name').indexOf('(') - 2)
+							name: name,
+							people: people,
 					});
 				}
 			});
@@ -119,7 +130,13 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 
 		// add the matches to the list
 		for(var i in self.rooms) {
-			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + ' (' + self.rooms[i].people + ' Personen)</li>');
+			var room = self.rooms[i];
+			var people = "";
+			
+			if (room.people > 0) {
+				people = " (" + room.people + " Personen)";
+			}
+			content.append('<li class="available-room-option" data-jid="'+ self.rooms[i].jid +'">' + self.rooms[i].name + people + '</li>');
 		}
 
 		content.find('li').click(self.joinChanel);
