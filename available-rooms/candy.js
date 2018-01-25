@@ -28,8 +28,8 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 	 * Initializes the available-rooms plugin with the default settings.
 	 */
 	self.init = function(){
-		  $(Candy.Core.Event).on('candy:core.chat.connection', function(e, args) {
-			 if(args.status === Strophe.Status.ATTACHED) {
+		  $(Candy).on('candy:core.chat.connection', function(e, args) {
+			 if(args.status === Strophe.Status.CONNECTED) {
 					// Load rooms
 					self.loadRooms();
 
@@ -39,7 +39,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 		 });
 
 		// Add Handler
-		 $(Candy.View.Pane).bind('candy:view.message.beforeSend', function(e, args) {
+		 $(Candy).bind('candy:view.message.before-send', function(e, args) {
 			// (strip colors)
 			// if it matches '/list', show rooms and don't send anything
 			if (args.message.replace(/\|c:\d+\|/, '').toLowerCase() === '/list') {
@@ -47,7 +47,7 @@ CandyShop.AvailableRooms = (function(self, Candy, $) {
 				args.message = '';
 			}
 		});
-		$(Candy.View.Pane).bind('candy:view.room.afterAdd', self.loadRooms);
+		$(Candy).bind('candy:view.room.after-add', self.loadRooms);
 	};
 
 	/** Function: loadRooms
