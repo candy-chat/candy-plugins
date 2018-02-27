@@ -130,9 +130,14 @@ CandyShop.RoomPanel = (function(self, Candy, Strophe, $) {
                     Candy.Core.getConnection().sendIQ(iq, self.updateRoomList);
                 } else {
 
+                    var listMaxHeight = '';
+                    if (_options.roomListMaxHeight) {
+                        listMaxHeight = ' style="max-height: ' + _options.roomListMaxHeight + 'px"';
+                    }
                     var html = Mustache.to_html(CandyShop.RoomPanel.Template.rooms, {
                             title: $.i18n._('candyshopRoomPanelChooseRoom'),
-                            roomList: _options.roomList
+                            roomList: _options.roomList,
+                            roomListMaxHeight: listMaxHeight
                     });
                     Candy.View.Pane.Chat.Modal.show(html,true);
 
@@ -174,7 +179,7 @@ CandyShop.RoomPanel.Template = (function (self) {
     var roomParts = [
         '<div class="roomList">',
             '<h2>{{title}}</h2>',
-            '<ul>',
+            '<ul{{roomListMaxHeight}}>',
                 '{{#roomList}}',
                     '<li><a href="#{{jid}}">{{name}}</a></li>',
                 '{{/roomList}}',

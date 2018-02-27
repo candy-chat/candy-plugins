@@ -47,7 +47,10 @@ CandyShop.RoomPanel.init({
     autoDetectRooms: true,
 
     // how long in seconds before refreshing room list, default value is 600. [optional]
-    roomCacheTime: 600
+    roomCacheTime: 600,
+
+    // If this is set to an integer, the room list will be this many pixels tall (at most)
+    roomListMaxHeight: false,
 });
 
 Candy.Core.connect();

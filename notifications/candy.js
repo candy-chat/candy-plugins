@@ -81,11 +81,18 @@ CandyShop.Notifications = (function(self, Candy, $) {
       if(_options.notifyNormalMessage ||
         (self.mentionsMe(args.message) && _options.notifyMention) ||
         (_options.notifyPersonalMessage && Candy.View.Pane.Chat.rooms[args.roomJid].type === 'chat')) {
+        
+        var message = args.message;
+        // If either of the color plugins are active, strip out the color span that they add
+        if ( 'undefined' != typeof CandyShop.ColorsXhtml || 'undefined' != typeof CandyShop.Colors ) {
+          message = /^<span style=\"color: #.*?>(.*)<\/span>$/g.exec(args.message)[1]
+        }
+        
         // Create the notification.
         var title = !_options.title ? args.name : _options.title ,
           notification = new window.Notification(title, {
           icon: _options.icon,
-          body: args.message,
+          body: message,
           requireInteraction: _options.requireInteraction
         });
 
