@@ -3,21 +3,23 @@
  * @version 1.0
  * @author Manuel Alabor (manuel@alabor.me)
  * @author Jonatan Männchen <jonatan@maennchen.ch>
+ * @author Melissa Noelle <madamei@mojolingo.com>
  *
  * If a user posts a URL to an image, that image gets rendered directly
  * inside of Candy.
  */
-
-/* global Candy, jQuery, Image */
 
 var CandyShop = (function(self) { return self; }(CandyShop || {}));
 
 CandyShop.InlineImages = (function(self, Candy, $) {
 
   var _options = {
-    fileExtensions: ['png','jpg','jpeg','gif']
-    , maxImageSize: 100
-    , noInlineSizing: false
+    imageFileExtensions: ['png','jpg','jpeg','gif'],
+    textFileExtensions: ['txt'],
+    maxImageSize: 100,
+    noInlineSizing: false,
+    showTextPreview: true,
+    textPreviewLength: 200,
   };
 
   /** Function: init
@@ -36,10 +38,10 @@ CandyShop.InlineImages = (function(self, Candy, $) {
    * array with all the file extensions you want to display as image.
    *
    * Parameters:
-   *   (String array) fileExtensions - Array with extensions (jpg, png, ...)
+   *   (String array) imageFileExtensions - Array with extensions (jpg, png, ...)
    */
-  self.initWithFileExtensions = function(fileExtensions) {
-    _options.fileExtensions = fileExtensions;
+  self.initWithFileExtensions = function(imageFileExtensions) {
+    _options.imageFileExtensions = imageFileExtensions;
     self.init();
   };
 
@@ -65,7 +67,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
    *   (int) maxImageSize - Maximum edge size for images
    */
   self.initWithFileExtensionsAndMaxImageSize = function(fileExtensions, maxImageSize) {
-    _options.fileExtensions = fileExtensions;
+    _options.imageFileExtensions = fileExtensions;
     _options.maxImageSize = maxImageSize;
     self.init();
   };
@@ -104,8 +106,9 @@ CandyShop.InlineImages = (function(self, Candy, $) {
     dummyContainer.innerHTML = message;
 
     $(dummyContainer).find('a').each(function(index, anchor) {
-      if (anchorHasMatchingFileExtension(anchor)) {
-        anchor.innerHTML = buildImageLoaderSource(anchor.href);
+      var type = anchorHasMatchingFileExtension(anchor);
+      if (type) {
+        anchor.innerHTML = buildLoaderSource(anchor.href, type);
       }
     });
 
@@ -122,10 +125,12 @@ CandyShop.InlineImages = (function(self, Candy, $) {
    *   (true, false)
    */
   var anchorHasMatchingFileExtension = function(element) {
-    var dotPosition = element.pathname.lastIndexOf(".");
-    if(dotPosition > -1) {
-      if(_options.fileExtensions.indexOf(element.pathname.substr(dotPosition+1)) != -1) {
-        return true;
+    var dotPosition = element.pathname.lastIndexOf('.');
+    if (dotPosition > -1) {
+      if (_options.imageFileExtensions.indexOf(element.pathname.substr(dotPosition+1)) !== -1) {
+        return 'image';
+      } else if (_options.textFileExtensions.indexOf(element.pathname.substr(dotPosition+1)) !== -1) {
+        return 'text';
       }
     }
     return false;
@@ -133,7 +138,7 @@ CandyShop.InlineImages = (function(self, Candy, $) {
 
   /** Function: handleOnShow
    * Each time a message gets displayed, this method checks for possible
-   * image loaders (created by buildImageLoaderSource).
+   * image loaders (created by buildLoaderSource).
    * If there is one, the image "behind" the loader gets loaded in the
    * background. As soon as the image is loaded, the image loader gets
    * replaced by proper scaled image.
@@ -141,29 +146,49 @@ CandyShop.InlineImages = (function(self, Candy, $) {
    * Parameters:
    *   (Array) args
    */
-  var handleOnShow = function(e, args) {
+  var handleOnShow = function() {
     $('.inlineimages-loader').each(function(index, element) {
-      $(element).removeClass('inlineimages-loader');
       var url = $(element).attr('longdesc');
-      var imageLoader = new Image();
 
-      $(imageLoader).load(function() {
-        var origWidth = this.width;
-        var origHeight = this.height;
-        if(origWidth > _options.maxImageSize || origHeight > _options.maxImageSize) {
-          var ratio = Math.min(_options.maxImageSize / origWidth, _options.maxImageSize / origHeight);
-          var width = Math.round(ratio * origWidth);
-          var height = Math.round(ratio * origHeight);
-        }
+      $(element).removeClass('inlineimages-loader');
 
-        $(element).replaceWith(buildImageSource(url, width, height))
-      });
+      if ($(element).prop('tagName') === 'IMG') {
+        var imageLoader = new Image();
+        var width, height;
 
-      imageLoader.src = url;
+        $(imageLoader).load(function() {
+          var origWidth = this.width;
+          var origHeight = this.height;
+          if(origWidth > _options.maxImageSize || origHeight > _options.maxImageSize) {
+            var ratio = Math.min(_options.maxImageSize / origWidth, _options.maxImageSize / origHeight);
+            width = Math.round(ratio * origWidth);
+            height = Math.round(ratio * origHeight);
+          }
+
+          $(element).replaceWith(buildImageSource(url, width, height));
+          var messagePane = $('.room-pane:visible').find('.message-pane');
+          messagePane.scrollTop(messagePane[0].scrollHeight);
+        });
+        imageLoader.src = url;
+      } else if ($(element).prop('tagName') === 'DIV' && _options.showTextPreview) {
+        $.get(url, function(data) {
+          var text = data.slice(0, _options.textPreviewLength);
+          if (data.length > _options.textPreviewLength) {
+            text += '...';
+          }
+          text = '<h6>Pasted Text:</h6><pre>' + text + '</pre>';
+          $(element).addClass('inline-text-preview');
+          text += '<a href="' + url + '" target="_blank">Click here to continue reading...</a>';
+          element.innerHTML = text;
+          $(element).parent('a').after(element.outerHTML);
+          // Remove parent link.
+          $(element).parent('a').remove();
+        });
+      }
     });
   };
 
-  /** Function: buildImageLoaderSource
+  /** Function: buildLoaderSource
    * Returns a loader indicator. The handleOnShow method fullfills afterwards
    * the effective image loading.
    *
@@ -173,8 +198,12 @@ CandyShop.InlineImages = (function(self, Candy, $) {
    * Returns:
    *   (String)
    */
-  var buildImageLoaderSource = function(url) {
-    return '<img class="inlineimages-loader" longdesc="' + url + '" src="ui/candy-plugins/inline-images/spinner.gif" />';
+  var buildLoaderSource = function(url, type) {
+    if (type === 'image') {
+      return '<img class="inlineimages-loader" longdesc="' + url + '" src="ui/candy-plugins/inline-images/spinner.gif" />';
+    } else if (type === 'text') {
+      return '<div class="inlineimages-loader" longdesc="' + url + '" src="ui/candy-plugins/inline-images/spinner.gif"></div>';
+    }
   };
 
   /** Function: buildImageSource
@@ -195,5 +224,4 @@ CandyShop.InlineImages = (function(self, Candy, $) {
   };
 
   return self;
-
 }(CandyShop.InlineImages || {}, Candy, jQuery));
