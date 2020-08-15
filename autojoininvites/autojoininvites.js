@@ -23,10 +23,9 @@ CandyShop.AutoJoinInvites = (function(self, Candy, $) {
    */
   self.init = function(){
     $(Candy).on('candy:core:chat:invite',function(ev, obj) {
-      if (CandyShop.Bookmark) {
-        CandyShop.Bookmark.add(obj.roomJid);
-      }
-      Candy.Core.Action.Jabber.Room.Join(obj.roomJid, null);
+      Candy.Core.log('[CandyShop: AutoJoinInvites] joining room: ' + obj.roomJid);
+      // Candy.Core.Action.Jabber.Room.Join(obj.roomJid, null);
+      CandyShop.JoinOnResponse.joinRoom({ roomJid: obj.roomJid }, false);
     });
   };
 
