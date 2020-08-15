@@ -27,10 +27,11 @@ CandyShop.TypingNotifications = (function(self, Candy, $) {
     });
     // When a typing notification is recieved, display it.
     $(Candy).on('candy:core.message.chatstate', function(ev, obj) {
-      var pane, chatstate_string;
+      Candy.Core.log('[CandyShop TypingNotifications] recieved typing notification for ' + obj.roomJid + ': ' + obj.name + ' with state: ' + obj.chatstate);
+      var pane, chatStateString;
       pane = Candy.View.Pane.Room.getPane(obj.roomJid);
-      chatstate_string = self.getChatstateString(obj.chatstate, obj.name);
-      $(pane).find('.typing-notification-area').html(chatstate_string);
+      chatStateString = self.getChatstateString(obj.chatstate, obj.name);
+      $(pane).find('.typing-notification-area').html(chatStateString);
       return true;
     });
   };
@@ -46,9 +47,12 @@ CandyShop.TypingNotifications = (function(self, Candy, $) {
   };
 
   self.addTypingNotificationDiv = function(obj){
-    var pane_html = Candy.View.Pane.Room.getPane(obj.roomJid),
-        typing_notification_div_html = '<div class="typing-notification-area"></div>';
-    $(pane_html).find('.message-form-wrapper').append(typing_notification_div_html);
+    var roomPane = Candy.View.Pane.Room.getPane(obj.roomJid);
+    $(roomPane).find('.message-form-wrapper').append(self.Template.typingNotification);
+  };
+
+  self.Template = {
+    typingNotification: '<div class="typing-notification-area"></div>'
   };
 
   return self;
